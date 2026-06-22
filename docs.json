@@ -21,7 +21,7 @@
     "languages": [
       {
         "language": "en",
-        "default": true,
+        "default": false,
         "pages": ["en/overview"],
         "groups": [
           {
@@ -78,7 +78,8 @@
               "zh/api/suno"
             ]
           }
-        ]
+        ],
+        "default": true
       }
     ]
   }
