@@ -4,8 +4,8 @@
   "name": "Starrise AI",
   "favicon": "/favicon.ico",
   "logo": {
-    "light": "/images/logo-light.png",
-    "dark": "/images/logo-dark.png"
+    "light": "/images/主.png",
+    "dark": "/images/副.png"
   },
   "colors": {
     "primary": "#0284c7",
@@ -648,17 +648,6 @@
                 "group": "系统接口",
                 "pages": [
                   "zh/guides/system-api/models-list"
-                ]
-              }
-            ]
-          },
-          {
-            "tab": "更新日志",
-            "groups": [
-              {
-                "group": "2026",
-                "pages": [
-                  "zh/changelog/invite"
                 ]
               }
             ]
