@@ -20,87 +20,663 @@
   "navigation": {
     "languages": [
       {
-        "language": "en",
-        "default": false,
-        "pages": [
-          "en/overview"
-        ],
-        "groups": [
+        "language": "zh",
+        "default": true,
+        "tabs": [
           {
-            "group": "Guide",
-            "pages": [
-              "en/guide/quick-start",
-              "en/guide/authentication",
-              "en/guide/client-compatibility"
+            "tab": "指南",
+            "groups": [
+              {
+                "group": "快速开始",
+                "pages": [
+                  "zh/index",
+                  "zh/quickstart"
+                ]
+              },
+              {
+                "group": "模型介绍",
+                "pages": [
+                  {
+                    "group": "Anthropic",
+                    "icon": "/images/providers/anthropic.svg",
+                    "pages": [
+                      "zh/guides/model-api/anthropic/claude-opus-4-8",
+                      "zh/guides/model-api/anthropic/claude-opus-4-7",
+                      "zh/guides/model-api/anthropic/claude-opus-4-7-thinking",
+                      "zh/guides/model-api/anthropic/claude-opus-4-6",
+                      "zh/guides/model-api/anthropic/claude-opus-4-6-thinking",
+                      "zh/guides/model-api/anthropic/claude-opus-4-5",
+                      "zh/guides/model-api/anthropic/claude-opus-4-5-thinking",
+                      "zh/guides/model-api/anthropic/claude-opus-4-1",
+                      "zh/guides/model-api/anthropic/claude-opus-4-1-thinking",
+                      "zh/guides/model-api/anthropic/claude-opus-4",
+                      "zh/guides/model-api/anthropic/claude-opus-4-thinking",
+                      "zh/guides/model-api/anthropic/claude-sonnet-4-6",
+                      "zh/guides/model-api/anthropic/claude-sonnet-4-6-thinking",
+                      "zh/guides/model-api/anthropic/claude-sonnet-4-5",
+                      "zh/guides/model-api/anthropic/claude-sonnet-4-5-thinking",
+                      "zh/guides/model-api/anthropic/claude-sonnet-4",
+                      "zh/guides/model-api/anthropic/claude-sonnet-4-thinking",
+                      "zh/guides/model-api/anthropic/claude-haiku-4-5",
+                      "zh/guides/model-api/anthropic/claude-haiku-4-5-thinking",
+                      "zh/guides/model-api/anthropic/claude-3-7-sonnet",
+                      "zh/guides/model-api/anthropic/claude-3-7-sonnet-thinking",
+                      "zh/guides/model-api/anthropic/claude-3-5-sonnet"
+                    ]
+                  },
+                  {
+                    "group": "ByteDance",
+                    "icon": "/images/providers/bytedance.svg",
+                    "pages": [
+                      "zh/guides/model-api/bytedance/seedance-task-query",
+                      "zh/guides/model-api/bytedance/volc-asset",
+                      "zh/guides/model-api/bytedance/seedance-2-0-ultra",
+                      "zh/guides/model-api/bytedance/seedance-2-0-fast",
+                      "zh/guides/model-api/bytedance/seedance-2-0",
+                      "zh/guides/model-api/bytedance/doubao-seed-2.0-pro",
+                      "zh/guides/model-api/bytedance/doubao-seed-2.0-code",
+                      "zh/guides/model-api/bytedance/doubao-seed-2.0-lite",
+                      "zh/guides/model-api/bytedance/doubao-seed-2.0-mini",
+                      "zh/guides/model-api/bytedance/doubao-seed-1-8",
+                      "zh/guides/model-api/bytedance/doubao-seed-1-6-flash",
+                      "zh/guides/model-api/bytedance/doubao-seed-1-6",
+                      "zh/guides/model-api/bytedance/doubao-seed-1-6-lite",
+                      "zh/guides/model-api/bytedance/doubao-seed-1-6-vision",
+                      "zh/guides/model-api/bytedance/doubao-seedream-5-0-t2i",
+                      "zh/guides/model-api/bytedance/doubao-seedream-5-0-i2i",
+                      "zh/guides/model-api/bytedance/doubao-seedream-4-5-t2i",
+                      "zh/guides/model-api/bytedance/doubao-seedream-4-5-i2i",
+                      "zh/guides/model-api/bytedance/doubao-seedream-4-0-t2i",
+                      "zh/guides/model-api/bytedance/doubao-seedream-4-0-i2i",
+                      "zh/guides/model-api/bytedance/doubao-seedream-3-0-t2i",
+                      "zh/guides/model-api/bytedance/doubao-seedance-1-5-pro-t2v",
+                      "zh/guides/model-api/bytedance/doubao-seedance-1-5-pro-i2v",
+                      "zh/guides/model-api/bytedance/doubao-seedance-1-0-pro-t2v",
+                      "zh/guides/model-api/bytedance/doubao-seedance-1-0-pro-i2v",
+                      "zh/guides/model-api/bytedance/doubao-seedance-1-0-pro-fast-t2v",
+                      "zh/guides/model-api/bytedance/doubao-seedance-1-0-pro-fast-i2v",
+                      "zh/guides/model-api/bytedance/doubao-seedance-1-0-lite-t2v",
+                      "zh/guides/model-api/bytedance/doubao-seedance-1-0-lite-i2v"
+                    ]
+                  },
+                  {
+                    "group": "Zhipu",
+                    "icon": "/images/providers/zhipu.svg",
+                    "pages": [
+                      "zh/guides/model-api/zhipu/glm-5.1",
+                      "zh/guides/model-api/zhipu/glm-5",
+                      "zh/guides/model-api/zhipu/glm-4.7",
+                      "zh/guides/model-api/zhipu/glm-4.5"
+                    ]
+                  },
+                  {
+                    "group": "DeepSeek",
+                    "icon": "/images/providers/deepseek.svg",
+                    "pages": [
+                      "zh/guides/model-api/deepseek/deepseek-v4-flash",
+                      "zh/guides/model-api/deepseek/deepseek-v4-pro",
+                      "zh/guides/model-api/deepseek/deepseek-v3-2-speciale",
+                      "zh/guides/model-api/deepseek/deepseek-v3-2",
+                      "zh/guides/model-api/deepseek/deepseek-v3-2-exp",
+                      "zh/guides/model-api/deepseek/deepseek-v3-2-251201",
+                      "zh/guides/model-api/deepseek/deepseek-v3-1-terminus",
+                      "zh/guides/model-api/deepseek/deepseek-v3-1",
+                      "zh/guides/model-api/deepseek/deepseek-v3"
+                    ]
+                  },
+                  {
+                    "group": "Alibaba",
+                    "icon": "/images/providers/alibaba.svg",
+                    "pages": [
+                      "zh/guides/model-api/alibaba/happyhorse-task-query",
+                      "zh/guides/model-api/alibaba/happyhorse-1.0-t2v",
+                      "zh/guides/model-api/alibaba/happyhorse-1.0-i2v",
+                      "zh/guides/model-api/alibaba/happyhorse-1.0-r2v",
+                      "zh/guides/model-api/alibaba/happyhorse-1.0-video-edit",
+                      "zh/guides/model-api/alibaba/qwen3.6-flash",
+                      "zh/guides/model-api/alibaba/qwen3.5-397b-a17b",
+                      "zh/guides/model-api/alibaba/qwen3-coder-next",
+                      "zh/guides/model-api/alibaba/qwen3-coder",
+                      "zh/guides/model-api/alibaba/qwen3-next-80b-a3b-instruct",
+                      "zh/guides/model-api/alibaba/qwen3-next-80b-a3b-thinking",
+                      "zh/guides/model-api/alibaba/qwen3-235b-a22b-instruct-2507",
+                      "zh/guides/model-api/alibaba/qwen3-235b-a22b-thinking-2507",
+                      "zh/guides/model-api/alibaba/qwen3-235b-a22b",
+                      "zh/guides/model-api/alibaba/qwen3-30b-a3b-instruct-2507",
+                      "zh/guides/model-api/alibaba/qwen3-30b-a3b-thinking-2507",
+                      "zh/guides/model-api/alibaba/qwen3-32b",
+                      "zh/guides/model-api/alibaba/qwen3-14b",
+                      "zh/guides/model-api/alibaba/qwen2.5-72b-instruct",
+                      "zh/guides/model-api/alibaba/qwen2.5-32b-instruct",
+                      "zh/guides/model-api/alibaba/qwen2.5-7b-instruct",
+                      "zh/guides/model-api/alibaba/qwen3-vl-235b-a22b-instruct",
+                      "zh/guides/model-api/alibaba/qwen3-vl-235b-a22b-thinking",
+                      "zh/guides/model-api/alibaba/qwen2.5-vl-72b-instruct",
+                      "zh/guides/model-api/alibaba/qwen2.5-vl-32b-instruct",
+                      "zh/guides/model-api/alibaba/qwen2.5-vl-7b-instruct",
+                      "zh/guides/model-api/alibaba/qwen2-vl-72b-instruct",
+                      "zh/guides/model-api/alibaba/qwen2-vl-7b-instruct",
+                      "zh/guides/model-api/alibaba/qwen-image-plus",
+                      "zh/guides/model-api/alibaba/wan2.7-image",
+                      "zh/guides/model-api/alibaba/wan2.6-t2i",
+                      "zh/guides/model-api/alibaba/wan2.2-t2v-a14b",
+                      "zh/guides/model-api/alibaba/wan2.2-i2v-a14b",
+                      "zh/guides/model-api/alibaba/wan2-task-query"
+                    ]
+                  },
+                  {
+                    "group": "MiniMax",
+                    "icon": "/images/providers/minimax.svg",
+                    "pages": [
+                      "zh/guides/model-api/minimax/minimax-m2.7",
+                      "zh/guides/model-api/minimax/minimax-m2.5",
+                      "zh/guides/model-api/minimax/minimax-m2.1"
+                    ]
+                  },
+                  {
+                    "group": "MoonShot",
+                    "icon": "/images/providers/moonshot.svg",
+                    "pages": [
+                      "zh/guides/model-api/moonshot/kimi-k2-5"
+                    ]
+                  },
+                  {
+                    "group": "xAI",
+                    "icon": "/images/providers/xai.svg",
+                    "pages": [
+                      "zh/guides/model-api/xai/grok-3",
+                      "zh/guides/model-api/xai/grok-3-mini",
+                      "zh/guides/model-api/xai/grok-4-fast-reasoning",
+                      "zh/guides/model-api/xai/grok-4-fast-non-reasoning",
+                      "zh/guides/model-api/xai/grok-4-1-fast-reasoning",
+                      "zh/guides/model-api/xai/grok-4-1-fast-non-reasoning"
+                    ]
+                  },
+                  {
+                    "group": "Google",
+                    "icon": "/images/providers/google.svg",
+                    "pages": [
+                      "zh/guides/model-api/google/gemini-3.5-flash",
+                      "zh/guides/model-api/google/gemini-3.1-flash-image-preview",
+                      "zh/guides/model-api/google/gemini-3.1-flash-image-preview-stream",
+                      "zh/guides/model-api/google/gemini-3.1-flash-image-preview-c",
+                      "zh/guides/model-api/google/gemini-3.1-pro-preview",
+                      "zh/guides/model-api/google/gemini-3.1-flash-lite-preview",
+                      "zh/guides/model-api/google/gemini-3-pro-preview",
+                      "zh/guides/model-api/google/gemini-3-pro-preview-stream",
+                      "zh/guides/model-api/google/gemini-3-pro-image-preview",
+                      "zh/guides/model-api/google/gemini-3-pro-image-preview-stream",
+                      "zh/guides/model-api/google/gemini-3-pro-image-preview-c",
+                      "zh/guides/model-api/google/gemini-3-flash-preview",
+                      "zh/guides/model-api/google/gemini-2-5-pro",
+                      "zh/guides/model-api/google/gemini-2-5-pro-stream",
+                      "zh/guides/model-api/google/gemini-2-5-flash",
+                      "zh/guides/model-api/google/gemini-2-5-flash-image",
+                      "zh/guides/model-api/google/gemini-2-5-flash-image-stream",
+                      "zh/guides/model-api/google/gemini-2.5-flash-lite",
+                      "zh/guides/model-api/google/gemini-2-0-flash"
+                    ]
+                  },
+                  {
+                    "group": "Kuaishou",
+                    "icon": "/images/providers/kuaishou.svg",
+                    "pages": [
+                      "zh/guides/model-api/kuaishou/kling-v3-omni",
+                      "zh/guides/model-api/kuaishou/kling-v3-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v3-t2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-6-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-6-t2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-5-turbo-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-5-turbo-t2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-1-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-1-master-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-1-master-t2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-master-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v2-master-t2v",
+                      "zh/guides/model-api/kuaishou/kling-v1-6-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v1-6-t2v",
+                      "zh/guides/model-api/kuaishou/kling-v1-6-mi2v",
+                      "zh/guides/model-api/kuaishou/kling-v1-5-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v1-i2v",
+                      "zh/guides/model-api/kuaishou/kling-v1-t2v",
+                      "zh/guides/model-api/kuaishou/kling-identify-face",
+                      "zh/guides/model-api/kuaishou/kling-lip-sync",
+                      "zh/guides/model-api/kuaishou/kling-task-query",
+                      "zh/guides/model-api/kuaishou/kling-element-create",
+                      "zh/guides/model-api/kuaishou/kling-element-query",
+                      "zh/guides/model-api/kuaishou/kling-element-list",
+                      "zh/guides/model-api/kuaishou/kling-element-preset-list",
+                      "zh/guides/model-api/kuaishou/kling-element-delete"
+                    ]
+                  },
+                  {
+                    "group": "Black Forest Labs",
+                    "icon": "/images/providers/bfl.svg",
+                    "pages": [
+                      "zh/guides/model-api/blackforestlabs/flux-1-1-pro",
+                      "zh/guides/model-api/blackforestlabs/flux-2-pro",
+                      "zh/guides/model-api/blackforestlabs/flux-2-flex",
+                      "zh/guides/model-api/blackforestlabs/flux-1-kontext-pro"
+                    ]
+                  },
+                  {
+                    "group": "OpenAI",
+                    "icon": "/images/providers/openai.svg",
+                    "pages": [
+                      "zh/guides/model-api/openai/gpt-5-5",
+                      "zh/guides/model-api/openai/gpt-5-4",
+                      "zh/guides/model-api/openai/gpt-5-3-codex",
+                      "zh/guides/model-api/openai/gpt-5-2",
+                      "zh/guides/model-api/openai/gpt-5-2-chat",
+                      "zh/guides/model-api/openai/gpt-5-2-chat-latest",
+                      "zh/guides/model-api/openai/gpt-5-2-codex",
+                      "zh/guides/model-api/openai/gpt-5-1",
+                      "zh/guides/model-api/openai/gpt-5-1-chat",
+                      "zh/guides/model-api/openai/gpt-5-1-chat-latest",
+                      "zh/guides/model-api/openai/gpt-5-1-codex-mini",
+                      "zh/guides/model-api/openai/gpt-5",
+                      "zh/guides/model-api/openai/gpt-5-chat-latest",
+                      "zh/guides/model-api/openai/gpt-5-pro",
+                      "zh/guides/model-api/openai/gpt-5-codex",
+                      "zh/guides/model-api/openai/gpt-5-codex-high",
+                      "zh/guides/model-api/openai/gpt-5-codex-low",
+                      "zh/guides/model-api/openai/gpt-5-mini",
+                      "zh/guides/model-api/openai/gpt-5-nano",
+                      "zh/guides/model-api/openai/gpt-4o",
+                      "zh/guides/model-api/openai/gpt-4o-mini",
+                      "zh/guides/model-api/openai/gpt-4-1",
+                      "zh/guides/model-api/openai/gpt-4",
+                      "zh/guides/model-api/openai/sora-2",
+                      "zh/guides/model-api/openai/gpt-image-2",
+                      "zh/guides/model-api/openai/gpt-image-1-5",
+                      "zh/guides/model-api/openai/gpt-image-1"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "资源",
+                "pages": [
+                  "zh/guides/resources/payment",
+                  "zh/guides/resources/faq"
+                ]
+              }
             ]
           },
           {
-            "group": "API Reference",
-            "pages": [
-              "en/api/models",
-              "en/api/chat",
-              "en/api/responses",
-              "en/api/claude",
-              "en/api/gemini",
-              "en/api/embeddings",
-              "en/api/images",
-              "en/api/video",
-              "en/api/audio",
-              "en/api/realtime",
-              "en/api/midjourney",
-              "en/api/suno"
+            "tab": "API 参考",
+            "groups": [
+              {
+                "group": "概览",
+                "pages": [
+                  "zh/api-reference/introduction"
+                ]
+              },
+              {
+                "group": "原生兼容端点",
+                "pages": [
+                  {
+                    "group": "OpenAI",
+                    "pages": [
+                      "zh/api-reference/endpoints/openai"
+                    ]
+                  },
+                  {
+                    "group": "Anthropic Claude",
+                    "pages": [
+                      "zh/api-reference/endpoints/anthropic"
+                    ]
+                  },
+                  {
+                    "group": "Google Gemini",
+                    "pages": [
+                      "zh/api-reference/endpoints/gemini-native",
+                      "zh/api-reference/endpoints/gemini-chat"
+                    ]
+                  },
+                  {
+                    "group": "ByteDance 豆包",
+                    "pages": [
+                      "zh/api-reference/endpoints/doubao",
+                      "zh/api-reference/endpoints/doubao-responses"
+                    ]
+                  }
+                ]
+              },
+              {
+                "group": "模型 API",
+                "pages": [
+                  {
+                    "group": "Anthropic",
+                    "icon": "/images/providers/anthropic.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/anthropic/claude-opus-4-8",
+                      "zh/api-reference/model-api/anthropic/claude-opus-4-7",
+                      "zh/api-reference/model-api/anthropic/claude-opus-4-6",
+                      "zh/api-reference/model-api/anthropic/claude-opus-4-6-thinking",
+                      "zh/api-reference/model-api/anthropic/claude-sonnet-4-6",
+                      "zh/api-reference/model-api/anthropic/claude-sonnet-4-6-thinking",
+                      "zh/api-reference/model-api/anthropic/claude-opus-4-5-20251101",
+                      "zh/api-reference/model-api/anthropic/claude-opus-4-5-20251101-thinking",
+                      "zh/api-reference/model-api/anthropic/claude-sonnet-4-5-20250929",
+                      "zh/api-reference/model-api/anthropic/claude-sonnet-4-5-20250929-thinking",
+                      "zh/api-reference/model-api/anthropic/claude-haiku-4-5-20251001",
+                      "zh/api-reference/model-api/anthropic/claude-haiku-4-5-20251001-thinking",
+                      "zh/api-reference/model-api/anthropic/claude-opus-4-20250514"
+                    ]
+                  },
+                  {
+                    "group": "ByteDance",
+                    "icon": "/images/providers/bytedance.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/bytedance/seedance-task-query",
+                      {
+                        "group": "Seedance 2.0 素材管理",
+                        "pages": [
+                          "zh/api-reference/model-api/bytedance/volc-asset-create-group",
+                          "zh/api-reference/model-api/bytedance/volc-asset-create-image",
+                          "zh/api-reference/model-api/bytedance/volc-asset-create-video",
+                          "zh/api-reference/model-api/bytedance/volc-asset-create-audio",
+                          "zh/api-reference/model-api/bytedance/volc-asset-list-groups",
+                          "zh/api-reference/model-api/bytedance/volc-asset-list-assets",
+                          "zh/api-reference/model-api/bytedance/volc-asset-get-asset"
+                        ]
+                      },
+                      "zh/api-reference/model-api/bytedance/seedance-2-0-ultra",
+                      "zh/api-reference/model-api/bytedance/seedance-2-0-fast",
+                      "zh/api-reference/model-api/bytedance/seedance-2-0",
+                      "zh/api-reference/model-api/bytedance/doubao-seed-2.0-pro",
+                      "zh/api-reference/model-api/bytedance/doubao-seed-2.0-code",
+                      "zh/api-reference/model-api/bytedance/doubao-seed-2.0-lite",
+                      "zh/api-reference/model-api/bytedance/doubao-seed-2.0-mini",
+                      "zh/api-reference/model-api/bytedance/doubao-seed-1-8-251228",
+                      "zh/api-reference/model-api/bytedance/doubao-seed-1-6-flash-250828",
+                      "zh/api-reference/model-api/bytedance/doubao-seed-1-6-251015",
+                      "zh/api-reference/model-api/bytedance/doubao-seed-1-6-lite-251015",
+                      "zh/api-reference/model-api/bytedance/doubao-seed-1-6-vision-250815",
+                      "zh/api-reference/model-api/bytedance/doubao-seedream-5-0-260128-t2i",
+                      "zh/api-reference/model-api/bytedance/doubao-seedream-5-0-260128-i2i",
+                      "zh/api-reference/model-api/bytedance/doubao-seedream-4-5-251128-t2i",
+                      "zh/api-reference/model-api/bytedance/doubao-seedream-4-5-251128-i2i",
+                      "zh/api-reference/model-api/bytedance/doubao-seedream-4-0-250828-t2i",
+                      "zh/api-reference/model-api/bytedance/doubao-seedream-4-0-250828-i2i",
+                      "zh/api-reference/model-api/bytedance/doubao-seedream-3-0-t2i-250415",
+                      "zh/api-reference/model-api/bytedance/doubao-seedance-1-5-pro-251215-t2v",
+                      "zh/api-reference/model-api/bytedance/doubao-seedance-1-5-pro-251215-i2v",
+                      "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-pro-250528-t2v",
+                      "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-pro-250528-i2v",
+                      "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-pro-fast-251015-t2v",
+                      "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-pro-fast-251015-i2v",
+                      "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-lite-t2v-250428",
+                      "zh/api-reference/model-api/bytedance/doubao-seedance-1-0-lite-i2v-250428"
+                    ]
+                  },
+                  {
+                    "group": "Zhipu",
+                    "icon": "/images/providers/zhipu.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/zhipu/glm-5.1",
+                      "zh/api-reference/model-api/zhipu/glm-5",
+                      "zh/api-reference/model-api/zhipu/glm-4.7",
+                      "zh/api-reference/model-api/zhipu/glm-4.5"
+                    ]
+                  },
+                  {
+                    "group": "DeepSeek",
+                    "icon": "/images/providers/deepseek.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/deepseek/deepseek-v4-flash",
+                      "zh/api-reference/model-api/deepseek/deepseek-v4-pro",
+                      "zh/api-reference/model-api/deepseek/deepseek-v3-2-speciale",
+                      "zh/api-reference/model-api/deepseek/deepseek-v3-2",
+                      "zh/api-reference/model-api/deepseek/deepseek-v3-2-exp",
+                      "zh/api-reference/model-api/deepseek/deepseek-v3-2-251201",
+                      "zh/api-reference/model-api/deepseek/deepseek-v3-1-terminus",
+                      "zh/api-reference/model-api/deepseek/deepseek-v3-1",
+                      "zh/api-reference/model-api/deepseek/deepseek-v3"
+                    ]
+                  },
+                  {
+                    "group": "Alibaba",
+                    "icon": "/images/providers/alibaba.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/alibaba/happyhorse-task-query",
+                      "zh/api-reference/model-api/alibaba/happyhorse-1.0-t2v",
+                      "zh/api-reference/model-api/alibaba/happyhorse-1.0-i2v",
+                      "zh/api-reference/model-api/alibaba/happyhorse-1.0-r2v",
+                      "zh/api-reference/model-api/alibaba/happyhorse-1.0-video-edit",
+                      "zh/api-reference/model-api/alibaba/qwen3.6-flash",
+                      "zh/api-reference/model-api/alibaba/qwen3.5-397b-a17b",
+                      "zh/api-reference/model-api/alibaba/qwen3-coder-next",
+                      "zh/api-reference/model-api/alibaba/qwen3-coder",
+                      "zh/api-reference/model-api/alibaba/qwen3-next-80b-a3b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen3-next-80b-a3b-thinking",
+                      "zh/api-reference/model-api/alibaba/qwen3-235b-a22b-instruct-2507",
+                      "zh/api-reference/model-api/alibaba/qwen3-235b-a22b-thinking-2507",
+                      "zh/api-reference/model-api/alibaba/qwen3-235b-a22b",
+                      "zh/api-reference/model-api/alibaba/qwen3-30b-a3b-instruct-2507",
+                      "zh/api-reference/model-api/alibaba/qwen3-30b-a3b-thinking-2507",
+                      "zh/api-reference/model-api/alibaba/qwen3-32b",
+                      "zh/api-reference/model-api/alibaba/qwen3-14b",
+                      "zh/api-reference/model-api/alibaba/qwen2.5-72b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen2.5-32b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen2.5-7b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen3-vl-235b-a22b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen3-vl-235b-a22b-thinking",
+                      "zh/api-reference/model-api/alibaba/qwen2.5-vl-72b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen2.5-vl-32b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen2.5-vl-7b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen2-vl-72b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen2-vl-7b-instruct",
+                      "zh/api-reference/model-api/alibaba/qwen-image-plus",
+                      "zh/api-reference/model-api/alibaba/wan2.7-image",
+                      "zh/api-reference/model-api/alibaba/wan2.6-t2i",
+                      "zh/api-reference/model-api/alibaba/wan2.2-t2v-a14b",
+                      "zh/api-reference/model-api/alibaba/wan2.2-i2v-a14b",
+                      "zh/api-reference/model-api/alibaba/wan2-task-query"
+                    ]
+                  },
+                  {
+                    "group": "MiniMax",
+                    "icon": "/images/providers/minimax.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/minimax/minimax-m2.7",
+                      "zh/api-reference/model-api/minimax/minimax-m2.5",
+                      "zh/api-reference/model-api/minimax/minimax-m2.1"
+                    ]
+                  },
+                  {
+                    "group": "MoonShot",
+                    "icon": "/images/providers/moonshot.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/moonshot/kimi-k2-5"
+                    ]
+                  },
+                  {
+                    "group": "xAI",
+                    "icon": "/images/providers/xai.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/xai/grok-3",
+                      "zh/api-reference/model-api/xai/grok-3-mini",
+                      "zh/api-reference/model-api/xai/grok-4-fast-reasoning",
+                      "zh/api-reference/model-api/xai/grok-4-fast-non-reasoning",
+                      "zh/api-reference/model-api/xai/grok-4-1-fast-reasoning",
+                      "zh/api-reference/model-api/xai/grok-4-1-fast-non-reasoning"
+                    ]
+                  },
+                  {
+                    "group": "Google",
+                    "icon": "/images/providers/google.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/google/gemini-3.5-flash",
+                      "zh/api-reference/model-api/google/gemini-3.1-flash-image-preview",
+                      "zh/api-reference/model-api/google/gemini-3.1-flash-image-preview-stream",
+                      "zh/api-reference/model-api/google/gemini-3.1-flash-image-preview-c",
+                      "zh/api-reference/model-api/google/gemini-3.1-pro-preview",
+                      "zh/api-reference/model-api/google/gemini-3.1-flash-lite-preview",
+                      "zh/api-reference/model-api/google/gemini-3-pro-preview",
+                      "zh/api-reference/model-api/google/gemini-3-pro-preview-stream",
+                      "zh/api-reference/model-api/google/gemini-3-pro-image-preview",
+                      "zh/api-reference/model-api/google/gemini-3-pro-image-preview-stream",
+                      "zh/api-reference/model-api/google/gemini-3-pro-image-preview-c",
+                      "zh/api-reference/model-api/google/gemini-3-flash-preview",
+                      "zh/api-reference/model-api/google/gemini-2-5-pro",
+                      "zh/api-reference/model-api/google/gemini-2-5-pro-stream",
+                      "zh/api-reference/model-api/google/gemini-2-5-flash",
+                      "zh/api-reference/model-api/google/gemini-2-5-flash-image",
+                      "zh/api-reference/model-api/google/gemini-2-5-flash-image-stream",
+                      "zh/api-reference/model-api/google/gemini-2.5-flash-lite",
+                      "zh/api-reference/model-api/google/gemini-2-0-flash"
+                    ]
+                  },
+                  {
+                    "group": "Kuaishou",
+                    "icon": "/images/providers/kuaishou.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/kuaishou/kling-v3-omni",
+                      "zh/api-reference/model-api/kuaishou/kling-v3-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v3-t2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-6-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-6-t2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-5-turbo-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-5-turbo-t2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-1-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-1-master-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-1-master-t2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-master-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v2-master-t2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v1-6-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v1-6-t2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v1-6-mi2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v1-5-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v1-i2v",
+                      "zh/api-reference/model-api/kuaishou/kling-v1-t2v",
+                      "zh/api-reference/model-api/kuaishou/kling-identify-face",
+                      "zh/api-reference/model-api/kuaishou/kling-lip-sync",
+                      "zh/api-reference/model-api/kuaishou/kling-task-query",
+                      "zh/api-reference/model-api/kuaishou/kling-element-create",
+                      "zh/api-reference/model-api/kuaishou/kling-element-query",
+                      "zh/api-reference/model-api/kuaishou/kling-element-list",
+                      "zh/api-reference/model-api/kuaishou/kling-element-preset-list",
+                      "zh/api-reference/model-api/kuaishou/kling-element-delete"
+                    ]
+                  },
+                  {
+                    "group": "Black Forest Labs",
+                    "icon": "/images/providers/bfl.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/blackforestlabs/flux-1-1-pro",
+                      "zh/api-reference/model-api/blackforestlabs/flux-2-pro",
+                      "zh/api-reference/model-api/blackforestlabs/flux-2-flex",
+                      "zh/api-reference/model-api/blackforestlabs/flux-1-kontext-pro",
+                      "zh/api-reference/model-api/blackforestlabs/flux-1-kontext-pro-edit"
+                    ]
+                  },
+                  {
+                    "group": "OpenAI",
+                    "icon": "/images/providers/openai.svg",
+                    "pages": [
+                      "zh/api-reference/model-api/openai/gpt-5-5",
+                      "zh/api-reference/model-api/openai/gpt-5-4",
+                      "zh/api-reference/model-api/openai/gpt-5-3-codex",
+                      "zh/api-reference/model-api/openai/gpt-5-2",
+                      "zh/api-reference/model-api/openai/gpt-5-2-chat",
+                      "zh/api-reference/model-api/openai/gpt-5-2-chat-latest",
+                      "zh/api-reference/model-api/openai/gpt-5-2-codex",
+                      "zh/api-reference/model-api/openai/gpt-5-1",
+                      "zh/api-reference/model-api/openai/gpt-5-1-chat",
+                      "zh/api-reference/model-api/openai/gpt-5-1-chat-latest",
+                      "zh/api-reference/model-api/openai/gpt-5-1-codex-mini",
+                      "zh/api-reference/model-api/openai/gpt-5",
+                      "zh/api-reference/model-api/openai/gpt-5-chat-latest",
+                      "zh/api-reference/model-api/openai/gpt-5-pro",
+                      "zh/api-reference/model-api/openai/gpt-5-codex",
+                      "zh/api-reference/model-api/openai/gpt-5-codex-high",
+                      "zh/api-reference/model-api/openai/gpt-5-codex-low",
+                      "zh/api-reference/model-api/openai/gpt-5-mini",
+                      "zh/api-reference/model-api/openai/gpt-5-nano",
+                      "zh/api-reference/model-api/openai/gpt-4o",
+                      "zh/api-reference/model-api/openai/gpt-4o-mini",
+                      "zh/api-reference/model-api/openai/gpt-4-1",
+                      "zh/api-reference/model-api/openai/gpt-4",
+                      "zh/api-reference/model-api/openai/sora-2",
+                      "zh/api-reference/model-api/openai/sora-2-query",
+                      "zh/api-reference/model-api/openai/sora-2-download",
+                      "zh/api-reference/model-api/openai/gpt-image-2",
+                      "zh/api-reference/model-api/openai/gpt-image-2-edit",
+                      "zh/api-reference/model-api/openai/gpt-image-1-5",
+                      "zh/api-reference/model-api/openai/gpt-image-1"
+                    ]
+                  }
+                ]
+              }
             ]
           },
           {
-            "group": "Resources",
-            "pages": [
-              "en/guide/faq",
-              "en/guide/payment"
+            "tab": "场景示例",
+            "groups": [
+              {
+                "group": "场景示例",
+                "pages": [
+                  "zh/guides/usecases/use-anyfast-in-claude-code",
+                  "zh/guides/usecases/use-anyfast-in-chathub",
+                  "zh/guides/usecases/use-anyfast-in-chatbox",
+                  "zh/guides/usecases/use-anyfast-in-dify",
+                  "zh/guides/usecases/use-anyfast-in-sider",
+                  "zh/guides/usecases/use-anyfast-in-mindsearch",
+                  "zh/guides/usecases/use-anyfast-in-db-gpt",
+                  "zh/guides/usecases/use-anyfast-in-cline",
+                  "zh/guides/usecases/use-anyfast-in-codex",
+                  "zh/guides/usecases/use-anyfast-in-deep-research-web-ui",
+                  "zh/guides/usecases/use-anyfast-in-openclaw",
+                  "zh/guides/usecases/use-anyfast-in-opencode",
+                  "zh/guides/usecases/use-anyfast-in-sillytavern",
+                  "zh/guides/usecases/use-anyfast-in-janitor-ai",
+                  "zh/guides/usecases/use-anyfast-in-hermes-agent",
+                  "zh/guides/usecases/use-anyfast-in-chub-ai",
+                  "zh/guides/usecases/use-anyfast-in-roo-code",
+                  "zh/guides/usecases/use-anyfast-in-continue-vscode",
+                  "zh/guides/usecases/use-anyfast-in-cc-switch"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "系统接口",
+            "groups": [
+              {
+                "group": "系统接口",
+                "pages": [
+                  "zh/guides/system-api/models-list"
+                ]
+              }
+            ]
+          },
+          {
+            "tab": "更新日志",
+            "groups": [
+              {
+                "group": "2026",
+                "pages": [
+                  "zh/changelog/invite"
+                ]
+              }
             ]
           }
         ]
-      },
-      {
-        "language": "zh",
-        "pages": [
-          "zh/overview"
-        ],
-        "groups": [
-          {
-            "group": "指南",
-            "pages": [
-              "zh/guide/quick-start",
-              "zh/guide/authentication",
-              "zh/guide/client-compatibility"
-            ]
-          },
-          {
-            "group": "API 参考",
-            "pages": [
-              "zh/api/models",
-              "zh/api/chat",
-              "zh/api/responses",
-              "zh/api/claude",
-              "zh/api/gemini",
-              "zh/api/embeddings",
-              "zh/api/images",
-              "zh/api/video",
-              "zh/api/audio",
-              "zh/api/realtime",
-              "zh/api/midjourney",
-              "zh/api/suno"
-            ]
-          },
-          {
-            "group": "资源",
-            "pages": [
-              "zh/guide/faq",
-              "zh/guide/payment"
-            ]
-          }
-        ],
-        "default": true
       }
     ]
+  },
+  "navbar": {
+    "primary": {
+      "type": "button",
+      "label": "控制台",
+      "href": "https://ai.starrise.tech/console/token"
+    }
+  },
+  "footer": {
+    "socials": {
+      "website": "https://ai.starrise.tech"
+    }
   }
 }

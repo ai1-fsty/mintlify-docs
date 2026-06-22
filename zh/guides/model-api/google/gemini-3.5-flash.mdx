@@ -1,0 +1,76 @@
+---
+title: "Gemini 3.5 Flash"
+description: "通过 Gemini API 调用 Google Gemini 3.5 Flash。最智能的 Flash 模型，针对智能体和编码任务优化。"
+---
+
+Gemini 3.5 Flash 是 Google 最智能的 Flash 模型，通过 Starrise AI 以原生 Gemini API 提供服务。在智能体执行、编码和长时间运行任务方面提供前沿性能。
+
+## 核心能力
+
+* **100 万 token 上下文窗口** — 处理海量文档和对话，最多 65,000 个输出 token
+* **思考级别** — 通过 `minimal`、`low`、`medium`（默认）和 `high` 控制推理深度
+* **思考保留** — 模型自动在多轮对话中保留中间推理
+* **智能体执行** — 针对多智能体部署、问题解决和大规模智能体循环进行了优化
+* **编码** — 擅长迭代式编码周期、快速探索和原型设计
+* **正式版发布** — 稳定模型，可大规模用于生产
+
+## 快速示例
+
+<CodeGroup>
+  ```bash cURL
+  curl "https://ai.starrise.tech/v1beta/models/gemini-3.5-flash:generateContent?key=YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "contents": [
+        {
+          "role": "user",
+          "parts": [{ "text": "用三句话解释并行智能体执行的工作原理。" }]
+        }
+      ],
+      "generationConfig": {
+        "thinkingConfig": {
+          "thinkingLevel": "medium"
+        }
+      }
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  url = "https://ai.starrise.tech/v1beta/models/gemini-3.5-flash:generateContent"
+  params = {"key": "YOUR_API_KEY"}
+  data = {
+      "contents": [
+          {
+              "role": "user",
+              "parts": [{"text": "用三句话解释并行智能体执行的工作原理。"}]
+          }
+      ],
+      "generationConfig": {
+          "thinkingConfig": {
+              "thinkingLevel": "medium"
+          }
+      }
+  }
+
+  response = requests.post(url, params=params, json=data)
+  result = response.json()
+  print(result["candidates"][0]["content"]["parts"][0]["text"])
+  ```
+</CodeGroup>
+
+## 参数说明
+
+| 参数                                              | 类型     | 必填 | 说明                                         |
+| ----------------------------------------------- | ------ | -- | ------------------------------------------ |
+| `key`                                           | string | 是  | API 密钥（查询参数）                               |
+| `contents`                                      | array  | 是  | `{ role, parts }` 对象数组                     |
+| `systemInstruction`                             | object | 否  | 包含 `parts` 数组的系统指令                         |
+| `generationConfig.thinkingConfig.thinkingLevel` | string | 否  | `minimal`、`low`、`medium`（默认）、`high`，控制推理深度 |
+| `generationConfig.temperature`                  | float  | 否  | `0`–`2`。Gemini 3.5 Flash 不推荐使用             |
+| `generationConfig.topP`                         | float  | 否  | Gemini 3.5 Flash 不推荐使用                     |
+
+<Card title="API 参考" icon="code" href="/zh/api-reference/model-api/google/gemini-3.5-flash">
+  查看 Gemini 3.5 Flash 的交互式 API Playground。
+</Card>

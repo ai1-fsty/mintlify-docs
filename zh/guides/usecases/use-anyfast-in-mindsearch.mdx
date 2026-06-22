@@ -1,0 +1,59 @@
+---
+title: "在 MindSearch 中使用"
+description: "将 Starrise AI 模型与 MindSearch 集成——开源 AI 搜索引擎。"
+---
+
+## 1. 获取 API Key
+
+打开 [Starrise AI 控制台](https://ai.starrise.tech/) 并注册账号（如果注册过，直接登录即可）。完成注册后，前往 **API 密钥**，创建新的 API Key，点击密钥进行复制，以备后续使用。
+
+## 2. 部署 MindSearch
+
+复制 MindSearch 到本地并安装相关依赖后（参考 [MindSearch README](https://github.com/InternLM/MindSearch/blob/main/README.md)），修改 `/path/to/MindSearch/mindsearch/models.py`，加上调用 Starrise AI API 的相关配置：
+
+```python
+starrise_config = dict(
+    type=GPTAPI,
+    model_type='gpt-4o',
+    key=os.environ.get('ANYFAST_API_KEY', 'YOUR ANYFAST API KEY'),
+    openai_api_base='https://ai.starrise.tech/v1/chat/completions',
+    meta_template=[
+        dict(role='system', api_role='system'),
+        dict(role='user', api_role='user'),
+        dict(role='assistant', api_role='assistant'),
+        dict(role='environment', api_role='system')
+    ],
+    top_p=0.8,
+    top_k=1,
+    temperature=0,
+    max_new_tokens=8192,
+    repetition_penalty=1.02,
+    stop_words=['<|im_end|>']
+)
+```
+
+加入这段配置后，可以执行相关指令来启动 MindSearch。
+
+启动后端：
+
+```bash
+# 指定 Starrise AI 的 API Key
+export ANYFAST_API_KEY=<上面流程中复制的密钥>
+
+# 启动
+python -m mindsearch.app --lang en --model_format starrise_config --search_engine DuckDuckGoSearch
+```
+
+启动前端（以 Gradio 为例）：
+
+```bash
+python frontend/mindsearch_gradio.py
+```
+
+## 3. 上传到 HuggingFace Space
+
+我们也可以选择部署到 HuggingFace 的 Space 当中：
+
+* 在 [huggingface.co/new-space](https://huggingface.co/new-space) 创建一个新的 Space，配置为：Gradio Template: Blank，Hardware: CPU basic。
+* 创建成功后，进入 **Settings** 设置 API Key。
+* 把 MindSearch 目录、`requirements.txt` 和 `app.py` 一并上传。

@@ -1,0 +1,105 @@
+---
+title: "Wan2.7 Image"
+description: "通过 Starrise AI API 调用阿里巴巴万相-图像生成与编辑 2.7 模型。"
+---
+
+万相-图像生成与编辑 2.7（Wan2.7 Image）是阿里巴巴最新的多模态图像模型，通过 Starrise AI 提供服务。支持文生图、图像编辑、交互式区域编辑和组图生成，最高支持 4K 输出分辨率。
+
+## 模型列表
+
+| 模型 ID              | 说明                |
+| ------------------ | ----------------- |
+| `wan2.7-image-pro` | 专业版，文生图支持 4K 高清输出 |
+| `wan2.7-image`     | 标准版，生成速度更快        |
+
+## 核心能力
+
+* **文生图** — 根据文字描述生成图片
+* **图像编辑** — 结合文字提示词对已有图片进行编辑（支持 0–9 张输入图片）
+* **交互式编辑** — 通过 `bbox_list` 指定框选区域进行局部编辑
+* **组图生成** — 一次请求生成多张相关图片（`enable_sequential`）
+* **思考模式** — 增强推理能力，提升文生图质量
+
+## 快速示例
+
+<CodeGroup>
+  ```bash 文生图
+  curl https://ai.starrise.tech/v1/images/generations \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "wan2.7-image-pro",
+      "prompt": "一间有着精致窗户的花店，漂亮的木质门，摆放着花朵",
+      "size": "2K",
+      "thinking_mode": true
+    }'
+  ```
+
+  ```bash 图像编辑
+  curl https://ai.starrise.tech/v1/images/generations \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "wan2.7-image-pro",
+      "prompt": "将花瓶换成一束红玫瑰",
+      "image": "https://example.com/room.jpg",
+      "size": "2K"
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  response = requests.post(
+      "https://ai.starrise.tech/v1/images/generations",
+      headers={"Authorization": "Bearer YOUR_API_KEY"},
+      json={
+          "model": "wan2.7-image-pro",
+          "prompt": "一间有着精致窗户的花店，漂亮的木质门，摆放着花朵",
+          "size": "2K",
+          "thinking_mode": True
+      }
+  )
+
+  result = response.json()
+  print(result["data"][0]["url"])
+  ```
+</CodeGroup>
+
+## 参数说明
+
+| 参数                  | 类型      | 必填 | 说明                                                                   |
+| ------------------- | ------- | -- | -------------------------------------------------------------------- |
+| `model`             | string  | 是  | `wan2.7-image-pro` 或 `wan2.7-image`                                  |
+| `prompt`            | string  | 是  | 图片描述文字，最多 5000 个字符                                                   |
+| `image`             | string  | 否  | 编辑用输入图片 URL 或 Base64 数据 URI。支持 JPEG、JPG、PNG、BMP、WEBP，最大 20 MB，最多 9 张 |
+| `n`                 | integer | 否  | 生成张数。关闭组图模式：`1–4`，默认 `1`；开启组图模式：`1–12`，默认 `12`                       |
+| `size`              | string  | 否  | `1K`、`2K`（默认）或 `4K`（仅 wan2.7-image-pro 文生图）。也支持自定义 `{宽}x{高}` 像素值     |
+| `enable_sequential` | boolean | 否  | 启用组图输出模式，默认 `false`                                                  |
+| `thinking_mode`     | boolean | 否  | 开启思考模式以提升质量，默认 `true`。仅在无图片输入且关闭组图模式时生效                              |
+| `watermark`         | boolean | 否  | 是否添加水印，默认 `false`                                                    |
+| `seed`              | integer | 否  | 随机数种子 `[0, 2147483647]`，相同种子可获得相近结果                                  |
+| `response_format`   | string  | 否  | `url`（默认）或 `b64_json`                                                |
+
+### 分辨率参考
+
+| 规格 | 像素                                |
+| -- | --------------------------------- |
+| 1K | 1024×1024                         |
+| 2K | 2048×2048                         |
+| 4K | 4096×4096（仅 wan2.7-image-pro 文生图） |
+
+有图片输入时，输出宽高比与输入图片一致并缩放至所选分辨率。
+
+## 响应字段
+
+| 字段                      | 说明                                            |
+| ----------------------- | --------------------------------------------- |
+| `data[].url`            | 生成图片链接（PNG，有效期 24 小时）                         |
+| `data[].b64_json`       | Base64 编码图片（仅 `response_format=b64_json` 时返回） |
+| `data[].revised_prompt` | AI 扩展后的实际提示词                                  |
+| `created`               | 创建时间戳                                         |
+
+<Card title="API 参考" icon="code" href="/zh/api-reference/model-api/alibaba/wan2.7-image">
+  查看 Wan2.7 Image 的交互式 API Playground。
+</Card>

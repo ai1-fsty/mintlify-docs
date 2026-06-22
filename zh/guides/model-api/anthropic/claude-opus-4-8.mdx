@@ -1,0 +1,88 @@
+---
+title: "Claude Opus 4.8"
+description: "通过 OpenAI 兼容接口调用 Anthropic 的 Claude Opus 4.8，最强大的通用模型，具备自适应思维和快速模式。"
+---
+
+Claude Opus 4.8 是 Anthropic 目前最强大的通用模型，通过 Starrise AI 以 OpenAI 兼容接口提供服务。基于 Claude Opus 4.7 构建，改进了长时智能体编程、工具触发可靠性和压缩处理能力。
+
+## 核心能力
+
+* **OpenAI 兼容** — 可直接替换 OpenAI SDK，无需修改其他代码
+* **1M 上下文窗口** — 128K 最大输出 Token
+* **自适应思维** — 仅在任务需要时触发推理，减少不必要的思考 Token
+* **快速模式** — 最高 2.5 倍输出速度（研究预览版，高级定价）
+* **对话中系统消息** — 无需重新发送完整系统提示词即可追加更新指令
+* **更低缓存门槛** — 最低可缓存提示词长度降至 1,024 Token
+* **流式输出** — 通过 SSE 实现实时 Token 流式传输
+
+## 快速示例
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.starrise.tech/v1/messages \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "claude-opus-4-8",
+      "messages": [
+        { "role": "user", "content": "用简单的语言解释量子纠缠。" }
+      ]
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.starrise.tech/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="claude-opus-4-8",
+      messages=[
+          {"role": "user", "content": "用简单的语言解释量子纠缠。"}
+      ]
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```python 流式输出
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.starrise.tech/v1"
+  )
+
+  stream = client.chat.completions.create(
+      model="claude-opus-4-8",
+      messages=[
+          {"role": "user", "content": "写一首关于大海的短诗。"}
+      ],
+      stream=True
+  )
+
+  for chunk in stream:
+      print(chunk.choices[0].delta.content or "", end="")
+  ```
+</CodeGroup>
+
+## 参数说明
+
+| 参数           | 类型             | 必填 | 说明                       |
+| ------------ | -------------- | -- | ------------------------ |
+| `model`      | string         | 是  | 固定为 `claude-opus-4-8`    |
+| `messages`   | array          | 是  | `{ role, content }` 对象数组 |
+| `max_tokens` | integer        | 否  | 最大生成 Token 数             |
+| `stream`     | boolean        | 否  | 开启 SSE 流式传输，默认 `false`   |
+| `stop`       | string / array | 否  | 触发停止生成的序列                |
+
+<Note>
+  Claude Opus 4.8 不支持 `temperature`、`top_p` 和 `top_k` 参数。设置非默认值将返回 400 错误，请通过提示词引导模型行为。
+</Note>
+
+<Card title="API 参考" icon="code" href="/zh/api-reference/model-api/anthropic/claude-opus-4-8">
+  查看 Claude Opus 4.8 的交互式 API Playground。
+</Card>

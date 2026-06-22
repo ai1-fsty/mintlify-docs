@@ -1,0 +1,187 @@
+---
+title: "Seedance 2.0 任务查询"
+description: "查询字节跳动 Seedance 2.0 视频生成任务的状态和结果。"
+---
+
+创建 Seedance 2.0 视频生成任务后，使用此端点轮询任务状态并在完成后获取结果。
+
+## 端点
+
+```
+GET /v1/video/generations/{task_id}
+```
+
+## 快速示例
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.starrise.tech/v1/video/generations/asyntask_h81efT0qwtLnzyt6VENmCZ6VXSfNxE2E \
+    -H "Authorization: Bearer YOUR_API_KEY"
+  ```
+
+  ```python Python
+  import requests, time
+
+  task_id = "asyntask_h81efT0qwtLnzyt6VENmCZ6VXSfNxE2E"
+  while True:
+      r = requests.get(
+          f"https://ai.starrise.tech/v1/video/generations/{task_id}",
+          headers={"Authorization": "Bearer YOUR_API_KEY"}
+      ).json()
+      status = r["data"]["status"]
+      if status == "SUCCESS":
+          print("视频 URL:", r["data"]["result_url"])
+          break
+      if status == "FAILURE":
+          print("失败:", r["data"]["fail_reason"])
+          break
+      time.sleep(15)
+  ```
+</CodeGroup>
+
+## 任务状态
+
+| `data.status` | 含义                         | 后续动作                         |
+| ------------- | -------------------------- | ---------------------------- |
+| `NOT_START`   | 任务已接收，尚未排队                 | 继续轮询                         |
+| `QUEUED`      | 排队中                        | 继续轮询                         |
+| `IN_PROGRESS` | 处理中（`progress` 从 50% 开始递进） | 继续轮询，建议 15s 间隔               |
+| `SUCCESS`     | 完成                         | 读取 `data.result_url`         |
+| `FAILURE`     | 失败                         | 读取 `data.fail_reason`，平台自动退费 |
+
+视频生成约需 1-5 分钟。`result_url` 有效期 **24 小时**——请立即下载或转存。
+
+## 顶层响应字段
+
+| 字段                         | 类型     | 说明                                                                      |
+| -------------------------- | ------ | ----------------------------------------------------------------------- |
+| `data.task_id`             | string | 平台任务 ID（格式 `asyntask_xxx`）                                              |
+| `data.action`              | string | 任务子类型：`generate`、`referenceGenerate`、`firstTailGenerate`、`omniGenerate` |
+| `data.status`              | string | 任务状态（见上表）                                                               |
+| `data.result_url`          | string | 预签名下载 URL，**有效期 24 小时**。失败任务此字段省略                                       |
+| `data.original_result_url` | string | **仅超分任务返回。** 上游原始（增强前）视频 URL                                            |
+| `data.fail_reason`         | string | 失败时为错误信息。*历史兼容*：成功时该字段会被复制为 `result_url` 的值，兼容老客户端                      |
+| `data.submit_time`         | int64  | 提交时间戳（Unix 秒）                                                           |
+| `data.start_time`          | int64  | 上游开始时间戳；未开始为 `0`                                                        |
+| `data.finish_time`         | int64  | 完成时间戳                                                                   |
+| `data.progress`            | string | 进度百分比文本，如 `"50%"`、`"100%"`                                              |
+| `data.request_id`          | string | 请求溯源 ID                                                                 |
+| `data.data`                | object | 上游原始输出（见下文）                                                             |
+
+## `data.data` — 上游原始输出
+
+| 字段                              | 说明                                                           |
+| ------------------------------- | ------------------------------------------------------------ |
+| `content.video_url`             | 生成的视频 URL（普通任务等同于外层 `result_url`）                            |
+| `id`                            | 上游任务 ID                                                      |
+| `model`                         | 上游模型 ID                                                      |
+| `duration`                      | 视频时长（秒）                                                      |
+| `ratio`                         | 宽高比                                                          |
+| `resolution`                    | 上游原始分辨率。**超分任务**为下调后的上游分辨率，用户感知的最终分辨率在 `super_resolution` 字段 |
+| `super_resolution`              | **仅超分任务返回。** 超分后的最终分辨率（如 `720p`、`2k`）                        |
+| `framespersecond`               | 帧率                                                           |
+| `generate_audio`                | 是否生成了音频                                                      |
+| `seed`                          | 使用的随机种子                                                      |
+| `status`                        | 上游状态（`succeeded`、`failed`、`running` 等）                       |
+| `usage.completion_tokens`       | 上游原始 completion tokens                                       |
+| `usage.total_tokens`            | 上游原始 total tokens                                            |
+| `usage.super_resolution_tokens` | **仅超分任务返回。** 超分系数应用后的 token 数，对应实际计费 token                   |
+
+## 成功响应（普通任务）
+
+```json
+{
+  "code": "success",
+  "message": "",
+  "data": {
+    "task_id": "asyntask_h81efT0qwtLnzyt6VENmCZ6VXSfNxE2E",
+    "action": "generate",
+    "status": "SUCCESS",
+    "result_url": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?...",
+    "fail_reason": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?...",
+    "submit_time": 1777288506,
+    "start_time": 1777288508,
+    "finish_time": 1777288800,
+    "progress": "100%",
+    "request_id": "20260427111505260254000NBdvZFoP",
+    "data": {
+      "content": {"video_url": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?..."},
+      "id": "cgt-20260427191505-9j2q7",
+      "model": "doubao-seedance-2-0-260128",
+      "duration": 5,
+      "ratio": "16:9",
+      "resolution": "720p",
+      "framespersecond": 24,
+      "generate_audio": true,
+      "seed": 4304,
+      "status": "succeeded",
+      "usage": {"completion_tokens": 108900, "total_tokens": 108900}
+    }
+  }
+}
+```
+
+## 成功响应（超分任务）
+
+超分模型（如 `seedance-turbo`）走"上游低分辨率生成 + MediaKit 超分增强"两阶段流程，相比普通任务多以下字段：
+
+```json
+{
+  "code": "success",
+  "message": "",
+  "data": {
+    "task_id": "asyntask_2cEAvaCpERzvSo7wfCCPZmNlGx8cjnu4",
+    "action": "generate",
+    "status": "SUCCESS",
+    "result_url": "https://...vod.cn-north-1.volcvideo.com/...?preview=1&auth_key=...",
+    "original_result_url": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?...",
+    "fail_reason": "https://...vod.cn-north-1.volcvideo.com/...?preview=1&auth_key=...",
+    "submit_time": 1777288507,
+    "start_time": 1777288509,
+    "finish_time": 1777288834,
+    "progress": "100%",
+    "request_id": "20260427111507187625000wErxKeB6",
+    "data": {
+      "content": {"video_url": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?..."},
+      "id": "cgt-20260427191507-f5n97",
+      "duration": 5,
+      "ratio": "16:9",
+      "resolution": "480p",
+      "super_resolution": "720p",
+      "usage": {
+        "completion_tokens": 50638,
+        "total_tokens": 50638,
+        "super_resolution_tokens": 114441
+      }
+    }
+  }
+}
+```
+
+> 注意 `data.resolution = "480p"` 是上游原始值（系统将用户请求的 720p 在请求阶段下调到 480p 发给上游以节省成本）；`data.super_resolution = "720p"` 才是用户感知到的最终分辨率。
+
+## 失败响应
+
+```json
+{
+  "code": "success",
+  "message": "",
+  "data": {
+    "task_id": "asyntask_xxx",
+    "action": "generate",
+    "status": "FAILURE",
+    "fail_reason": "task failed, code: InvalidParameter, message: img_url must be set for image to video method",
+    "submit_time": 1775802896,
+    "start_time": 0,
+    "finish_time": 1775802902,
+    "progress": "100%",
+    "request_id": "..."
+  }
+}
+```
+
+平台**自动退还**预扣额度——无需调用方操作。
+
+<Card title="API 参考" icon="code" href="/zh/api-reference/model-api/bytedance/seedance-task-query">
+  查看 Seedance 2.0 任务查询 的交互式 API Playground。
+</Card>

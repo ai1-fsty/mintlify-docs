@@ -1,0 +1,351 @@
+---
+title: "Seedance 2.0"
+description: "通过 Starrise AI API 调用字节跳动 Seedance 视频生成模型，支持多模态参考、视频编辑、延长、有声视频、联网搜索增强。"
+---
+
+Seedance 2.0 是字节跳动最新的视频生成模型，通过 Starrise AI API 提供。支持文生视频、图生视频、多模态参考输入、视频编辑、视频延长及同步音频生成。
+
+## 核心能力
+
+| 功能        | 说明                                        |
+| --------- | ----------------------------------------- |
+| 文生视频      | 根据文本描述生成视频                                |
+| 图生视频（首帧）  | 使用一张图片作为首帧                                |
+| 图生视频（首尾帧） | 使用两张图片分别作为首帧和尾帧                           |
+| 多模态参考     | 组合图片、视频、音频作为参考（1–9 张图片，最多 3 个视频，最多 3 段音频） |
+| 编辑视频      | 使用参考图片修改现有视频中的元素                          |
+| 延长视频      | 延长和拼接参考视频                                 |
+| 生成有声视频    | 自动生成同步的人声、音效和背景音乐                         |
+| 联网搜索增强    | 结合实时互联网内容增强生成效果（仅文生视频）                    |
+| 返回视频尾帧    | 获取生成视频的最后一帧                               |
+
+## 输出规格
+
+| 属性  | 值                                   |
+| --- | ----------------------------------- |
+| 分辨率 | 480p、720p、1080p                     |
+| 宽高比 | 16:9、4:3、1:1、3:4、9:16、21:9、adaptive |
+| 时长  | 4–15 秒                              |
+| 格式  | mp4                                 |
+| 帧率  | 24 fps                              |
+
+## 工作流
+
+```
+1. POST /v1/video/generations  →  task_id
+2. 轮询 GET /v1/video/generations/{task_id}  →  status
+3. status = "succeeded" 后  →  下载视频 URL（有效期 24 小时）
+```
+
+## 资产管理工作流
+
+如果需要使用持久化的图片、视频、音频素材（如固定角色参考），可通过资产管理 API 预先上传，然后在生成请求中通过 `asset://<ID>` 引用。
+
+### 步骤一：创建资产组
+
+首先，创建一个资产组（Group）以获取组 ID。
+
+```bash
+curl https://ai.starrise.tech/volc/asset/CreateAssetGroup \
+  -H 'Authorization: Bearer YOUR_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "volc-asset",
+    "Name": "your-custom-name"
+}'
+```
+
+返回示例：
+
+```json
+{
+    "Id": "group-20260427160000-xxxxx"
+}
+```
+
+***
+
+### 步骤二：在组内创建资产
+
+使用步骤一中获取的组 ID，上传图片资产（例如角色参考人脸图片）。
+
+```bash
+curl https://ai.starrise.tech/volc/asset/CreateAsset \
+  -H 'Authorization: Bearer YOUR_KEY' \
+  -H 'Content-Type: application/json' \
+  -d '{
+    "model": "volc-asset",
+    "GroupId": "group-20260427160000-xxxxx",
+    "Name": "character-reference",
+    "AssetType": "Image",
+    "URL": "https://example.com/example.png"
+}'
+```
+
+返回示例：
+
+```json
+{
+    "Id": "asset-20260427160000-xxxxx"
+}
+```
+
+***
+
+### 步骤三：使用资产生成视频
+
+引用步骤二中获取的资产 ID 来生成视频。
+
+```bash
+curl https://ai.starrise.tech/v1/video/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "seedance-2.0",
+    "content": [
+      {
+        "type": "text",
+        "text": "@图1 中的人物走在阳光明媚的街道上，电影质感"
+      },
+      {
+        "type": "image_url",
+        "image_url": {
+          "url": "asset://asset-20260427160000-xxxxx"
+        },
+        "role": "reference_image"
+      }
+    ],
+    "resolution": "720p",
+    "duration": 5
+  }'
+```
+
+接口将返回一个异步任务 ID（以 `asyn` 为前缀）。
+
+***
+
+### 步骤四：轮询获取结果
+
+使用任务 ID 查询生成状态。
+
+```bash
+curl https://ai.starrise.tech/v1/video/generations/asynxxxx \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+任务完成后，响应中将包含一个预签名的 S3 下载链接。
+
+> **注意事项**
+>
+> * 下载链接有效期为 12 小时，过期后需重新获取。
+> * 如果任务进度达到 100% 但返回错误，通常表示生成内容被服务商的内容审核系统拦截（例如涉及名人肖像或受版权保护的内容）。此时请尝试修改提示词或更换参考图片。
+
+## 示例
+
+### 文生视频
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.starrise.tech/v1/video/generations \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "seedance-2.0",
+      "content": [
+        {
+          "type": "text",
+          "text": "一只猫在阳光明媚的房间里弹钢琴，电影级光影"
+        }
+      ],
+      "generate_audio": true,
+      "ratio": "16:9",
+      "duration": 8
+    }'
+  ```
+
+  ```python Python
+  import requests
+  import time
+
+  headers = {"Authorization": "Bearer YOUR_API_KEY", "Content-Type": "application/json"}
+
+  # 步骤 1：创建任务
+  resp = requests.post(
+      "https://ai.starrise.tech/v1/video/generations",
+      headers=headers,
+      json={
+          "model": "seedance-2.0",
+          "content": [
+              {"type": "text", "text": "一只猫在阳光明媚的房间里弹钢琴，电影级光影"}
+          ],
+          "generate_audio": True,
+          "ratio": "16:9",
+          "duration": 8
+      }
+  )
+  task_id = resp.json()["task_id"]
+
+  # 步骤 2：轮询结果
+  while True:
+      result = requests.get(
+          f"https://ai.starrise.tech/v1/video/generations/{task_id}",
+          headers=headers
+      ).json()
+      status = result["data"]["status"]
+      if status == "SUCCESS":
+          print("视频 URL:", result["data"]["data"]["content"]["video_url"])
+          break
+      elif status == "FAILED":
+          print("失败:", result["data"].get("fail_reason"))
+          break
+      time.sleep(5)
+  ```
+</CodeGroup>
+
+### 多模态参考（图片 + 视频 + 音频）
+
+在 prompt 中可以用 `@图1`、`@视频1`、`@音频1` 引用 `content` 数组里的素材，按媒体类型分别从 1 开始编号。
+
+> **重要：** 素材需严格按照 text、image\_url、video\_url、audio\_url 的顺序传入。请勿调整顺序，否则可能导致报错；当包含多个素材时，也需确保其中不混入其他类型的素材。
+
+```bash cURL
+curl https://ai.starrise.tech/v1/video/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "seedance-2.0",
+    "content": [
+      {
+        "type": "text",
+        "text": "@图1 中的角色在 @视频1 的场景中起舞，背景音乐使用 @音频1，新年喜庆氛围感拉满"
+      },
+      {
+        "type": "image_url",
+        "image_url": {"url": "https://example.com/character.jpg"},
+        "role": "reference_image"
+      },
+      {
+        "type": "video_url",
+        "video_url": {"url": "https://example.com/clip.mp4"},
+        "role": "reference_video"
+      },
+      {
+        "type": "audio_url",
+        "audio_url": {"url": "https://example.com/bgm.mp3"},
+        "role": "reference_audio"
+      }
+    ],
+    "generate_audio": true,
+    "ratio": "16:9",
+    "duration": 11
+  }'
+```
+
+### 编辑视频
+
+```bash cURL
+curl https://ai.starrise.tech/v1/video/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "seedance-2.0",
+    "content": [
+      {
+        "type": "text",
+        "text": "将 @视频1 中的水替换成 @图1 中的香水，运镜不变"
+      },
+      {
+        "type": "image_url",
+        "image_url": {"url": "https://example.com/perfume.jpg"},
+        "role": "reference_image"
+      },
+      {
+        "type": "video_url",
+        "video_url": {"url": "https://example.com/original.mp4"},
+        "role": "reference_video"
+      }
+    ],
+    "generate_audio": true,
+    "ratio": "16:9",
+    "duration": 5
+  }'
+```
+
+### 联网搜索增强（仅文生视频）
+
+```bash cURL
+curl https://ai.starrise.tech/v1/video/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "seedance-2.0",
+    "content": [
+      {
+        "type": "text",
+        "text": "微距镜头对准树上鲜艳的花瓣，逐渐放大"
+      }
+    ],
+    "generate_audio": true,
+    "ratio": "16:9",
+    "duration": 11,
+    "tools": [{"type": "web_search"}]
+  }'
+```
+
+## 请求参数
+
+| 参数                        | 类型      | 必填       | 说明                                                                               |
+| ------------------------- | ------- | -------- | -------------------------------------------------------------------------------- |
+| `model`                   | string  | 是        | `seedance-2.0`                                                                   |
+| `content`                 | array   | 是        | 输入内容数组（text、image\_url、video\_url、audio\_url）                                    |
+| `content[].type`          | string  | 是        | `text`、`image_url`、`video_url` 或 `audio_url`                                     |
+| `content[].text`          | string  | text 类型  | 文本提示词（建议中文 ≤500 字，英文 ≤1000 词）                                                    |
+| `content[].image_url.url` | string  | image 类型 | 图片 URL、Base64 或 `asset://<ID>`                                                   |
+| `content[].video_url.url` | string  | video 类型 | 视频 URL 或 `asset://<ID>`（mp4/mov，≤50 MB，2–15 秒）                                   |
+| `content[].audio_url.url` | string  | audio 类型 | 音频 URL、Base64 或 `asset://<ID>`（wav/mp3，≤15 MB）                                   |
+| `content[].role`          | string  | 条件必填     | `first_frame`、`last_frame`、`reference_image`、`reference_video`、`reference_audio` |
+| `generate_audio`          | boolean | 否        | 生成同步音频，默认 `true`                                                                 |
+| `resolution`              | string  | 否        | `480p`、`720p` 或 `1080p`，默认 `720p`                                                |
+| `ratio`                   | string  | 否        | `16:9`、`4:3`、`1:1`、`3:4`、`9:16`、`21:9`、`adaptive`，默认 `adaptive`                  |
+| `duration`                | integer | 否        | 4–15 秒，默认 `5`                                                                    |
+| `tools`                   | array   | 否        | `[{"type": "web_search"}]` 启用联网搜索（仅文生视频）                                         |
+| `watermark`               | boolean | 否        | 是否添加水印，默认 `false`                                                                |
+
+### 输入模式
+
+| 模式        | 内容项                            | `role` 取值                                             |
+| --------- | ------------------------------ | ----------------------------------------------------- |
+| 文生视频      | 1× text                        | —                                                     |
+| 图生视频（首帧）  | text（可选）+ 1× image\_url        | `first_frame` 或不填                                     |
+| 图生视频（首尾帧） | text（可选）+ 2× image\_url        | `first_frame` + `last_frame`                          |
+| 多模态参考     | text（可选）+ 图片/视频/音频             | `reference_image`、`reference_video`、`reference_audio` |
+| 编辑视频      | text + image\_url + video\_url | `reference_image` + `reference_video`                 |
+| 延长视频      | text + video\_url(s)           | `reference_video`                                     |
+
+> **注意：** 首帧、首尾帧、多模态参考为三种互斥场景，不可混用。
+
+### 在 prompt 中引用素材
+
+在文本 prompt 中可以使用 `@<类型><N>` 占位符引用 `content` 数组里的媒体项，**按媒体类型分别按数组中出现的顺序编号**：
+
+| 占位符             | 引用对象                    |
+| --------------- | ----------------------- |
+| `@图1`、`@图2`、…   | 第 1、2、… 个 `image_url` 项 |
+| `@视频1`、`@视频2`、… | 第 1、2、… 个 `video_url` 项 |
+| `@音频1`、`@音频2`、… | 第 1、2、… 个 `audio_url` 项 |
+
+示例：`"@图1 中的角色走过 @视频1 的场景，背景音乐使用 @音频1"`。
+
+> **注意：** 素材需严格按照 text、image\_url、video\_url、audio\_url 的顺序传入。请勿调整顺序，否则可能导致报错；当包含多个素材时，也需确保其中不混入其他类型的素材。
+
+### 不同宽高比对应的宽高像素值
+
+| 分辨率   | 16:9      | 4:3       | 1:1       | 3:4       | 9:16      | 21:9     |
+| ----- | --------- | --------- | --------- | --------- | --------- | -------- |
+| 480p  | 864x496   | 752x560   | 640x640   | 560x752   | 496x864   | 992x432  |
+| 720p  | 1280x720  | 1112x834  | 960x960   | 834x1112  | 720x1280  | 1470x630 |
+| 1080p | 1920x1080 | 1664x1248 | 1440x1440 | 1248x1664 | 1080x1920 | 2208x944 |
+
+<Card title="API 参考" icon="code" href="/zh/api-reference/model-api/bytedance/seedance-2-0">
+  查看 Seedance 2.0 的交互式 API 文档。
+</Card>

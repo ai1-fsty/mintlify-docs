@@ -1,0 +1,89 @@
+---
+title: "在 Claude Code 中使用"
+description: "将 Starrise AI 模型与 Claude Code 集成——终端中的 AI 编码助手。"
+---
+
+## 概述
+
+Claude Code 是一个命令行 AI 助手，可帮助完成编码任务。通过与 Starrise AI 集成，您可以直接从终端访问强大的 AI 模型进行代码生成、调试和分析。
+
+## 前置条件
+
+* macOS 或 Linux 操作系统（或 Windows 上的 WSL）
+* 具有 bash shell 的终端访问权限
+* 有效的 Starrise AI API 密钥
+* 互联网连接
+
+## 方法一：手动配置（推荐）
+
+### 环境变量设置
+
+在您的 shell 配置文件（`.bashrc`、`.zshrc` 或 `.profile`）中配置所需的环境变量：
+
+```bash
+# Starrise AI API 配置
+export ANTHROPIC_BASE_URL="https://ai.starrise.tech/"
+export ANTHROPIC_MODEL="claude-opus-4-7"
+export ANTHROPIC_API_KEY="sk-your-api-key-here"
+```
+
+### 应用配置
+
+```bash
+# bash 用户
+source ~/.bashrc
+
+# zsh 用户
+source ~/.zshrc
+```
+
+### 启动 Claude Code
+
+```bash
+claude
+```
+
+## 方法二：OpenAI 兼容模式
+
+添加到 shell 配置文件：
+
+```bash
+export OPENAI_API_KEY="sk-your-api-key-here"
+export OPENAI_BASE_URL="https://ai.starrise.tech/v1"
+```
+
+## 切换模型
+
+要更改模型，更新环境变量：
+
+```bash
+export ANTHROPIC_MODEL="claude-sonnet-4-6"
+source ~/.zshrc
+```
+
+## 使用技巧
+
+* 使用具体、详细的提示以获得更好的代码建议。
+* 将复杂任务分解为较小的、可管理的请求。
+* 在实施前审查生成的代码。
+* 在 [Starrise AI 控制台](https://ai.starrise.tech/) 中监控您的使用情况。
+
+## 故障排除
+
+**认证错误：**
+
+```bash
+echo $ANTHROPIC_API_KEY
+```
+
+**模型未找到：**
+
+```bash
+echo $ANTHROPIC_MODEL
+```
+
+**连接问题：**
+
+```bash
+curl -H "Authorization: Bearer $ANTHROPIC_API_KEY" https://ai.starrise.tech/v1/models
+```

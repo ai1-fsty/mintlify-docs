@@ -1,0 +1,45 @@
+---
+title: "Deep Research Web UI"
+description: "将 Starrise AI 模型与 Deep Research Web UI 集成——AI 驱动的研究助手。"
+---
+
+## 1. 介绍
+
+Deep Research Web UI 是一个由人工智能驱动的研究助手，通过结合搜索引擎、网络抓取和大语言模型，可以让 AI 根据某个问题自己搜索资料并且不断深挖，最后输出一份研究报告。
+
+本项目的特性：
+
+* **低成本** — 可以用很低的成本实现类似 ChatGPT、Perplexity、秘塔等产品的"深度研究"效果
+* **隐私安全** — 所有配置和 API 请求均在浏览器端完成，并且可以自部署
+* **实时反馈** — 流式传输 AI 响应并在界面实时展示
+* **搜索可视化** — 使用树状结构展示研究过程
+* **支持导出 PDF** — 将最终研究报告导出为 Markdown 和 PDF 格式
+* **多模型支持** — 兼容更多大模型供应商
+
+项目开源地址：[GitHub](https://github.com)
+
+## 2. 如何使用
+
+打开 [Deep Research Web UI](https://deep-research-web-ui.vercel.app/)，点击右上角的"⚙️"按钮打开设置弹窗。
+
+### 2.1 配置 Starrise AI 大模型服务
+
+* 在 [Starrise AI 控制台](https://ai.starrise.tech/) 注册或者登录一个账号。
+* 前往 **API 密钥**，生成一个新的 API Key，复制一下。
+* 回到 Deep Research 网页，在设置的 **AI 服务** 部分，选择 **OpenAI Compatible**。
+* 设置 **Base URL** 为 `https://ai.starrise.tech/v1`。
+* 在 **API 密钥** 一栏粘贴刚生成的 API Key。
+* 在 **模型名称** 一栏，选择想要使用的模型（如 `gpt-4o`、`claude-opus-4-7`）。
+* （可选）设置上下文长度：如果要做大规模的研究，建议配置不超过所选模型的最大上下文长度。
+
+### 2.2 配置联网搜索模型
+
+目前支持 Tavily 和 Firecrawl。推荐 Tavily，因为它提供了每月 1000 次的免费搜索：
+
+* 在 [Tavily 官网](https://tavily.com/) 注册一个账号，在控制台里新建一个 API Key 并复制。
+* 回到 Deep Research 网页，在设置的"联网搜索服务"部分，选择 **Tavily**，粘贴 API Key。
+* （可选）设置搜索时使用的语言。
+
+## 3. 开始使用
+
+设置完毕，可以开始使用了！输入想研究的课题，AI 将自动搜索并深入挖掘，最终生成研究报告。可以用它来查找第一手资料、了解感兴趣的话题、查找新闻并汇总等。

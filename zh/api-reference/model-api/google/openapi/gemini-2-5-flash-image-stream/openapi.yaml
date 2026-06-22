@@ -1,0 +1,288 @@
+openapi: 3.1.0
+info:
+  title: Gemini 2.5 Flash Image（流式）
+  description: 通过 Starrise AI 代理调用 Google Gemini 2.5 Flash Image 流式图片生成
+  version: 1.0.0
+servers:
+  - url: https://ai.starrise.tech
+security: []
+paths:
+  /v1beta/models/gemini-2.5-flash-image:streamGenerateContent:
+    post:
+      summary: 图片生成（流式）
+      description: >
+        通过 SSE 流式模式使用 Gemini 2.5 Flash Image 生成图片。 端点返回换行分隔的 Server-Sent
+        Events。思考 chunk（thought=true）最先推送， 随后是包含 inlineData 的图片 chunk，最后是用量统计
+        chunk。
+      operationId: Gemini25FlashImageStreamGenerateContent
+      parameters:
+        - name: key
+          in: query
+          description: API 密钥
+          required: true
+          schema:
+            type: string
+          example: YOUR_API_KEY
+        - name: alt
+          in: query
+          description: 设为 sse 可显式开启 SSE 模式（可选，流式为该端点的默认行为）
+          required: false
+          schema:
+            type: string
+            enum:
+              - sse
+          example: sse
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - contents
+                - generationConfig
+              properties:
+                contents:
+                  type: array
+                  description: >
+                    对话轮次数组，每个轮次包含 role 和 parts。 part 可以是文字提示或 inline_data
+                    图片（base64）。 如需传入参考图，在同一 parts 数组中同时包含 text part 和
+                    inline_data part。
+                  items:
+                    type: object
+                    properties:
+                      role:
+                        type: string
+                        enum:
+                          - user
+                          - model
+                        example: user
+                      parts:
+                        type: array
+                        description: >
+                          内容 part 列表。将 text 与 inline_data 放在同一数组中，
+                          可在发送提示词的同时传入参考图。
+                        items:
+                          type: object
+                          properties:
+                            text:
+                              type: string
+                              description: 文字提示
+                              example: 生成一张山间日落的图片
+                            inline_data:
+                              type: object
+                              description: >
+                                Base64 编码的参考图（请求体中为 snake_case）。 注意：流式响应中字段名为
+                                inlineData（驼峰）。
+                              properties:
+                                mime_type:
+                                  type: string
+                                  description: >-
+                                    图片 MIME
+                                    类型。支持：image/jpeg、image/png、image/webp
+                                  enum:
+                                    - image/jpeg
+                                    - image/png
+                                    - image/webp
+                                  example: image/jpeg
+                                data:
+                                  type: string
+                                  description: Base64 编码的图片数据。
+                                  example: >-
+                                    iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==
+                  example:
+                    - role: user
+                      parts:
+                        - text: 生成一张山间日落的图片
+                generationConfig:
+                  type: object
+                  required:
+                    - responseModalities
+                  properties:
+                    responseModalities:
+                      type: array
+                      description: >
+                        输出模态。使用 ["IMAGE"] 仅返回图片， 使用 ["TEXT", "IMAGE"]
+                        同时返回说明文字和图片。
+                      items:
+                        type: string
+                        enum:
+                          - TEXT
+                          - IMAGE
+                      example:
+                        - TEXT
+                        - IMAGE
+                    imageConfig:
+                      type: object
+                      description: 图片生成配置
+                      properties:
+                        aspectRatio:
+                          type: string
+                          description: 生成图片的宽高比。
+                          enum:
+                            - '1:1'
+                            - '4:3'
+                            - '3:4'
+                            - '16:9'
+                            - '9:16'
+                          example: '16:9'
+                        imageSize:
+                          type: string
+                          description: |
+                            生成图片的分辨率。 1K ≈ 1024px，2K ≈ 2048px，4K ≈ 4096px（按长边）。
+                          enum:
+                            - 1K
+                            - 2K
+                            - 4K
+                          example: 1K
+      responses:
+        '200':
+          description: >
+            流式 SSE 响应。每行以 "data:" 开头，后跟 JSON chunk。 按顺序推送三种 chunk： （1）思考 chunk —
+            parts[0].thought 为 true； （2）图片 chunk — parts[0].inlineData 包含
+            mimeType 和 base64 data（驼峰）； （3）最终用量 chunk — 顶层 usageMetadata，含
+            thoughtsTokenCount。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StreamChunk'
+              example:
+                candidates:
+                  - content:
+                      role: model
+                      parts:
+                        - inlineData:
+                            mimeType: image/png
+                            data: >-
+                              iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==
+                usageMetadata:
+                  trafficType: ON_DEMAND
+                modelVersion: gemini-2.5-flash-image
+        '400':
+          description: 请求无效
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: 超出速率限制
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    StreamChunk:
+      type: object
+      description: >
+        单个 SSE chunk，共三种类型： 思考 chunk（parts[].thought=true）、图片
+        chunk（parts[].inlineData）、用量 chunk（无 candidates）。
+      properties:
+        candidates:
+          type: array
+          description: 思考 chunk 和图片 chunk 中存在；最终用量 chunk 中不含此字段。
+          items:
+            type: object
+            properties:
+              content:
+                type: object
+                properties:
+                  role:
+                    type: string
+                    example: model
+                  parts:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        text:
+                          type: string
+                          description: 思考文本（仅思考 chunk 中存在）
+                        thought:
+                          type: boolean
+                          description: 为 true 时表示该 part 为内部思考 chunk
+                          example: true
+                        inlineData:
+                          type: object
+                          description: >
+                            生成的图片数据（驼峰命名；仅图片 chunk 中存在）。 注意：请求体使用
+                            inline_data（下划线）。
+                          properties:
+                            mimeType:
+                              type: string
+                              example: image/png
+                            data:
+                              type: string
+                              description: Base64 编码的生成图片
+                              example: >-
+                                iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==
+        usageMetadata:
+          type: object
+          description: Token 用量。最终 chunk 包含完整详情，含 thoughtsTokenCount。
+          properties:
+            promptTokenCount:
+              type: integer
+              example: 8
+            candidatesTokenCount:
+              type: integer
+              example: 1120
+            totalTokenCount:
+              type: integer
+              example: 1392
+            thoughtsTokenCount:
+              type: integer
+              description: 内部思考消耗的 token 数（仅最终用量 chunk 中存在）
+              example: 264
+            trafficType:
+              type: string
+              example: ON_DEMAND
+            promptTokensDetails:
+              type: array
+              items:
+                type: object
+                properties:
+                  modality:
+                    type: string
+                    example: TEXT
+                  tokenCount:
+                    type: integer
+                    example: 8
+            candidatesTokensDetails:
+              type: array
+              items:
+                type: object
+                properties:
+                  modality:
+                    type: string
+                    example: IMAGE
+                  tokenCount:
+                    type: integer
+                    example: 1120
+        modelVersion:
+          type: string
+          example: gemini-2.5-flash-image
+        createTime:
+          type: string
+          example: '2025-01-01T00:00:00Z'
+        responseId:
+          type: string
+          example: abc123
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: integer
+            message:
+              type: string
+            status:
+              type: string
+

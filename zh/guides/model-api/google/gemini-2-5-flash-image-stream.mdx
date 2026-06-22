@@ -1,0 +1,222 @@
+---
+title: "Gemini 2.5 Flash Image（流式）"
+description: "通过 Gemini API 调用 Google Gemini 2.5 Flash Image 进行流式图片生成。SSE 实时推送思考 chunk 与图片 chunk。"
+---
+
+Gemini 2.5 Flash Image（流式）通过 Starrise AI 以原生 Gemini API 提供服务，支持实时 SSE 流式返回图片生成结果。思考 chunk 先行推送，最终图片 chunk 紧随其后。
+
+<Warning>
+  流式输出需要 **Direct** 分组令牌，需在控制台选择 **Direct** 分组。
+</Warning>
+
+## 核心能力
+
+* **SSE 流式输出** — 实时推送思考 chunk 与图片 chunk
+* **思考模式** — 内部推理 chunk（`thought: true`）在图片之前流式输出
+* **文生图** — 根据文本描述生成图片
+* **图片编辑** — 在 `inline_data` 中传入参考图，配合文字指令进行编辑
+* **宽高比控制** — `1:1`、`4:3`、`3:4`、`16:9`、`9:16`
+* **分辨率控制** — `1K`（\~1024px）、`2K`（\~2048px）、`4K`（\~4096px，按长边）
+
+## SSE 响应格式
+
+流式端点返回换行分隔的 SSE 数据行，每行以 `data:` 开头，后跟 JSON 对象。共有三种 chunk 类型：
+
+1. **思考 chunk** — 最先到达；`parts[0].thought` 为 `true`
+2. **图片 chunk** — 包含 `parts[0].inlineData`，含 `mimeType` 和 base64 `data`（注意：流式响应中为驼峰命名）
+3. **最终用量 chunk** — 包含顶层 `usageMetadata`，含 `thoughtsTokenCount` 及各模态 token 详情
+
+```
+data: {"candidates":[{"content":{"role":"model","parts":[{"text":"...","thought":true}]}}],"usageMetadata":{"trafficType":"ON_DEMAND"},"modelVersion":"gemini-2.5-flash-image","createTime":"...","responseId":"..."}
+
+data: {"candidates":[{"content":{"role":"model","parts":[{"inlineData":{"mimeType":"image/png","data":"<base64>"}}]}}],...}
+
+data: {"usageMetadata":{"promptTokenCount":8,"candidatesTokenCount":1120,"totalTokenCount":1392,"trafficType":"ON_DEMAND","promptTokensDetails":[{"modality":"TEXT","tokenCount":8}],"candidatesTokensDetails":[{"modality":"IMAGE","tokenCount":1120}],"thoughtsTokenCount":264}}
+```
+
+<Note>
+  流式响应中图片字段名为 `inlineData`（驼峰），而请求体中字段名为 `inline_data`（下划线）。这是原生 Gemini API 的行为。
+</Note>
+
+## 文生图示例
+
+<CodeGroup>
+  ```bash cURL
+  curl "https://ai.starrise.tech/v1beta/models/gemini-2.5-flash-image:streamGenerateContent?key=YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "contents": [
+        {
+          "role": "user",
+          "parts": [
+            { "text": "生成一张山间日落的图片" }
+          ]
+        }
+      ],
+      "generationConfig": {
+        "responseModalities": ["TEXT", "IMAGE"],
+        "imageConfig": {
+          "aspectRatio": "16:9",
+          "imageSize": "1K"
+        }
+      }
+    }'
+  ```
+
+  ```python Python
+  import requests, base64, json
+
+  url = "https://ai.starrise.tech/v1beta/models/gemini-2.5-flash-image:streamGenerateContent"
+  params = {"key": "YOUR_API_KEY"}
+  data = {
+      "contents": [
+          {
+              "role": "user",
+              "parts": [{"text": "生成一张山间日落的图片"}]
+          }
+      ],
+      "generationConfig": {
+          "responseModalities": ["TEXT", "IMAGE"],
+          "imageConfig": {"aspectRatio": "16:9", "imageSize": "1K"}
+      }
+  }
+
+  response = requests.post(url, params=params, json=data, stream=True)
+
+  for line in response.iter_lines():
+      if not line:
+          continue
+      decoded = line.decode("utf-8")
+      if not decoded.startswith("data:"):
+          continue
+      chunk = json.loads(decoded[len("data:"):].strip())
+
+      candidates = chunk.get("candidates", [])
+      if not candidates:
+          continue
+      parts = candidates[0].get("content", {}).get("parts", [])
+      for part in parts:
+          # 跳过思考 chunk
+          if part.get("thought"):
+              continue
+          # 保存图片 chunk
+          if "inlineData" in part:
+              img_bytes = base64.b64decode(part["inlineData"]["data"])
+              with open("output.png", "wb") as f:
+                  f.write(img_bytes)
+              print("图片已保存至 output.png")
+  ```
+</CodeGroup>
+
+## 图片编辑示例（传入参考图）
+
+在同一个 `parts` 数组中同时传入 `text` 指令和 `inline_data` 参考图。
+
+<CodeGroup>
+  ```bash cURL
+  # 先将图片转为 base64：
+  # BASE64=$(base64 -i your_photo.jpg)
+  #
+  # 然后发送请求：
+  curl "https://ai.starrise.tech/v1beta/models/gemini-2.5-flash-image:streamGenerateContent?key=YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "contents": [
+        {
+          "role": "user",
+          "parts": [
+            {
+              "text": "这是我的一张照片，请在我旁边加一只羊驼"
+            },
+            {
+              "inline_data": {
+                "mime_type": "image/jpeg",
+                "data": "<YOUR_BASE64_ENCODED_IMAGE>"
+              }
+            }
+          ]
+        }
+      ],
+      "generationConfig": {
+        "responseModalities": ["TEXT", "IMAGE"],
+        "imageConfig": {
+          "aspectRatio": "1:1",
+          "imageSize": "1K"
+        }
+      }
+    }'
+  ```
+
+  ```python Python
+  import requests, base64, json
+
+  # 读取并编码参考图片
+  with open("your_photo.jpg", "rb") as f:
+      image_b64 = base64.b64encode(f.read()).decode("utf-8")
+
+  url = "https://ai.starrise.tech/v1beta/models/gemini-2.5-flash-image:streamGenerateContent"
+  params = {"key": "YOUR_API_KEY"}
+  data = {
+      "contents": [
+          {
+              "role": "user",
+              "parts": [
+                  {
+                      "text": "这是我的一张照片，请在我旁边加一只羊驼"
+                  },
+                  {
+                      "inline_data": {
+                          "mime_type": "image/jpeg",
+                          "data": image_b64
+                      }
+                  }
+              ]
+          }
+      ],
+      "generationConfig": {
+          "responseModalities": ["TEXT", "IMAGE"],
+          "imageConfig": {"aspectRatio": "1:1", "imageSize": "1K"}
+      }
+  }
+
+  response = requests.post(url, params=params, json=data, stream=True)
+
+  for line in response.iter_lines():
+      if not line:
+          continue
+      decoded = line.decode("utf-8")
+      if not decoded.startswith("data:"):
+          continue
+      chunk = json.loads(decoded[len("data:"):].strip())
+
+      candidates = chunk.get("candidates", [])
+      if not candidates:
+          continue
+      parts = candidates[0].get("content", {}).get("parts", [])
+      for part in parts:
+          if part.get("thought"):
+              continue
+          if "inlineData" in part:
+              img_bytes = base64.b64decode(part["inlineData"]["data"])
+              with open("output.png", "wb") as f:
+                  f.write(img_bytes)
+              print("图片已保存至 output.png")
+  ```
+</CodeGroup>
+
+## 参数说明
+
+| 参数                                         | 类型     | 必填 | 说明                                          |
+| ------------------------------------------ | ------ | -- | ------------------------------------------- |
+| `key`                                      | string | 是  | API 密钥（查询参数）                                |
+| `alt`                                      | string | 否  | 设为 `sse` 可显式开启 SSE 模式（可选，流式为默认行为）           |
+| `contents[].parts[].text`                  | string | 是  | 文字提示或指令                                     |
+| `contents[].parts[].inline_data.mime_type` | string | 否  | 参考图类型：`image/jpeg`、`image/png`、`image/webp` |
+| `contents[].parts[].inline_data.data`      | string | 否  | Base64 编码的参考图数据                             |
+| `generationConfig.responseModalities`      | array  | 是  | `["IMAGE"]` 或 `["TEXT", "IMAGE"]`           |
+| `generationConfig.imageConfig.aspectRatio` | string | 否  | `1:1` / `4:3` / `3:4` / `16:9` / `9:16`     |
+| `generationConfig.imageConfig.imageSize`   | string | 否  | `1K` / `2K` / `4K`（默认 `1K`）                 |
+
+<Card title="API 参考" icon="code" href="/zh/api-reference/model-api/google/gemini-2-5-flash-image-stream">
+  查看 Gemini 2.5 Flash Image（流式）的交互式 API Playground。
+</Card>

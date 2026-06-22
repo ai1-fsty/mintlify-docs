@@ -1,0 +1,195 @@
+---
+title: "Qwen3.6-Flash"
+description: "通过 Starrise AI OpenAI 兼容接口调用阿里巴巴 Qwen3.6-Flash 视觉语言模型。快速、智能体友好的多模态模型。"
+---
+
+Qwen3.6-Flash 是阿里巴巴的原生视觉语言 Flash 模型，通过 Starrise AI 以 OpenAI 兼容接口提供。相比 Qwen3.5-Flash，在智能体编码、数学/代码推理和空间智能方面有显著提升。
+
+## 核心能力
+
+* **OpenAI 兼容** — 可直接替换 OpenAI SDK，无需修改其他代码
+* **100 万 Token 上下文** — 支持大规模文档和多轮对话，最多 66K 输出 Token
+* **多模态输入** — 支持文本、图片和视频输入
+* **智能体编码** — 编码 Agent 基准测试大幅提升
+* **推理能力** — 通过 `enable_thinking` 参数启用内置思维链
+* **内置工具** — 通过 Responses API 支持联网搜索、代码解释器、网页抓取、图片搜索
+
+## 快速示例
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.starrise.tech/v1/chat/completions \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "qwen3.6-flash",
+      "messages": [
+        { "role": "user", "content": "用简单的语言解释量子纠缠。" }
+      ]
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.starrise.tech/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="qwen3.6-flash",
+      messages=[
+          {"role": "user", "content": "用简单的语言解释量子纠缠。"}
+      ]
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```python 流式输出
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.starrise.tech/v1"
+  )
+
+  stream = client.chat.completions.create(
+      model="qwen3.6-flash",
+      messages=[
+          {"role": "user", "content": "写一首关于大海的短诗。"}
+      ],
+      stream=True
+  )
+
+  for chunk in stream:
+      print(chunk.choices[0].delta.content or "", end="")
+  ```
+
+  ```python 推理模式
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.starrise.tech/v1"
+  )
+
+  completion = client.chat.completions.create(
+      model="qwen3.6-flash",
+      messages=[
+          {"role": "user", "content": "解这道数学题：x² + 5x + 6 = 0，求 x。"}
+      ],
+      extra_body={"enable_thinking": True},
+      stream=True
+  )
+
+  for chunk in completion:
+      if chunk.choices and chunk.choices[0].delta:
+          delta = chunk.choices[0].delta
+          if hasattr(delta, "reasoning_content") and delta.reasoning_content:
+              print(delta.reasoning_content, end="", flush=True)
+          if delta.content:
+              print(delta.content, end="", flush=True)
+  ```
+
+  ```python 图片输入
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.starrise.tech/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="qwen3.6-flash",
+      messages=[
+          {
+              "role": "user",
+              "content": [
+                  {"type": "text", "text": "请描述这张图片。"},
+                  {
+                      "type": "image_url",
+                      "image_url": {
+                          "url": "https://example.com/photo.jpg"
+                          # 或 base64: "url": "data:image/png;base64,iVBORw0KGgo..."
+                      }
+                  }
+              ]
+          }
+      ],
+      max_completion_tokens=300
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```python 视频输入
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.starrise.tech/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="qwen3.6-flash",
+      messages=[
+          {
+              "role": "user",
+              "content": [
+                  {"type": "text", "text": "请总结这个视频的内容。"},
+                  {
+                      "type": "video_url",
+                      "video_url": {
+                          "url": "https://example.com/sample.mp4"
+                          # 或 base64: "url": "data:video/mp4;base64,AAAAIGZ0eXBpc29t..."
+                      }
+                  }
+              ]
+          }
+      ],
+      max_completion_tokens=300
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```bash cURL (图片)
+  curl https://ai.starrise.tech/v1/chat/completions \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "qwen3.6-flash",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {"type": "text", "text": "请描述这张图片。"},
+            {"type": "image_url", "image_url": {"url": "data:image/png;base64,iVBORw0KGgo..."}}
+          ]
+        }
+      ],
+      "max_completion_tokens": 300
+    }'
+  ```
+</CodeGroup>
+
+> **注意：** `image_url` 和 `video_url` 同时支持远程 URL (`https://...`) 和 base64 数据 URI (`data:image/png;base64,...` / `data:video/mp4;base64,...`)。图片 tokens 和视频 tokens 会在 `usage.prompt_tokens_details` 中体现。
+
+## 参数说明
+
+| 参数                      | 类型      | 必填 | 说明                                                          |
+| ----------------------- | ------- | -- | ----------------------------------------------------------- |
+| `model`                 | string  | 是  | 固定为 `qwen3.6-flash`                                         |
+| `messages`              | array   | 是  | `{ role, content }` 对象数组。支持 `image_url` 和 `video_url` 多模态输入 |
+| `max_completion_tokens` | integer | 否  | 最大生成 Token 数                                                |
+| `temperature`           | float   | 否  | `0`–`2`，控制随机性，默认 `1`                                        |
+| `stream`                | boolean | 否  | 开启 SSE 流式传输，默认 `false`                                      |
+| `top_p`                 | float   | 否  | 核采样阈值，默认 `1`                                                |
+| `stop`                  | array   | 否  | 停止序列。必须为数组格式，默认 `null`                                      |
+| `enable_thinking`       | boolean | 否  | 通过 `extra_body` 启用推理模式，默认 `false`                           |
+
+<Card title="API 参考" icon="code" href="/zh/api-reference/model-api/alibaba/qwen3.6-flash">
+  查看 Qwen3.6-Flash 的交互式 API Playground。
+</Card>

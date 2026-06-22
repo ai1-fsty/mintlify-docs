@@ -1,0 +1,41 @@
+---
+title: "在 Codex 中使用"
+description: "将 Starrise AI 模型与 Codex 集成——终端中的 AI 编码代理。"
+---
+
+## 1. 安装 Codex
+
+从 [Codex CLI GitHub](https://github.com/openai/codex) 安装 Codex。
+
+## 2. 配置 Starrise AI
+
+在您的 shell 配置文件（`.bashrc`、`.zshrc` 或 `.profile`）中：
+
+```bash
+export OPENAI_API_KEY="sk-your-api-key-here"
+export OPENAI_BASE_URL="https://ai.starrise.tech/v1"
+```
+
+## 3. 应用配置
+
+```bash
+# bash 用户
+source ~/.bashrc
+
+# zsh 用户
+source ~/.zshrc
+```
+
+## 4. 启动 Codex
+
+```bash
+codex
+```
+
+通过 CLI 指定模型：
+
+```bash
+codex --model gpt-4o
+```
+
+完成以上操作，即可开始在 Codex 中使用 Starrise AI。

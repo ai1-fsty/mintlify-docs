@@ -1,0 +1,177 @@
+---
+title: "GPT Image 2"
+description: "OpenAI GPT Image 2 图像生成模型。新一代自回归 + 推理混合架构，支持灵活分辨率最高 4K，文字渲染准确率接近完美。"
+---
+
+GPT Image 2 是 OpenAI 的新一代图像生成模型，通过 Starrise AI API 提供服务。基于自回归 + 推理混合架构，支持原生 2K 分辨率、接近完美的文字渲染能力（12+ 种语言约 99% 字符级准确率），以及出色的多物体场景构图。
+
+## 核心能力
+
+* **文生图** — 根据自然语言描述生成图像
+* **图片编辑** — 通过 `/v1/images/edits` 接口对已有图片进行文本提示编辑
+* **灵活分辨率** — 支持任意自定义尺寸，最高 4K（3840px），边长须为 16 的倍数
+* **精准文字渲染** — 12+ 种语言约 99% 字符级准确率
+* **多物体构图** — 复杂场景无遮挡或错位问题
+* **多风格** — 写实、插画、动漫、矢量、3D、数据可视化
+
+> 无论是 `/v1/images/generations` 还是 `/v1/images/edits`，**`n` 支持 1–10，默认 1**。**需在控制台选择 Direct 分组。**
+
+## 输出规格
+
+| 属性         | 值                                          |
+| ---------- | ------------------------------------------ |
+| 尺寸         | 灵活分辨率（如 1024x1024、2048x2048、3840x2160）     |
+| 尺寸约束       | 边长：16 的倍数，宽高比 ≤ 3:1，总像素数 655,360–8,294,400 |
+| 质量         | low、medium、high                            |
+| 输出格式       | png、jpeg                                   |
+| 输入格式（编辑接口） | png、jpeg                                   |
+
+## 快速示例
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.starrise.tech/v1/images/generations \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "gpt-image-2",
+      "prompt": "一座未来城市的日落天际线，天空中有飞行汽车",
+      "size": "2048x2048",
+      "quality": "high"
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.starrise.tech/v1"
+  )
+
+  response = client.images.generate(
+      model="gpt-image-2",
+      prompt="一座未来城市的日落天际线，天空中有飞行汽车",
+      size="2048x2048",
+      quality="high"
+  )
+
+  print(response.data[0].b64_json[:100])
+  ```
+</CodeGroup>
+
+## 参数说明
+
+| 参数                   | 类型      | 必填 | 说明                                                                                    |
+| -------------------- | ------- | -- | ------------------------------------------------------------------------------------- |
+| `model`              | string  | 是  | 必须为 `gpt-image-2`                                                                     |
+| `prompt`             | string  | 是  | 图像描述文本                                                                                |
+| `n`                  | integer | 否  | 生成图片数量，支持 `1–10`，默认 `1`。**需在控制台选择 Direct 分组。**                                        |
+| `size`               | string  | 否  | `{宽}x{高}` 格式，边长须为 16 的倍数，宽高比 ≤ 3:1，总像素数 655,360–8,294,400，最大单边 3,840px。默认 `1024x1024` |
+| `quality`            | string  | 否  | `low`、`medium`、`high`，默认 `medium`                                                     |
+| `output_format`      | string  | 否  | `png`、`jpeg`，默认 `png`                                                                 |
+| `moderation`         | string  | 否  | `auto` 或 `low`，默认 `auto`                                                              |
+| `output_compression` | integer | 否  | jpeg 格式的压缩级别（0–100）                                                                   |
+
+## 图片编辑
+
+通过 `POST /v1/images/edits` 对已有图片进行编辑。请求体使用 multipart/form-data，将图片以文件形式上传。
+
+**每次请求最多支持 16 张输入图片**（`image[]`）。
+
+### 输入图片格式
+
+支持格式：**PNG、JPEG**。图片必须通过 **multipart/form-data 文件上传** 方式传入。
+
+可用模型 ID 两个：
+
+* `gpt-image-2` — 官方模型
+* `gpt-image-2-c` — 高性价比版本（支持 `response_format`）
+
+> **注意：** 使用 `gpt-image-2-c` 时，选择较高画质会影响 `n` 张图片的稳定输出。若需稳定生成多张图片，建议使用较低画质。
+
+<CodeGroup>
+  ```bash 单张图片
+  curl https://ai.starrise.tech/v1/images/edits \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -F "image=@/path/to/source.jpeg" \
+    -F model="gpt-image-2" \
+    -F prompt="将图片背景替换为海上日落" \
+    -F n=1 \
+    -F size="1024x1024"
+  ```
+
+  ```bash 多张图片（最多 16 张）
+  curl https://ai.starrise.tech/v1/images/edits \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -F "image[]=@/path/to/image1.png" \
+    -F "image[]=@/path/to/image2.png" \
+    -F "image[]=@/path/to/image3.png" \
+    -F model="gpt-image-2" \
+    -F prompt="将这些参考图片中的物品合成为一个礼品篮" \
+    -F size="1024x1024"
+  ```
+</CodeGroup>
+
+### 编辑接口参数
+
+| 参数                   | 类型      | 必填  | 说明                                                                         |
+| -------------------- | ------- | --- | -------------------------------------------------------------------------- |
+| `image`              | file    | 是   | 单张源图片（PNG 或 JPEG，multipart 上传）                                             |
+| `image[]`            | file 数组 | 是\* | 多张源图片，最多 **16 张**（PNG 或 JPEG）。多图时用此参数替代 `image`                            |
+| `mask`               | file    | 否   | 蒙版图片（含 Alpha 通道），与源图片格式和尺寸一致（\< 50MB）。多图时蒙版作用于第一张图片。**需在控制台选择 Direct 分组。** |
+| `model`              | string  | 是   | `gpt-image-2` 或 `gpt-image-2-c`                                            |
+| `prompt`             | string  | 是   | 编辑指令文本                                                                     |
+| `n`                  | integer | 否   | 返回图片数量，支持 `1–10`，默认 `1`。**需在控制台选择 Direct 分组。**                             |
+| `size`               | string  | 否   | `{宽}x{高}`，默认 `1024x1024`                                                   |
+| `output_format`      | string  | 否   | `png`、`jpeg`，默认 `png`                                                      |
+| `output_compression` | integer | 否   | jpeg 格式的压缩级别（0–100）                                                        |
+| `response_format`    | string  | 否   | `url`。**仅 `gpt-image-2-c` 支持。** 默认 `url`                                   |
+
+> `image` 和 `image[]` 二选一，不可同时使用。
+
+### 遮罩编辑
+
+提供含 Alpha 通道的蒙版图片，控制源图片中需要编辑的区域。Alpha 为白色（不透明）的像素被保留；Alpha 为黑色（透明）的像素将被编辑。
+
+要求：
+
+* 蒙版必须包含 **Alpha 通道**
+* 必须与源图片**格式和尺寸完全一致**
+* 文件大小限制：\< 50MB
+
+> 遮罩编辑与 `n` 参数**均需在控制台选择 Direct 分组。**
+
+```bash cURL
+curl https://ai.starrise.tech/v1/images/edits \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F image=@/path/to/source.jpeg \
+  -F mask=@/path/to/mask.png \
+  -F model="gpt-image-2" \
+  -F prompt="将背景替换为未来城市景观" \
+  -F n=1 \
+  -F size="2048x2048"
+```
+
+如果蒙版是黑白图片但不含 Alpha 通道，可先进行转换：
+
+```python Python
+from PIL import Image
+import numpy as np
+
+img = Image.open("bw_mask.png").convert("L")
+alpha = np.array(img)
+rgba = np.zeros((*alpha.shape, 4), dtype=np.uint8)
+rgba[alpha > 0] = [255, 255, 255, 255]
+Image.fromarray(rgba).save("mask.png")
+```
+
+<CardGroup cols={2}>
+  <Card title="生成接口 API 参考" icon="code" href="/zh/api-reference/model-api/openai/gpt-image-2">
+    `POST /v1/images/generations` 交互式 Playground。
+  </Card>
+
+  <Card title="编辑接口 API 参考" icon="pen-to-square" href="/zh/api-reference/model-api/openai/gpt-image-2-edit">
+    `POST /v1/images/edits` 交互式 Playground。
+  </Card>
+</CardGroup>

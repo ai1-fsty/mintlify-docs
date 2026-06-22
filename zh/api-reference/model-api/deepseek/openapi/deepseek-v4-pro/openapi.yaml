@@ -1,0 +1,328 @@
+openapi: 3.1.0
+info:
+  title: DeepSeek V4 Pro
+  description: 通过 Starrise AI OpenAI 兼容接口调用 DeepSeek V4 Pro
+  version: 1.0.0
+servers:
+  - url: https://ai.starrise.tech
+security:
+  - bearerAuth: []
+paths:
+  /v1/chat/completions:
+    post:
+      summary: 对话补全
+      description: 根据对话内容生成模型响应。
+      operationId: createChatCompletionDeepseekV4Pro
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - messages
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - deepseek-v4-pro
+                  description: 模型 ID
+                  example: deepseek-v4-pro
+                messages:
+                  type: array
+                  minItems: 1
+                  description: 对话消息列表。
+                  items:
+                    type: object
+                    required:
+                      - role
+                      - content
+                    properties:
+                      role:
+                        type: string
+                        enum:
+                          - system
+                          - user
+                          - assistant
+                          - tool
+                      content:
+                        type: string
+                      name:
+                        type: string
+                        description: 参与者名称，用于区分同角色不同参与者。
+                      prefix:
+                        type: boolean
+                        description: 为 true 时模型将以此消息为前缀继续生成。
+                      tool_call_id:
+                        type: string
+                        description: 工具消息必填，此消息响应的工具调用 ID。
+                  example:
+                    - role: user
+                      content: 你好！
+                thinking:
+                  type: object
+                  nullable: true
+                  description: 启用或禁用思考模式。
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                        - enabled
+                        - disabled
+                      description: '`enabled` 开启思考模式。'
+                    reasoning_effort:
+                      type: string
+                      enum:
+                        - high
+                        - max
+                        - low
+                        - medium
+                      description: 控制推理强度。
+                max_tokens:
+                  type: integer
+                  minimum: 1
+                  description: 最大生成 Token 数。
+                response_format:
+                  type: object
+                  properties:
+                    type:
+                      type: string
+                      enum:
+                        - text
+                        - json_object
+                      default: text
+                  description: '设为 `{"type": "json_object"}` 启用 JSON 模式。'
+                stop:
+                  oneOf:
+                    - type: string
+                    - type: array
+                      items:
+                        type: string
+                  description: 触发停止生成的序列，最多 16 个。
+                stream:
+                  type: boolean
+                  default: false
+                  description: 为 true 时通过 SSE 流式返回结果。
+                stream_options:
+                  type: object
+                  description: 流式选项，仅当 stream 为 true 时有效。
+                  properties:
+                    include_usage:
+                      type: boolean
+                      description: 为 true 时在流式结束前返回用量统计。
+                temperature:
+                  type: number
+                  minimum: 0
+                  maximum: 2
+                  default: 1
+                  description: 采样温度，值越高输出越随机。
+                  example: 1
+                top_p:
+                  type: number
+                  minimum: 0
+                  maximum: 1
+                  default: 1
+                  description: 核采样阈值。
+                tools:
+                  type: array
+                  description: 模型可调用的工具列表，当前仅支持函数调用。
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        type: string
+                        enum:
+                          - function
+                      function:
+                        type: object
+                        required:
+                          - name
+                        properties:
+                          name:
+                            type: string
+                            description: 函数名。
+                          description:
+                            type: string
+                            description: 函数功能描述。
+                          parameters:
+                            type: object
+                            description: 函数参数，JSON Schema 格式。
+                          strict:
+                            type: boolean
+                            description: 为 true 时启用严格模式。
+                tool_choice:
+                  oneOf:
+                    - type: string
+                      enum:
+                        - none
+                        - auto
+                        - required
+                    - type: object
+                      properties:
+                        type:
+                          type: string
+                          enum:
+                            - function
+                        function:
+                          type: object
+                          required:
+                            - name
+                          properties:
+                            name:
+                              type: string
+                  description: 控制工具调用行为：`none`、`auto`、`required` 或指定函数。
+                frequency_penalty:
+                  type: number
+                  minimum: -2
+                  maximum: 2
+                  default: 0
+                  description: DeepSeek 已弃用，传入无效。
+                presence_penalty:
+                  type: number
+                  minimum: -2
+                  maximum: 2
+                  default: 0
+                  description: DeepSeek 已弃用，传入无效。
+                user_id:
+                  type: string
+                  maxLength: 512
+                  pattern: ^[a-zA-Z0-9\-_]+$
+                  description: 自定义用户 ID，用于内容安全处理和 KVCache 缓存隔离。
+      responses:
+        '200':
+          description: 成功生成响应
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatCompletion'
+        '400':
+          description: 请求参数有误
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: object
+                    properties:
+                      message:
+                        type: string
+                      type:
+                        type: string
+                      code:
+                        type: string
+        '401':
+          description: 未授权
+        '429':
+          description: 请求频率超限
+components:
+  schemas:
+    ChatCompletion:
+      type: object
+      properties:
+        id:
+          type: string
+          example: chatcmpl-abc123
+        object:
+          type: string
+          example: chat.completion
+        created:
+          type: integer
+          description: Unix 时间戳
+        model:
+          type: string
+          example: deepseek-v4-pro
+        choices:
+          type: array
+          items:
+            type: object
+            properties:
+              index:
+                type: integer
+              message:
+                type: object
+                properties:
+                  role:
+                    type: string
+                    example: assistant
+                  content:
+                    type: string
+                    nullable: true
+                    example: 你好！有什么我可以帮助你的吗？
+                  reasoning_content:
+                    type: string
+                    nullable: true
+                    description: 思考模式下的推理过程。
+                  tool_calls:
+                    type: array
+                    nullable: true
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        type:
+                          type: string
+                          enum:
+                            - function
+                        function:
+                          type: object
+                          properties:
+                            name:
+                              type: string
+                            arguments:
+                              type: string
+              finish_reason:
+                type: string
+                nullable: true
+                enum:
+                  - stop
+                  - length
+                  - content_filter
+                  - tool_calls
+                  - insufficient_system_resource
+                  - null
+              matched_stop:
+                type: string
+                nullable: true
+        usage:
+          type: object
+          properties:
+            prompt_tokens:
+              type: integer
+            completion_tokens:
+              type: integer
+            total_tokens:
+              type: integer
+            prompt_tokens_details:
+              type: object
+              nullable: true
+              properties:
+                cached_tokens:
+                  type: integer
+                audio_tokens:
+                  type: integer
+                text_tokens:
+                  type: integer
+            completion_tokens_details:
+              type: object
+              properties:
+                reasoning_tokens:
+                  type: integer
+                accepted_prediction_tokens:
+                  type: integer
+                rejected_prediction_tokens:
+                  type: integer
+        system_fingerprint:
+          type: string
+          nullable: true
+          description: 后端配置指纹。
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: >-
+        使用 Bearer 令牌进行身份验证。在 Starrise AI 控制台创建 API Key 后，以 `Bearer YOUR_API_KEY`
+        格式传入 Authorization 请求头。
+

@@ -1,0 +1,93 @@
+---
+title: "在 DB-GPT 中使用"
+description: "将 Starrise AI 模型与 DB-GPT 集成——开源 AI 原生数据应用开发框架。"
+---
+
+## 1. 关于 DB-GPT
+
+[DB-GPT](https://github.com/eosphoros-ai/DB-GPT) 是一个开源的 AI 原生数据应用开发框架，提供多模型管理、Text2SQL 效果优化、RAG 框架以及 Multi-Agent 协作等多种技术能力。
+
+## 2. 获取 API Key
+
+打开 [Starrise AI 控制台](https://ai.starrise.tech/) 并注册账号（如果注册过，直接登录即可）。完成注册后，前往 **API 密钥**，创建新的 API Key 并复制。
+
+## 3. 部署 DB-GPT
+
+### 3.1 克隆 DB-GPT 源码
+
+```bash
+git clone https://github.com/eosphoros-ai/DB-GPT.git
+cd DB-GPT
+```
+
+### 3.2 创建虚拟环境并安装依赖
+
+```bash
+conda create -n dbgpt_env python=3.10
+conda activate dbgpt_env
+pip install -e ".[proxy]"
+```
+
+### 3.3 配置环境变量
+
+```bash
+cp .env.template .env
+```
+
+修改 `.env` 文件，配置 Starrise AI 模型：
+
+```ini
+# 使用 Starrise AI 作为代理模型
+LLM_MODEL=proxy_openai
+PROXY_OPENAI_API_BASE=https://ai.starrise.tech/v1
+PROXY_OPENAI_API_KEY={your-starrise-api-key}
+PROXY_OPENAI_BACKEND=gpt-4o
+
+# Embedding 模型配置
+EMBEDDING_MODEL=proxy_http_openapi
+PROXY_HTTP_OPENAPI_PROXY_SERVER_URL=https://ai.starrise.tech/v1/embeddings
+PROXY_HTTP_OPENAPI_PROXY_API_KEY={your-starrise-api-key}
+PROXY_HTTP_OPENAPI_PROXY_BACKEND=text-embedding-3-small
+```
+
+### 3.4 启动 DB-GPT 服务
+
+```bash
+dbgpt start webserver --port 5670
+```
+
+在浏览器打开 [http://127.0.0.1:5670/](http://127.0.0.1:5670/) 即可访问。
+
+## 4. 通过 DB-GPT Python SDK 使用 Starrise AI 模型
+
+### 4.1 安装
+
+```bash
+pip install "dbgpt>=0.6.3rc2" openai
+```
+
+### 4.2 使用 Starrise AI 大语言模型
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="{your-starrise-api-key}",
+    base_url="https://ai.starrise.tech/v1"
+)
+
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[
+        {"role": "system", "content": "你是一个乐于助人的 AI 助手。"},
+        {"role": "user", "content": "你好"}
+    ]
+)
+print(response.choices[0].message.content)
+```
+
+## 5. 上手指南
+
+1. **添加数据源** — 选择数据库类型（如 MySQL、PostgreSQL）并连接。
+2. **选择 ChatData 对话类型** — 通过自然语言与数据对话。
+3. **开始数据对话** — 选择 Starrise AI 模型和对应的数据库，开始数据对话。

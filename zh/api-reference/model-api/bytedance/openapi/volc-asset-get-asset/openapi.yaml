@@ -1,0 +1,94 @@
+openapi: 3.1.0
+info:
+  title: Seedance 2.0 素材 — 查询素材
+  description: 通过 Starrise AI API 按 Id 查询单个素材详情
+  version: 1.0.0
+servers:
+  - url: https://ai.starrise.tech
+security:
+  - bearerAuth: []
+paths:
+  /volc/asset/GetAsset:
+    post:
+      summary: 查询素材
+      description: 按 Id 查询单个素材详情。本操作为只读，不计费。
+      operationId: getAsset
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/GetAssetRequest'
+      responses:
+        '200':
+          description: 查询成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GetAssetResponse'
+        '401':
+          description: 未授权
+components:
+  schemas:
+    GetAssetRequest:
+      type: object
+      required:
+        - Id
+      properties:
+        Id:
+          type: string
+          description: 要查询的素材 ID。
+          example: asset-20260528140922-d9646
+      example:
+        Id: asset-20260528140922-d9646
+    GetAssetResponse:
+      type: object
+      properties:
+        Id:
+          type: string
+          description: 素材 ID。
+          example: asset-20260528140922-d9646
+        Name:
+          type: string
+          description: 素材名称。
+          example: character-reference
+        URL:
+          type: string
+          description: 素材文件 URL。
+          example: https://ark-media-asset.tos-cn-beijing.volces.com/...
+        AssetType:
+          type: string
+          enum:
+            - Image
+            - Video
+            - Audio
+          description: 素材类型。
+          example: Video
+        GroupId:
+          type: string
+          description: 所属素材组 ID。
+          example: group-20260528140601-tp9hw
+        Status:
+          type: string
+          enum:
+            - Active
+            - Inactive
+          description: 素材状态。
+          example: Active
+        ProjectName:
+          type: string
+          description: 项目名称。
+          example: default
+        CreateTime:
+          type: string
+          description: 创建时间。
+          example: '2026-05-28T06:09:22Z'
+        UpdateTime:
+          type: string
+          description: 更新时间。
+          example: '2026-05-28T06:09:31Z'
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+

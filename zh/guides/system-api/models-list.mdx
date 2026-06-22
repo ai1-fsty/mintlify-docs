@@ -1,0 +1,75 @@
+---
+title: "GET /v1/models"
+description: "OpenAI 兼容的模型列表接口，返回当前 API Key 可用的所有模型及其支持的 API 格式。"
+---
+
+`/v1/models` 是 OpenAI 兼容的模型列表接口，返回当前令牌可用的所有模型。SDK 和客户端用此接口自动发现可用模型及支持的 API 格式。
+
+## 快速示例
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.starrise.tech/v1/models \
+    -H "Authorization: Bearer YOUR_API_KEY"
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.starrise.tech/v1"
+  )
+
+  models = client.models.list()
+  for model in models:
+      print(f"{model.id} → {model.owned_by}")
+  ```
+</CodeGroup>
+
+## 请求
+
+| 请求头                               | 必填 | 说明         |
+| --------------------------------- | -- | ---------- |
+| `Authorization: Bearer <api-key>` | 是  | 用令牌 Key 鉴权 |
+| `Content-Type: application/json`  | 否  | 可选         |
+
+无请求体（GET）。
+
+## 返回体
+
+```json
+{
+  "data": [
+    {
+      "id": "gpt-4o",
+      "object": "model",
+      "created": 1626777600,
+      "owned_by": "openai",
+      "supported_endpoint_types": ["openai"]
+    },
+    {
+      "id": "claude-sonnet-4-5-20250929",
+      "object": "model",
+      "created": 1626777600,
+      "owned_by": "vertex-ai",
+      "supported_endpoint_types": ["openai", "anthropic"]
+    }
+  ]
+}
+```
+
+## 返回字段
+
+| 字段                         | 说明                                                                                                |
+| -------------------------- | ------------------------------------------------------------------------------------------------- |
+| `id`                       | 模型标识，调用 relay 时用此值填入 `model` 参数                                                                   |
+| `object`                   | 固定为 `"model"`                                                                                     |
+| `created`                  | 固定时间戳（无实际意义）                                                                                      |
+| `owned_by`                 | 模型提供方：`openai`、`vertex-ai`、`custom`、`xai`、`volcengine`、`codex`、`aws`、`coze`、`ali`、`minimax` 等     |
+| `supported_endpoint_types` | 该模型支持的 API 格式：`openai`、`anthropic`、`openai-response`、`gemini`、`image-generation`、`video`、`mj-*` 等 |
+
+## 说明
+
+* 不同令牌看到的模型列表可能不同，取决于代理商配置和定价覆盖范围。
+* 未提供令牌返回 `401 {"error":{"message":"未提供令牌"}}`。
