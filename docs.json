@@ -651,17 +651,6 @@
                 ]
               }
             ]
-          },
-          {
-            "tab": "更新日志",
-            "groups": [
-              {
-                "group": "2026",
-                "pages": [
-                  "zh/changelog/invite"
-                ]
-              }
-            ]
           }
         ]
       }
