@@ -4,8 +4,8 @@
   "name": "Starrise AI",
   "favicon": "/favicon.ico",
   "logo": {
-    "light": "/images/logo-light.png",
-    "dark": "/images/logo-dark.png"
+    "light": "/images/主.png",
+    "dark": "/images/副.png"
   },
   "colors": {
     "primary": "#0284c7",
