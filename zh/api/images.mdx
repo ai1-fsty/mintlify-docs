@@ -1,51 +1,107 @@
 ---
-title: "图片"
-description: "OpenAI 兼容的文生图与图片编辑。"
+title: "图片生成"
+description: "OpenAI 兼容的图片生成与编辑接口。"
 ---
 
 | 端点 | 方法 | 说明 |
 | --- | --- | --- |
 | `/v1/images/generations` | POST | 文生图 |
-| `/v1/images/edits` | POST | 带蒙版编辑 |
-| `/v1/edits` | POST | 旧版编辑端点 |
+| `/v1/images/edits` | POST | 带遮罩的图片编辑 |
 
-## 生成
+## 生成图片
 
 ```bash
 curl {{api-base-url}}/images/generations \
-  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "dall-e-3",
-    "prompt": "日落时分的宁静山湖",
+    "prompt": "夕阳下的宁静山湖，油画风格",
     "n": 1,
-    "size": "1024x1024"
+    "size": "1024x1024",
+    "quality": "standard"
   }'
 ```
+
+### 响应
+
+```json
+{
+  "created": 1710000000,
+  "data": [
+    {
+      "url": "https://...",
+      "revised_prompt": "夕阳下的宁静山湖..."
+    }
+  ]
+}
+```
+
+### Python SDK
 
 ```python
 from openai import OpenAI
 
 client = OpenAI(
     base_url="{{api-base-url}}",
-    api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    api_key="YOUR_API_KEY",
 )
 
 result = client.images.generate(
     model="dall-e-3",
-    prompt="日落时分的宁静山湖",
+    prompt="夕阳下的宁静山湖",
     size="1024x1024",
+    quality="standard",
+    n=1,
 )
 print(result.data[0].url)
 ```
 
-## 编辑
+## 参数
 
-使用 `POST /v1/images/edits`，按 OpenAI 规范提交 multipart（图片 + 蒙版 + prompt）。
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `model` | string | 是 | 模型 ID（如 `dall-e-3`、`gpt-image-2`） |
+| `prompt` | string | 是 | 期望图片的文字描述 |
+| `n` | integer | 否 | 生成数量（1–10），默认 `1` |
+| `size` | string | 否 | 图片尺寸（如 `1024x1024`、`1792x1024`） |
+| `quality` | string | 否 | `standard` 或 `hd` |
+| `style` | string | 否 | `vivid` 或 `natural` |
+| `response_format` | string | 否 | `url` 或 `b64_json` |
+
+## 编辑图片
+
+使用 `POST /v1/images/edits` 配合 multipart 表单数据：
+
+```bash
+curl {{api-base-url}}/images/edits \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F image=@original.png \
+  -F mask=@mask.png \
+  -F prompt="在天空中加一道彩虹" \
+  -F n=1 \
+  -F size="1024x1024"
+```
+
+## 可用模型
+
+| 模型 | 供应商 | 类型 |
+| --- | --- | --- |
+| `dall-e-3` | OpenAI | 文生图 |
+| `gpt-image-2` | OpenAI | 文生图与编辑 |
+| `gpt-image-1` | OpenAI | 文生图 |
+| `gemini-2.5-flash-image` | Google | 文生图与编辑 |
+| `gemini-3-pro-image-preview` | Google | 文生图与编辑 |
+| `flux-2-pro` | Black Forest Labs | 文生图 |
+| `flux-1.1-pro` | Black Forest Labs | 文生图 |
+| `wan2.7-image` | 阿里巴巴 | 文生图与编辑 |
+| `seedream-5.0` | ByteDance | 文生图 |
+
+完整列表与可用性请查看控制台 **模型定价** 页面。
 
 ## Midjourney
 
-Midjourney 专用流程见 [Midjourney API](/zh/api/midjourney)。
+Midjourney 特定工作流（绘图、变体、描述）请参见 [Midjourney API](/zh/api/midjourney)。
 
 <Warning>
 

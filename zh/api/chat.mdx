@@ -1,35 +1,94 @@
 ---
 title: "对话补全"
-description: "多轮对话、流式输出、工具/函数调用及视觉能力（视模型而定）的主要接口。"
+description: "多轮对话、流式输出、工具/函数调用及视觉理解（取决于模型）的主要端点。"
 ---
 
-**端点：** `POST /v1/chat/completions`
+**端点:** `POST /v1/chat/completions`
 
-## 请求示例
+对话补全端点是文本生成的主要接口。支持多轮对话、流式输出、工具/函数调用以及视觉理解（需模型支持）。
+
+## 请求
 
 ```bash
 curl {{api-base-url}}/chat/completions \
-  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "gpt-4o",
     "messages": [
-      {"role": "system", "content": "你是一个有帮助的助手。"},
+      {"role": "system", "content": "你是一个有用的助手。"},
       {"role": "user", "content": "你好！"}
     ]
   }'
 ```
 
+### 响应
+
+```json
+{
+  "id": "chatcmpl-abc123",
+  "object": "chat.completion",
+  "created": 1710000000,
+  "model": "gpt-4o",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "你好！有什么我可以帮助你的吗？"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 15,
+    "completion_tokens": 9,
+    "total_tokens": 24
+  }
+}
+```
+
+## 参数
+
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `model` | string | 是 | 模型 ID（如 `gpt-4o`、`claude-sonnet-4-6`、`deepseek-v3-2`） |
+| `messages` | array | 是 | 对话消息列表 |
+| `temperature` | number | 否 | 采样温度（0–2），默认 `1` |
+| `top_p` | number | 否 | 核采样阈值（0–1） |
+| `max_tokens` | integer | 否 | 最大生成 Token 数 |
+| `stream` | boolean | 否 | 启用 SSE 流式输出，默认 `false` |
+| `stop` | string/array | 否 | 最多 4 个停止序列 |
+| `frequency_penalty` | number | 否 | 频率惩罚（-2 到 2） |
+| `presence_penalty` | number | 否 | 存在惩罚（-2 到 2） |
+| `n` | integer | 否 | 补全数量，默认 `1` |
+| `tools` | array | 否 | 工具调用的函数定义 |
+| `tool_choice` | string/object | 否 | 控制工具选择行为 |
+| `response_format` | object | 否 | 输出格式（`text` 或 `json_object`） |
+| `user` | string | 否 | 终端用户标识 |
+
+### 消息对象
+
+```json
+{
+  "role": "system | user | assistant | tool",
+  "content": "字符串或多模态内容数组",
+  "name": "可选名称",
+  "tool_calls": [],
+  "tool_call_id": ""
+}
+```
+
 ## 流式输出
 
-设置 `"stream": true`，响应为 SSE 格式（`data: {...}` 分块）。
+设置 `"stream": true`。响应使用 Server-Sent Events (SSE) 返回 `data: {...}` 数据块。
 
 ```python
 from openai import OpenAI
 
 client = OpenAI(
     base_url="{{api-base-url}}",
-    api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    api_key="YOUR_API_KEY",
 )
 
 stream = client.chat.completions.create(
@@ -43,16 +102,58 @@ for chunk in stream:
         print(chunk.choices[0].delta.content, end="")
 ```
 
-## 旧版 Completions
+每个 SSE 数据块包含增量内容。最后一个数据块包含 `finish_reason` 和使用量信息。
 
-**端点：** `POST /v1/completions` — OpenAI 旧版 prompt 格式。
+## 工具 / 函数调用
 
-## 参数
+```bash
+curl {{api-base-url}}/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-4o",
+    "messages": [{"role": "user", "content": "巴黎今天天气怎么样？"}],
+    "tools": [{
+      "type": "function",
+      "function": {
+        "name": "get_weather",
+        "description": "获取指定地点的当前天气",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "location": {"type": "string", "description": "城市名称"}
+          },
+          "required": ["location"]
+        }
+      }
+    }]
+  }'
+```
 
-支持 OpenAI 标准字段：`model`、`messages`、`temperature`、`top_p`、`max_tokens`、`tools`、`tool_choice`、`response_format`、`stream` 等。上游不支持的字段可能被忽略或透传。
+## 视觉理解（多模态）
 
-## 相关文档
+对于支持视觉的模型，在消息内容中传入图片：
 
-- [Responses API](/zh/api/responses)
-- [Claude Messages](/zh/api/claude)
-- [模型列表](/zh/api/models)
+```json
+{
+  "model": "gpt-4o",
+  "messages": [{
+    "role": "user",
+    "content": [
+      {"type": "text", "text": "这张图片里有什么？"},
+      {"type": "image_url", "image_url": {"url": "https://example.com/image.jpg"}}
+    ]
+  }]
+}
+```
+
+## 旧版补全
+
+**端点:** `POST /v1/completions` — OpenAI 旧版 prompt 格式，使用 `prompt` 而非 `messages`。
+
+## 相关页面
+
+- [Responses API](/zh/api/responses) — OpenAI Responses 格式
+- [Claude Messages](/zh/api/claude) — Anthropic 原生 Messages API
+- [Gemini](/zh/api/gemini) — Google Gemini 原生 API
+- [模型列表](/zh/api/models) — 查询可用模型

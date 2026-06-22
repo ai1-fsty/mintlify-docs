@@ -1,32 +1,81 @@
 ---
 title: "Realtime"
-description: "基于 WebSocket 的 OpenAI Realtime API。"
+description: "OpenAI Realtime WebSocket API，支持低延迟语音和多模态交互。"
 ---
 
-**端点：** `GET /v1/realtime`（WebSocket 升级）
+**端点:** `GET /v1/realtime` (WebSocket 升级)
 
-## 认证
+Realtime API 通过 WebSocket 实现低延迟、多模态交互，支持实时语音对话、文字聊天和函数调用。
 
-网关从 WebSocket 子协议头读取 API Key：
+## 认证方式
 
-```
-Sec-WebSocket-Protocol: realtime, openai-insecure-api-key.sk-xxx, openai-beta.realtime-v1
-```
-
-若客户端支持，也可在升级前设置 `Authorization: Bearer sk-...`。
-
-## 使用
-
-将 OpenAI Realtime 客户端指向：
+网关从 WebSocket 子协议头读取 API 密钥：
 
 ```
-{{ws-base-url}}/realtime?model=gpt-4o-realtime-preview
+Sec-WebSocket-Protocol: realtime, openai-insecure-api-key.YOUR_API_KEY, openai-beta.realtime-v1
 ```
 
-协议行为与 OpenAI Realtime 一致（音频/文本事件、会话配置等）。
+若客户端支持，也可在升级前设置 `Authorization: Bearer YOUR_API_KEY`。
+
+## 连接地址
+
+```
+{{ws-base-url}}/v1/realtime?model=gpt-4o-realtime-preview
+```
+
+## OpenAI SDK 用法
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="{{api-base-url}}",
+    api_key="YOUR_API_KEY",
+)
+
+# 连接 Realtime API
+# SDK 自动管理 WebSocket 连接和事件处理
+```
+
+## 支持的功能
+
+| 功能 | 说明 |
+| --- | --- |
+| **语音对话** | 实时语音到语音交互 |
+| **文字聊天** | 发送和接收文字消息 |
+| **函数调用** | 模型可实时调用您的函数 |
+| **会话配置** | 设置指令、语音、模态和工具 |
+| **音频输入/输出** | PCM16 音频，可配置采样率 |
+| **中断** | 取消进行中的模型响应 |
+
+## 会话配置
+
+```json
+{
+  "type": "session.update",
+  "session": {
+    "modalities": ["text", "audio"],
+    "instructions": "你是一个有用的助手。",
+    "voice": "alloy",
+    "input_audio_format": "pcm16",
+    "output_audio_format": "pcm16",
+    "turn_detection": {
+      "type": "server_vad",
+      "threshold": 0.5,
+      "prefix_padding_ms": 300,
+      "silence_duration_ms": 500
+    }
+  }
+}
+```
 
 <Info>
 
-需要上游通道支持所选模型的 OpenAI Realtime 能力。
+需要上游渠道支持所选模型的 OpenAI Realtime 功能。
 
 </Info>
+
+## 相关页面
+
+- [对话补全](/zh/api/chat) — 标准对话端点
+- [音频](/zh/api/audio) — REST 风格音频 API

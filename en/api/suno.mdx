@@ -1,40 +1,71 @@
 ---
 title: "Suno"
-description: "AI music generation API under `/suno`."
+description: "AI music generation API — create songs from text prompts, fetch results."
 ---
 
-**Auth:** `Authorization: Bearer sk-...`
+Create AI-generated music through the Starrise AI gateway. Tasks are asynchronous — submit a generation request, then poll for results.
 
-## Submit
+**Auth:** `Authorization: Bearer YOUR_API_KEY`
+
+## Submit Music Generation
 
 ```bash
 curl {{api-origin}}/suno/submit/generate \
-  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "prompt": "upbeat electronic dance track",
+    "prompt": "upbeat electronic dance track with energetic synth",
     "mv": "chirp-v4"
   }'
 ```
 
-`:action` in the path matches the upstream Suno task type (e.g. `generate`, `custom_generate`).
+`:action` in the path matches the upstream Suno task type:
+
+| Action | Description |
+| --- | --- |
+| `generate` | Standard music generation |
+| `custom_generate` | Custom generation with lyrics |
+| `extend` | Extend existing audio |
+| `generate_lyrics` | Generate lyrics only |
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- |
+| `prompt` | string | Yes | Music style and description |
+| `mv` | string | No | Model version (e.g. `chirp-v4`) |
+| `title` | string | No | Song title |
+| `tags` | string | No | Music genre tags |
+| `continue_at` | number | No | Extend from timestamp (seconds) |
+| `continue_clip_id` | string | No | Audio clip ID to extend |
+| `make_instrumental` | boolean | No | Generate instrumental only |
+| `gpt_description_prompt` | object | No | Custom lyrics generation prompt |
 
 ## Fetch Single Task
 
 ```bash
 curl {{api-origin}}/suno/fetch/{task_id} \
-  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+  -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
 ## Batch Fetch
 
 ```bash
 curl {{api-origin}}/suno/fetch \
-  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "ids": ["task-id-1", "task-id-2"]
   }'
 ```
 
-Tasks are asynchronous — poll fetch endpoints until status indicates completion. Billing is recorded in the console usage logs like other relay calls.
+## Task Status
+
+Tasks are asynchronous — poll fetch endpoints until status indicates completion. Common statuses include `pending`, `processing`, `completed`, and `failed`.
+
+Billing is recorded in the console usage logs like other relay calls.
+
+## Related
+
+- [Audio](/en/api/audio) — TTS and transcription APIs
+- [Midjourney](/en/api/midjourney) — Image and video generation

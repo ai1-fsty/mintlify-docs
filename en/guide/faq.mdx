@@ -1,0 +1,69 @@
+---
+title: "FAQ"
+description: "Frequently asked questions about Starrise AI."
+---
+
+## Account & Billing
+
+**How do I create an account?**
+Sign up at [{{api-origin}}]({{api-origin}}) with email or supported OAuth (GitHub, Discord, etc.).
+
+**How is billing calculated?**
+Chat models are billed per token (input + output). Image, video, and audio models are billed per generation. Pricing for each model is displayed in the console **Pricing** page.
+
+**Can I set spending limits?**
+Yes. You can set quota limits on individual API tokens to control spending. The token will stop working once its quota is exhausted.
+
+**What payment methods are supported?**
+Check the **Top-Up** page in the console for available payment methods. We support various payment options depending on your region.
+
+**Do unused credits expire?**
+Account balance does not expire. Token-specific quotas may have expiration dates if configured.
+
+## API & Usage
+
+**What is the Base URL?**
+Your API address is displayed on the console home page. It typically looks like `{{api-base-url}}`.
+
+**Which models are available?**
+Browse the **Pricing** page in the console for the complete list. You can also call `GET /v1/models` to see models available to your token.
+
+**How do I switch from OpenAI?**
+Change the `base_url` to `{{api-base-url}}` and `api_key` to your Starrise AI token. No code changes needed if you're using the OpenAI SDK.
+
+**Does Starrise AI support streaming?**
+Yes. Set `"stream": true` in chat completion requests to receive Server-Sent Events (SSE).
+
+**What happens if a provider is down?**
+Error responses include clear messages indicating the issue. You can configure fallback channels in the console for high availability.
+
+**How do rate limits work?**
+Rate limits vary by model and account tier. If exceeded, the API returns `429 Too Many Requests`. Implement exponential backoff to handle rate limiting.
+
+## Security
+
+**How should I store my API key?**
+Use environment variables. Never hardcode API keys in source code or expose them in client-side code.
+
+**Can I restrict API key usage?**
+Yes. You can set IP allowlists, model restrictions, and quota limits on each API token.
+
+**What if my API key is compromised?**
+Immediately delete the compromised token in the console and create a new one.
+
+**Is data encrypted in transit?**
+Yes. All API traffic uses HTTPS/TLS encryption.
+
+## Technical
+
+**Is the API OpenAI-compatible?**
+Yes. Chat, image, audio, embedding, and model endpoints follow the OpenAI API specification.
+
+**Can I use the Anthropic SDK?**
+Yes. Set `ANTHROPIC_BASE_URL` to `{{api-origin}}` and use your Starrise token as the API key.
+
+**Can I use the Google Gemini SDK?**
+Yes. Configure the client to use `{{api-origin}}` as the API endpoint with your Starrise token.
+
+**How do I get help?**
+Contact support through the console or check the [Quick Start](/en/guide/quick-start) guide for getting started.

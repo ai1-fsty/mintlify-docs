@@ -1,9 +1,11 @@
 ---
 title: Overview
-description: Starrise-api unified AI gateway — OpenAI, Claude, Gemini and 40+ providers through one endpoint.
+description: Starrise AI unified API platform — access 100+ AI models from OpenAI, Anthropic, Google, ByteDance, DeepSeek and more through one endpoint.
 ---
 
-Starrise-api is a unified AI gateway compatible with OpenAI-style clients. Access chat, Claude, Gemini, images, audio, embeddings, Midjourney, and Suno through one Base URL — replace the host and use your API token.
+Starrise AI is a unified AI API platform that gives developers access to the world's best models — including chat, image generation, video generation, and audio — through a single, consistent interface.
+
+Instead of managing separate API keys, SDKs, and authentication flows for each provider, Starrise AI abstracts everything into one endpoint. Switch between models from OpenAI, Anthropic, ByteDance, Google, DeepSeek, and more by changing a single parameter.
 
 <CardGroup cols={3}>
   <Card title="Quick Start" href="/en/guide/quick-start">
@@ -18,35 +20,56 @@ Starrise-api is a unified AI gateway compatible with OpenAI-style clients. Acces
   <Card title="Chat API" href="/en/api/chat">
     Completions, streaming, tools
   </Card>
-  <Card title="All Endpoints" href="/en/api/models">
-    Models, images, audio, MJ, Suno
+  <Card title="Image Generation" href="/en/api/images">
+    Text-to-image and editing
+  </Card>
+  <Card title="Video Generation" href="/en/api/video">
+    Text-to-video and image-to-video
   </Card>
 </CardGroup>
+
+## What Starrise AI Provides
+
+**Unified access to 100+ models**
+Chat completions, image generation, video generation, audio — all available under one API key. No need to integrate each provider separately.
+
+**OpenAI-compatible interface**
+For chat models, Starrise AI follows the OpenAI API specification. If you're already using the OpenAI SDK, switching to Starrise AI requires only a base URL change.
+
+**Multi-modal support**
+Beyond chat, Starrise AI supports image and video generation models with provider-specific parameters exposed in a clean, documented format.
+
+**Predictable error handling**
+Every endpoint returns consistent error codes and message formats, regardless of the underlying provider — so your error handling logic stays simple.
+
+**Transparent pricing**
+No platform fees or markup surprises. You pay per token for chat models and per generation for media models, billed based on actual usage.
 
 ## Supported Capabilities
 
 | Category | Endpoints | Description |
 | --- | --- | --- |
-| **Chat** | `/v1/chat/completions` | Multi-turn, streaming, function calling |
+| **Chat** | `/v1/chat/completions` | Multi-turn, streaming, function calling, vision |
 | **Responses** | `/v1/responses` | OpenAI Responses API |
-| **Claude** | `/v1/messages` | Anthropic Messages API |
-| **Gemini** | `/v1beta/models/*` | Google Gemini native API |
-| **Embeddings** | `/v1/embeddings`, `/v1/rerank` | Vectors and reranking |
-| **Images** | `/v1/images/*` | Generation and editing |
-| **Audio** | `/v1/audio/*` | STT, TTS, translation |
-| **Realtime** | `/v1/realtime` | WebSocket voice/chat |
-| **Midjourney** | `/mj/*` | Image and video tasks |
+| **Claude** | `/v1/messages` | Anthropic Messages API with extended thinking |
+| **Gemini** | `/v1beta/models/*` | Google Gemini native API with search grounding |
+| **Embeddings** | `/v1/embeddings`, `/v1/rerank` | Text embeddings and document reranking |
+| **Images** | `/v1/images/*` | Text-to-image generation and editing |
+| **Video** | `/v1/video/*`, `/mj/*` | Text-to-video, image-to-video, task management |
+| **Audio** | `/v1/audio/*` | Speech-to-text, text-to-speech, translation |
+| **Realtime** | `/v1/realtime` | WebSocket voice and real-time chat |
+| **Midjourney** | `/mj/*` | Image generation, variations, describe |
 | **Suno** | `/suno/*` | AI music generation |
 
 ## Three Steps to Integrate
 
-1. **Create an account** — register in the console
+1. **Create an account** — sign up in the console
 2. **Create an API token** — create one under **Tokens** and copy your `sk-...` key
 3. **Set Base URL** — copy the API address from the console home page into your SDK `base_url`
 
 ## Base URL
 
-Copy your **API address** from the console home page. Example:
+Copy your **API address** from the console home page:
 
 ```
 {{api-base-url}}
@@ -58,7 +81,21 @@ If your app already uses the OpenAI SDK, change `base_url` and `api_key` only. N
 
 </Info>
 
+## Model Providers
 
-## Providers
+100+ models across leading providers:
 
-40+ models including OpenAI, Claude, Gemini, DeepSeek, Qwen, Moonshot, Zhipu, and more. See **Pricing** in the console for the full list and rates.
+| Provider | Key Models |
+| --- | --- |
+| **OpenAI** | GPT-5.5, GPT-5.4, GPT-5.2, GPT-5.1, GPT-5, GPT-4o, GPT-4.1, GPT Image 2 |
+| **Anthropic** | Claude Opus 4.8, Claude Sonnet 4.6, Claude Haiku 4.5 |
+| **Google** | Gemini 3.5 Flash, Gemini 3.1 Pro, Gemini 2.5 Pro/Flash |
+| **ByteDance** | Doubao Seed 2.0 Pro, Seedance 2.0, Seedream 5.0 |
+| **DeepSeek** | DeepSeek V4 Pro, V4 Flash, V3.2, V3.1 |
+| **Alibaba** | Qwen3.6 Flash, Qwen3.5, Qwen3-Coder, Wan2.7 Image |
+| **xAI** | Grok 4.1, Grok 4, Grok 3 |
+| **Kuaishou** | Kling 3.0, Kling 2.6, Kling V3 Omni |
+| **Zhipu** | GLM-5.1, GLM-5, GLM-4.7 |
+| **Others** | MiniMax M2.7, Kimi-K2.5, Black Forest Labs FLUX.2, and more |
+
+See **Pricing** in the console for the full list and rates.

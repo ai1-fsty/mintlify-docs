@@ -3,36 +3,64 @@ title: "Responses API"
 description: "OpenAI Responses API for agentic workflows with built-in tool and state handling."
 ---
 
-| Endpoint | Method |
-| --- | --- |
-| `/v1/responses` | POST |
-| `/v1/responses/compact` | POST |
+| Endpoint | Method | Description |
+| --- | --- | --- |
+| `/v1/responses` | POST | Create a response with built-in tools |
+| `/v1/responses/compact` | POST | Compact conversation context |
 
 ## Create Response
 
 ```bash
 curl {{api-base-url}}/responses \
-  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "gpt-4o",
-    "input": "Summarize the latest project status."
+    "input": "Summarize the latest project status and list action items."
   }'
+```
+
+The Responses API provides a higher-level interface that handles tool execution, state management, and conversation context automatically. It is ideal for agentic workflows.
+
+### Python SDK
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="{{api-base-url}}",
+    api_key="YOUR_API_KEY",
+)
+
+response = client.responses.create(
+    model="gpt-4o",
+    input="Summarize the latest project status.",
+    tools=[{
+        "type": "file_search",
+        "vector_store_ids": ["vs_abc123"]
+    }]
+)
 ```
 
 ## Compaction
 
+Use `/v1/responses/compact` to compress conversation context while preserving key information:
+
 ```bash
 curl {{api-base-url}}/responses/compact \
-  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{ ... }'
 ```
 
-Use the OpenAI SDK with `client.responses.create(...)` and `base_url` pointed at Starrise-api.
-
 <Info>
 
-Availability depends on upstream channel support for the selected model.
+Availability depends on upstream channel support for the selected model. Not all models support the Responses format.
 
 </Info>
+
+## Related
+
+- [Chat Completions](/en/api/chat) — Standard chat endpoint
+- [Claude Messages](/en/api/claude) — Anthropic-native API
+- [Models](/en/api/models) — list available models

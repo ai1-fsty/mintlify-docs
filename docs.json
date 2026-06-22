@@ -22,7 +22,9 @@
       {
         "language": "en",
         "default": false,
-        "pages": ["en/overview"],
+        "pages": [
+          "en/overview"
+        ],
         "groups": [
           {
             "group": "Guide",
@@ -42,17 +44,27 @@
               "en/api/gemini",
               "en/api/embeddings",
               "en/api/images",
+              "en/api/video",
               "en/api/audio",
               "en/api/realtime",
               "en/api/midjourney",
               "en/api/suno"
+            ]
+          },
+          {
+            "group": "Resources",
+            "pages": [
+              "en/guide/faq",
+              "en/guide/payment"
             ]
           }
         ]
       },
       {
         "language": "zh",
-        "pages": ["zh/overview"],
+        "pages": [
+          "zh/overview"
+        ],
         "groups": [
           {
             "group": "指南",
@@ -72,10 +84,18 @@
               "zh/api/gemini",
               "zh/api/embeddings",
               "zh/api/images",
+              "zh/api/video",
               "zh/api/audio",
               "zh/api/realtime",
               "zh/api/midjourney",
               "zh/api/suno"
+            ]
+          },
+          {
+            "group": "资源",
+            "pages": [
+              "zh/guide/faq",
+              "zh/guide/payment"
             ]
           }
         ],

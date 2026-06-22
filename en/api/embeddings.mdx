@@ -1,15 +1,17 @@
 ---
 title: "Embeddings & Rerank"
-description: "Text embeddings and document reranking endpoints."
+description: "Text embeddings and document reranking endpoints for semantic search, RAG, and retrieval."
 ---
 
 ## Embeddings
 
 **Endpoint:** `POST /v1/embeddings`
 
+Convert text into vector representations for semantic search, clustering, recommendations, and retrieval-augmented generation (RAG).
+
 ```bash
 curl {{api-base-url}}/embeddings \
-  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "text-embedding-3-small",
@@ -17,39 +19,90 @@ curl {{api-base-url}}/embeddings \
   }'
 ```
 
+### Response
+
+```json
+{
+  "object": "list",
+  "data": [
+    {
+      "object": "embedding",
+      "index": 0,
+      "embedding": [0.01, 0.02, ...]
+    }
+  ],
+  "model": "text-embedding-3-small",
+  "usage": {
+    "prompt_tokens": 12,
+    "total_tokens": 12
+  }
+}
+```
+
+### Python SDK
+
 ```python
 from openai import OpenAI
 
 client = OpenAI(
     base_url="{{api-base-url}}",
-    api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    api_key="YOUR_API_KEY",
 )
 
 response = client.embeddings.create(
     model="text-embedding-3-small",
     input=["Document one", "Document two"],
+    dimensions=512
 )
 print(len(response.data[0].embedding))
 ```
 
-Use cases: semantic search, RAG, clustering, recommendation.
+### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- |
+| `model` | string | Yes | Embedding model ID |
+| `input` | string/array | Yes | Text to embed (string or array of strings) |
+| `dimensions` | integer | No | Output dimensions (model-dependent) |
+| `encoding_format` | string | No | `float` or `base64` |
 
 ## Rerank
 
 **Endpoint:** `POST /v1/rerank`
 
-Jina-compatible reranking for improving retrieval quality:
+Jina-compatible reranking for improving retrieval quality. Reorder documents by relevance to a query:
 
 ```bash
 curl {{api-base-url}}/rerank \
-  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "jina-reranker-v2-base-multilingual",
     "query": "What is the capital of France?",
-    "documents": ["Paris is the capital.", "Berlin is in Germany."]
+    "documents": [
+      "Paris is the capital of France.",
+      "Berlin is the capital of Germany.",
+      "London is the capital of the UK."
+    ],
+    "top_n": 3
   }'
 ```
+
+### Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- |
+| `model` | string | Yes | Rerank model ID |
+| `query` | string | Yes | Search query |
+| `documents` | array | Yes | List of document strings |
+| `top_n` | integer | No | Number of top results to return |
+
+### Use Cases
+
+- **Semantic Search**: Embed queries and documents, find nearest neighbors
+- **RAG**: Retrieve relevant documents, rerank for quality, feed to LLM
+- **Clustering**: Group similar documents by vector proximity
+- **Recommendation**: Find similar items by embedding distance
 
 <Info>
 

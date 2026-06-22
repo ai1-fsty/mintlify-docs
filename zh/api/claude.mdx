@@ -1,39 +1,107 @@
 ---
 title: "Claude Messages"
-description: "Anthropic 兼容的 Messages API。"
+description: "Anthropic 兼容的 Messages API，支持扩展思考。"
 ---
 
-**端点：** `POST /v1/messages`
+**端点:** `POST /v1/messages`
 
-## 认证
+通过原生 Messages API 格式访问 Anthropic Claude 模型，支持扩展思考、视觉理解和工具调用。
 
-网关标准令牌：
+## 认证方式
 
+支持两种认证方式：
+
+**标准网关令牌：**
 ```bash
--H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+-H "Authorization: Bearer YOUR_API_KEY"
 ```
 
-或 Anthropic 原生请求头（网关会自动映射）：
-
+**原生 Anthropic 请求头（网关自动映射）：**
 ```bash
--H "x-api-key: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+-H "x-api-key: YOUR_API_KEY" \
 -H "anthropic-version: 2023-06-01"
 ```
 
-## 示例
+## 基础请求
 
 ```bash
 curl {{api-base-url}}/messages \
-  -H "x-api-key: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "anthropic-version: 2023-06-01" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-20250514",
+    "model": "claude-sonnet-4-6",
     "max_tokens": 1024,
     "messages": [
-      {"role": "user", "content": "你好，Claude"}
+      {"role": "user", "content": "解释 REST 和 GraphQL 的区别。"}
     ]
   }'
 ```
 
-使用官方 `@anthropic-ai/sdk`，设置 `baseURL: '{{api-origin}}'`，`apiKey` 填 Starrise 令牌即可。流式输出与 Anthropic SSE 格式一致。
+## 扩展思考
+
+为复杂推理任务启用扩展思考：
+
+```json
+{
+  "model": "claude-opus-4-8",
+  "max_tokens": 4096,
+  "thinking": {
+    "type": "enabled",
+    "budget_tokens": 2000
+  },
+  "messages": [
+    {"role": "user", "content": "解决这个复杂数学问题..."}
+  ]
+}
+```
+
+## 视觉理解
+
+```json
+{
+  "model": "claude-sonnet-4-6",
+  "max_tokens": 1024,
+  "messages": [{
+    "role": "user",
+    "content": [
+      {"type": "text", "text": "详细描述这张图片。"},
+      {"type": "image", "source": {
+        "type": "base64",
+        "media_type": "image/jpeg",
+        "data": "/9j/..."
+      }}
+    ]
+  }]
+}
+```
+
+## SDK 用法
+
+使用 Anthropic 官方 SDK 接入 Starrise AI：
+
+```python
+import anthropic
+
+client = anthropic.Anthropic(
+    base_url="{{api-origin}}",
+    api_key="YOUR_API_KEY",
+)
+
+message = client.messages.create(
+    model="claude-sonnet-4-6",
+    max_tokens=1024,
+    messages=[{"role": "user", "content": "你好，Claude！"}]
+)
+print(message.content)
+```
+
+## 流式输出
+
+流式输出采用与 Anthropic API 规范匹配的 SSE 格式。
+
+## 相关页面
+
+- [对话补全](/zh/api/chat) — OpenAI 兼容对话端点
+- [Gemini](/zh/api/gemini) — Google Gemini 原生 API
+- [模型列表](/zh/api/models) — 查询可用 Claude 模型

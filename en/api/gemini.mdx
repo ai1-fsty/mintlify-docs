@@ -1,12 +1,14 @@
 ---
 title: "Gemini"
-description: "Google Gemini native API under `/v1beta`."
+description: "Google Gemini native API under `/v1beta` — access Gemini models with thinking mode, search grounding, and streaming."
 ---
+
+Access Google Gemini models through the native Gemini API format, with support for thinking mode, Google Search grounding, image generation, and streaming.
 
 ## List Models
 
 ```bash
-curl "{{api-origin}}/v1beta/models?key=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+curl "{{api-origin}}/v1beta/models?key=YOUR_API_KEY"
 ```
 
 ## Generate Content
@@ -14,7 +16,7 @@ curl "{{api-origin}}/v1beta/models?key=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
 Path format: `POST /v1beta/models/{model}:{action}`
 
 ```bash
-curl "{{api-origin}}/v1beta/models/gemini-2.0-flash:generateContent?key=sk-xxx" \
+curl "{{api-origin}}/v1beta/models/gemini-2.5-flash:generateContent?key=YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "contents": [{
@@ -23,15 +25,65 @@ curl "{{api-origin}}/v1beta/models/gemini-2.0-flash:generateContent?key=sk-xxx" 
   }'
 ```
 
-Authentication alternatives:
+## Authentication
 
-- `Authorization: Bearer sk-...`
-- Header `x-goog-api-key: sk-...`
-- Query parameter `key=sk-...`
+Multiple authentication methods are supported:
+
+- `Authorization: Bearer YOUR_API_KEY`
+- Header `x-goog-api-key: YOUR_API_KEY`
+- Query parameter `?key=YOUR_API_KEY`
+
+## Thinking Mode
+
+Enable thinking for complex reasoning with Gemini 2.5/3.x models:
+
+```json
+{
+  "contents": [{
+    "parts": [{"text": "Solve this complex problem step by step."}]
+  }],
+  "generationConfig": {
+    "thinkingConfig": {
+      "thinkingBudget": 1024
+    }
+  }
+}
+```
+
+## Google Search Grounding
+
+```json
+{
+  "contents": [{
+    "parts": [{"text": "What are the latest developments in AI?"}]
+  }],
+  "tools": [{
+    "googleSearch": {}
+  }]
+}
+```
+
+## Streaming
+
+Streaming uses SSE format:
+
+```python
+import google.generativeai as genai
+
+genai.configure(
+    api_key="YOUR_API_KEY",
+    client_options={"api_endpoint": "{{api-origin}}"}
+)
+
+model = genai.GenerativeModel("gemini-2.5-flash")
+response = model.generate_content("Tell me a story", stream=True)
+for chunk in response:
+    print(chunk.text, end="")
+```
 
 ## OpenAI-Compatible Path
 
-Some clients use:
+Some clients use OpenAI-style paths:
 
 ```
 POST /v1/models/{model}:generateContent
@@ -39,10 +91,18 @@ POST /v1/models/{model}:generateContent
 
 Also supported via the gateway relay.
 
-## Embeddings (Gemini)
+## Available Endpoints
 
-```
-POST /v1/engines/{model}/embeddings
-```
+| Path Pattern | Method | Description |
+| --- | --- | --- |
+| `/v1beta/models` | GET | List models |
+| `/v1beta/models/{model}:generateContent` | POST | Generate content |
+| `/v1beta/models/{model}:streamGenerateContent` | POST | Stream content |
+| `/v1beta/openai/models` | GET | OpenAI-compatible model list |
+| `/v1/models/{model}:generateContent` | POST | OpenAI path alias |
 
-Relayed with Gemini format when the upstream channel supports it.
+## Related
+
+- [Chat Completions](/en/api/chat) — OpenAI-compatible chat endpoint
+- [Claude Messages](/en/api/claude) — Anthropic-native API
+- [Models](/en/api/models) — list available models

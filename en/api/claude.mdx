@@ -1,41 +1,107 @@
 ---
 title: "Claude Messages"
-description: "Anthropic-compatible Messages API."
+description: "Anthropic-compatible Messages API with extended thinking support."
 ---
 
 **Endpoint:** `POST /v1/messages`
 
+Access Anthropic Claude models through the native Messages API format, with support for extended thinking, vision, and tool use.
+
 ## Authentication
 
-Either standard gateway token:
+Two authentication methods are supported:
 
+**Standard gateway token:**
 ```bash
--H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+-H "Authorization: Bearer YOUR_API_KEY"
 ```
 
-Or native Anthropic headers (auto-mapped by the gateway):
-
+**Native Anthropic headers (auto-mapped by the gateway):**
 ```bash
--H "x-api-key: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+-H "x-api-key: YOUR_API_KEY" \
 -H "anthropic-version: 2023-06-01"
 ```
 
-## Example
+## Basic Request
 
 ```bash
 curl {{api-base-url}}/messages \
-  -H "x-api-key: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "x-api-key: YOUR_API_KEY" \
   -H "anthropic-version: 2023-06-01" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "claude-sonnet-4-20250514",
+    "model": "claude-sonnet-4-6",
     "max_tokens": 1024,
     "messages": [
-      {"role": "user", "content": "Hello, Claude"}
+      {"role": "user", "content": "Explain the difference between REST and GraphQL."}
     ]
   }'
 ```
 
-Use the official `@anthropic-ai/sdk` with `baseURL: '{{api-origin}}'` and your Starrise token as `apiKey`.
+## Extended Thinking
 
-Streaming uses the same SSE pattern as Anthropic's API.
+Enable extended thinking for complex reasoning tasks:
+
+```json
+{
+  "model": "claude-opus-4-8",
+  "max_tokens": 4096,
+  "thinking": {
+    "type": "enabled",
+    "budget_tokens": 2000
+  },
+  "messages": [
+    {"role": "user", "content": "Solve this complex math problem..."}
+  ]
+}
+```
+
+## Vision
+
+```json
+{
+  "model": "claude-sonnet-4-6",
+  "max_tokens": 1024,
+  "messages": [{
+    "role": "user",
+    "content": [
+      {"type": "text", "text": "Describe this image in detail."},
+      {"type": "image", "source": {
+        "type": "base64",
+        "media_type": "image/jpeg",
+        "data": "/9j/..."
+      }}
+    ]
+  }]
+}
+```
+
+## SDK Usage
+
+Use the official Anthropic SDK with Starrise AI:
+
+```python
+import anthropic
+
+client = anthropic.Anthropic(
+    base_url="{{api-origin}}",
+    api_key="YOUR_API_KEY",
+)
+
+message = client.messages.create(
+    model="claude-sonnet-4-6",
+    max_tokens=1024,
+    messages=[{"role": "user", "content": "Hello, Claude!"}]
+)
+print(message.content)
+```
+
+## Streaming
+
+Streaming uses SSE format matching Anthropic's API specification.
+
+## Related
+
+- [Chat Completions](/en/api/chat) — OpenAI-compatible chat endpoint
+- [Gemini](/en/api/gemini) — Google Gemini native API
+- [Models](/en/api/models) — list available Claude models

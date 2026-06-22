@@ -5,11 +5,13 @@ description: "Primary endpoint for multi-turn chat, streaming, tool/function cal
 
 **Endpoint:** `POST /v1/chat/completions`
 
+The Chat Completions endpoint is the primary interface for text generation. It supports multi-turn conversations, streaming, tool/function calling, and vision (for compatible models).
+
 ## Request
 
 ```bash
 curl {{api-base-url}}/chat/completions \
-  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "gpt-4o",
@@ -18,6 +20,63 @@ curl {{api-base-url}}/chat/completions \
       {"role": "user", "content": "Hello!"}
     ]
   }'
+```
+
+### Response
+
+```json
+{
+  "id": "chatcmpl-abc123",
+  "object": "chat.completion",
+  "created": 1710000000,
+  "model": "gpt-4o",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "Hello! How can I help you today?"
+      },
+      "finish_reason": "stop"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 15,
+    "completion_tokens": 9,
+    "total_tokens": 24
+  }
+}
+```
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| --- | --- | --- | --- |
+| `model` | string | Yes | Model ID (e.g. `gpt-4o`, `claude-sonnet-4-6`, `deepseek-v3-2`) |
+| `messages` | array | Yes | List of messages in the conversation |
+| `temperature` | number | No | Sampling temperature (0–2), default `1` |
+| `top_p` | number | No | Nucleus sampling threshold (0–1) |
+| `max_tokens` | integer | No | Maximum tokens to generate |
+| `stream` | boolean | No | Enable streaming via SSE, default `false` |
+| `stop` | string/array | No | Up to 4 stop sequences |
+| `frequency_penalty` | number | No | Penalize token frequency (-2 to 2) |
+| `presence_penalty` | number | No | Penalize token presence (-2 to 2) |
+| `n` | integer | No | Number of completions, default `1` |
+| `tools` | array | No | Function definitions for tool calling |
+| `tool_choice` | string/object | No | Control tool selection behavior |
+| `response_format` | object | No | Output format (`text` or `json_object`) |
+| `user` | string | No | End-user identifier |
+
+### Message Object
+
+```json
+{
+  "role": "system | user | assistant | tool",
+  "content": "string or content parts array for multimodal",
+  "name": "optional name",
+  "tool_calls": [],
+  "tool_call_id": ""
+}
 ```
 
 ## Streaming
@@ -29,7 +88,7 @@ from openai import OpenAI
 
 client = OpenAI(
     base_url="{{api-base-url}}",
-    api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    api_key="YOUR_API_KEY",
 )
 
 stream = client.chat.completions.create(
@@ -43,16 +102,58 @@ for chunk in stream:
         print(chunk.choices[0].delta.content, end="")
 ```
 
+Each SSE chunk contains a delta with partial content. The final chunk includes `finish_reason` and usage information.
+
+## Tool / Function Calling
+
+```bash
+curl {{api-base-url}}/chat/completions \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-4o",
+    "messages": [{"role": "user", "content": "What is the weather in Paris?"}],
+    "tools": [{
+      "type": "function",
+      "function": {
+        "name": "get_weather",
+        "description": "Get current weather for a location",
+        "parameters": {
+          "type": "object",
+          "properties": {
+            "location": {"type": "string", "description": "City name"}
+          },
+          "required": ["location"]
+        }
+      }
+    }]
+  }'
+```
+
+## Vision (Multimodal)
+
+For models with vision support, pass images in the message content:
+
+```json
+{
+  "model": "gpt-4o",
+  "messages": [{
+    "role": "user",
+    "content": [
+      {"type": "text", "text": "What is in this image?"},
+      {"type": "image_url", "image_url": {"url": "https://example.com/image.jpg"}}
+    ]
+  }]
+}
+```
+
 ## Legacy Completions
 
-**Endpoint:** `POST /v1/completions` — OpenAI legacy prompt format.
-
-## Parameters
-
-Supports standard OpenAI fields: `model`, `messages`, `temperature`, `top_p`, `max_tokens`, `tools`, `tool_choice`, `response_format`, `stream`, etc. Unsupported fields may be ignored or forwarded depending on upstream channel.
+**Endpoint:** `POST /v1/completions` — OpenAI legacy prompt format using `prompt` instead of `messages`.
 
 ## Related
 
-- [Responses API](/en/api/responses) — OpenAI Responses format
-- [Claude Messages](/en/api/claude) — Anthropic-native path
+- [Responses API](/en/api/responses) — OpenAI Responses format for agentic workflows
+- [Claude Messages](/en/api/claude) — Anthropic-native Messages API
+- [Gemini](/en/api/gemini) — Google Gemini native API
 - [Models](/en/api/models) — list available models

@@ -1,22 +1,26 @@
 ---
 title: "Midjourney"
-description: "Midjourney 代理 API，路径前缀 `/mj`。使用 Starrise 令牌认证。"
+description: "Midjourney 代理 API — 图片生成、变体、描述、混合及视频。"
 ---
 
+通过 Starrise AI 网关访问 Midjourney 图片和视频生成。使用您的 Starrise 令牌认证。
+
+## 认证方式
+
 ```bash
--H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+-H "Authorization: Bearer YOUR_API_KEY"
 # 或
--H "mj-api-secret: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+-H "mj-api-secret: YOUR_API_KEY"
 ```
 
-## 提交 Imagine
+## 提交绘图（文生图）
 
 ```bash
 curl {{api-origin}}/mj/submit/imagine \
-  -H "Authorization: Bearer sk-xxx" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "prompt": "赛博朋克风格的未来都市夜景",
+    "prompt": "夜晚的未来城市，赛博朋克风格 --ar 16:9",
     "botType": "MID_JOURNEY"
   }'
 ```
@@ -26,37 +30,64 @@ curl {{api-origin}}/mj/submit/imagine \
 | 端点 | 说明 |
 | --- | --- |
 | `/mj/submit/imagine` | 文生图 |
-| `/mj/submit/change` | 放大 / 变体 |
-| `/mj/submit/simple-change` | 简化变更 |
-| `/mj/submit/describe` | 图片描述 |
-| `/mj/submit/blend` | 多图混合 |
-| `/mj/submit/action` | 自定义动作 |
-| `/mj/submit/modal` | Modal 操作 |
+| `/mj/submit/change` | 放大、变体、重绘 |
+| `/mj/submit/simple-change` | 简化变更操作 |
+| `/mj/submit/describe` | 描述上传的图片 |
+| `/mj/submit/blend` | 混合多张图片 |
+| `/mj/submit/action` | 自定义操作（平移、缩放等） |
+| `/mj/submit/modal` | 模态操作 |
 | `/mj/submit/edits` | 编辑提交 |
 | `/mj/submit/video` | 视频生成 |
-| `/mj/submit/shorten` | Prompt 缩短 |
+| `/mj/submit/shorten` | 提示词缩短 |
 
 ## 查询任务
 
 ```bash
 curl {{api-origin}}/mj/task/{task_id}/fetch \
-  -H "Authorization: Bearer sk-xxx"
+  -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
 ## 获取图片
 
 ```bash
 curl {{api-origin}}/mj/image/{id} \
-  -H "Authorization: Bearer sk-xxx"
+  -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
-## 条件列表
+## 任务列表
 
 ```bash
 curl {{api-origin}}/mj/task/list-by-condition \
-  -H "Authorization: Bearer sk-xxx" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{ ... }'
+  -d '{
+    "pageNumber": 1,
+    "pageSize": 10
+  }'
 ```
 
-请求/响应体遵循上游 Midjourney 代理通道的配置规范。
+## 任务状态
+
+| 状态 | 说明 |
+| --- | --- |
+| `NOT_START` | 任务已创建，等待处理 |
+| `SUBMITTED` | 已提交到 Midjourney |
+| `IN_PROGRESS` | 处理中（如 0%–100%） |
+| `SUCCESS` | 已完成，结果可用 |
+| `FAILURE` | 任务失败 |
+
+## 参数速查
+
+| 参数 | 类型 | 说明 |
+| --- | --- | --- |
+| `prompt` | string | 文字提示词（支持 Midjourney 参数） |
+| `botType` | string | `MID_JOURNEY` 或 `NIJI_JOURNEY` |
+| `state` | string | 自定义状态，用于 Webhook 追踪 |
+| `base64` | string | Base64 编码图片（describe/blend 用） |
+| `notifyHook` | string | 状态更新的 Webhook 地址 |
+
+## 相关页面
+
+- [图片生成](/zh/api/images) — OpenAI 兼容图片生成
+- [视频生成](/zh/api/video) — 视频生成 API
+- [模型列表](/zh/api/models) — 查询可用模型

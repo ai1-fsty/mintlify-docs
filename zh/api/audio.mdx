@@ -1,53 +1,93 @@
 ---
 title: "音频"
-description: "OpenAI 兼容的语音与转写 API。"
+description: "OpenAI 兼容的语音转文字、文字转语音及音频翻译接口。"
 ---
 
 | 端点 | 方法 | 说明 |
 | --- | --- | --- |
 | `/v1/audio/transcriptions` | POST | 语音转文字 |
-| `/v1/audio/translations` | POST | 音频翻译为英文文本 |
+| `/v1/audio/translations` | POST | 音频翻译为英文 |
 | `/v1/audio/speech` | POST | 文字转语音 |
 
-## 转写
+## 语音转文字
+
+使用 Whisper 模型将音频转换为文字：
 
 ```bash
 curl {{api-base-url}}/audio/transcriptions \
-  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -F file=@audio.mp3 \
-  -F model=whisper-1
+  -F model=whisper-1 \
+  -F language=zh
 ```
 
-## 语音合成（TTS）
+### 参数
+
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `file` | file | 是 | 音频文件（mp3、mp4、mpeg、mpga、m4a、wav、webm） |
+| `model` | string | 是 | 模型 ID（如 `whisper-1`） |
+| `language` | string | 否 | ISO 639-1 语言代码 |
+| `prompt` | string | 否 | 引导转写风格 |
+| `response_format` | string | 否 | `json`、`text`、`srt`、`verbose_json`、`vtt` |
+| `temperature` | number | 否 | 采样温度（0–1） |
+
+## 文字转语音
+
+将文字转换为语音：
 
 ```bash
 curl {{api-base-url}}/audio/speech \
-  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "tts-1",
-    "input": "你好，来自 Starrise API。",
-    "voice": "alloy"
+    "input": "你好，欢迎使用 Starrise AI。",
+    "voice": "alloy",
+    "speed": 1.0
   }' \
   --output speech.mp3
 ```
+
+### Python SDK
 
 ```python
 from openai import OpenAI
 
 client = OpenAI(
     base_url="{{api-base-url}}",
-    api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    api_key="YOUR_API_KEY",
 )
 
 with client.audio.speech.with_streaming_response.create(
     model="tts-1",
     voice="alloy",
-    input="你好，来自 Starrise API。",
+    input="你好，欢迎使用 Starrise AI。",
 ) as response:
     response.stream_to_file("speech.mp3")
 ```
 
+### 参数
+
+| 参数 | 类型 | 必填 | 说明 |
+| --- | --- | --- | --- |
+| `model` | string | 是 | TTS 模型（如 `tts-1`、`tts-1-hd`） |
+| `input` | string | 是 | 待转换为语音的文字 |
+| `voice` | string | 是 | 语音：`alloy`、`echo`、`fable`、`onyx`、`nova`、`shimmer` |
+| `speed` | number | 否 | 语速倍率（0.25–4.0），默认 `1.0` |
+| `response_format` | string | 否 | `mp3`、`opus`、`aac`、`flac`、`wav`、`pcm` |
+
+## 音频翻译
+
+将音频翻译为英文文字：
+
+```bash
+curl {{api-base-url}}/audio/translations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F file=@audio_zh.mp3 \
+  -F model=whisper-1
+```
+
 ## Suno 音乐
 
-AI 音乐生成见 [Suno API](/zh/api/suno)。
+AI 音乐生成请参见 [Suno API](/zh/api/suno)。

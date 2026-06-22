@@ -1,16 +1,18 @@
 ---
 title: "Quick Start"
-description: "Get from registration to your first API call in three steps — matching the console onboarding flow."
+description: "Start making API calls to Starrise AI in minutes."
 ---
+
+Starrise AI provides a unified API to access AI models from multiple providers — including chat, image generation, video generation, and audio. This guide gets you up and running with your first API call.
 
 ## Prerequisites
 
-- A Starrise-api account (click **Get Started** on the home page)
+- A Starrise AI account ([sign up in the console]({{api-origin}}))
 - An API token ([Authentication](/en/guide/authentication))
 
 ## Step 1: Create an Account
 
-1. Open the Starrise-api console
+1. Open the Starrise AI console at [{{api-origin}}]({{api-origin}})
 2. Register with email or supported OAuth (GitHub, Discord, etc.)
 3. New accounts may receive starter quota (as shown in your account dashboard)
 
@@ -27,13 +29,14 @@ The full key is shown once. Store it securely.
 
 </Warning>
 
-
 ## Step 3: Make Your First Request
+
+Use your API key to call a chat model. Replace `YOUR_API_KEY` with your actual token:
 
 ```bash
 curl {{api-base-url}}/chat/completions \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -d '{
     "model": "gpt-4o",
     "messages": [
@@ -48,6 +51,7 @@ Example response:
 {
   "id": "chatcmpl-xxx",
   "object": "chat.completion",
+  "model": "gpt-4o",
   "choices": [{
     "index": 0,
     "message": {
@@ -68,40 +72,51 @@ Example response:
 
 ### Python
 
+```bash
+pip install openai
+```
+
 ```python
 from openai import OpenAI
 
 client = OpenAI(
-    base_url="{{api-base-url}}",
-    api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    api_key="YOUR_API_KEY",
+    base_url="{{api-base-url}}"
 )
 
 response = client.chat.completions.create(
     model="gpt-4o",
     messages=[{"role": "user", "content": "Hello!"}]
 )
+
 print(response.choices[0].message.content)
 ```
 
 ### Node.js
 
+```bash
+npm install openai
+```
+
 ```javascript
-import OpenAI from 'openai'
+import OpenAI from "openai";
 
 const client = new OpenAI({
-  baseURL: '{{api-base-url}}',
-  apiKey: 'sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-})
+  apiKey: "YOUR_API_KEY",
+  baseURL: "{{api-base-url}}",
+});
 
 const response = await client.chat.completions.create({
-  model: 'gpt-4o',
-  messages: [{ role: 'user', content: 'Hello!' }]
-})
+  model: "gpt-4o",
+  messages: [{ role: "user", content: "Hello!" }],
+});
 
-console.log(response.choices[0].message.content)
+console.log(response.choices[0].message.content);
 ```
 
 ## Streaming
+
+Set `"stream": true` to receive Server-Sent Events (SSE) with `data: {...}` chunks:
 
 ```python
 stream = client.chat.completions.create(
@@ -115,8 +130,33 @@ for chunk in stream:
         print(chunk.choices[0].delta.content, end="")
 ```
 
+## Error Handling
+
+| Status | Description |
+| --- | --- |
+| `200` | Success |
+| `400` | Bad request — invalid parameters |
+| `401` | Unauthorized — invalid or missing API key |
+| `403` | Forbidden — insufficient permissions or model restriction |
+| `404` | Not found — invalid endpoint or model |
+| `429` | Rate limit exceeded — too many requests |
+| `500` | Internal server error |
+
+When an error occurs, the API returns a JSON response with an `error` object:
+
+```json
+{
+  "error": {
+    "message": "Invalid API key provided.",
+    "type": "authentication_error",
+    "code": "invalid_api_key"
+  }
+}
+```
+
 ## Next Steps
 
-- [Authentication](/en/guide/authentication) — token options and security
-- [Client Compatibility](/en/guide/client-compatibility) — all supported endpoints
-- [Chat API](/en/api/chat) — full chat reference
+- [Authentication](/en/guide/authentication) — token options and security best practices
+- [Client Compatibility](/en/guide/client-compatibility) — all supported endpoints and third-party tools
+- [Chat API](/en/api/chat) — full chat completions reference
+- [Models](/en/api/models) — list available models

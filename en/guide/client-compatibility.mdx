@@ -1,16 +1,16 @@
 ---
 title: "Client Compatibility"
-description: "Starrise-api is fully compatible with the OpenAI API format. Any client, SDK, or tool that supports OpenAI can connect by changing Base URL and API Key."
+description: "Starrise AI is fully compatible with the OpenAI API format. Any client, SDK, or tool that supports OpenAI can connect by changing Base URL and API Key."
 ---
 
 ## Configuration
 
-| Setting | OpenAI Default | Starrise-api |
+| Setting | OpenAI Default | Starrise AI |
 | --- | --- | --- |
 | Base URL | `https://api.openai.com/v1` | `{{api-base-url}}` |
-| API Key | OpenAI API key | Starrise-api token (`sk-...`) |
+| API Key | OpenAI API key | Starrise AI token (`sk-...`) |
 
-Sign in to the console and copy your **API address** (Base URL) from the home page. Paste it into your SDK or third-party tool as the Base URL / API Host. Example:
+Sign in to the console and copy your **API address** (Base URL) from the home page. Paste it into your SDK or third-party tool as the Base URL / API Host:
 
 ```
 {{api-base-url}}
@@ -46,26 +46,26 @@ npm install openai
 ```
 
 ```javascript
-import OpenAI from 'openai'
+import OpenAI from "openai";
 
 const client = new OpenAI({
-  baseURL: '{{api-base-url}}',
-  apiKey: 'sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
-})
+  baseURL: "{{api-base-url}}",
+  apiKey: "sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+});
 ```
 
 ## OpenAI-Compatible Endpoints
 
-These routes use `Authorization: Bearer sk-...` (or `sk-` prefix without Bearer in some tools).
+These routes use `Authorization: Bearer sk-...`.
 
 | Endpoint | Method | Description |
 | --- | --- | --- |
-| `/v1/chat/completions` | POST | Chat completions (streaming supported) |
+| `/v1/chat/completions` | POST | Chat completions (streaming, tools, vision) |
 | `/v1/completions` | POST | Legacy text completions |
 | `/v1/responses` | POST | OpenAI Responses API |
 | `/v1/responses/compact` | POST | Responses compaction |
 | `/v1/embeddings` | POST | Text embeddings |
-| `/v1/rerank` | POST | Document reranking (Jina-style) |
+| `/v1/rerank` | POST | Document reranking (Jina-compatible) |
 | `/v1/images/generations` | POST | Image generation |
 | `/v1/images/edits` | POST | Image editing |
 | `/v1/edits` | POST | Legacy image edit |
@@ -74,7 +74,7 @@ These routes use `Authorization: Bearer sk-...` (or `sk-` prefix without Bearer 
 | `/v1/audio/speech` | POST | Text-to-speech |
 | `/v1/moderations` | POST | Content moderation |
 | `/v1/models` | GET | List models (OpenAI format) |
-| `/v1/models/:model` | GET | Retrieve model |
+| `/v1/models/:model` | GET | Retrieve model details |
 | `/v1/realtime` | GET (WebSocket) | OpenAI Realtime API |
 
 <Info title="Not implemented">
@@ -83,7 +83,14 @@ These routes use `Authorization: Bearer sk-...` (or `sk-` prefix without Bearer 
 
 </Info>
 
+## Video Generation Endpoints
 
+| Endpoint | Method | Description |
+| --- | --- | --- |
+| `/v1/video/generations` | POST | Create video generation task |
+| `/v1/video/generations/{task_id}` | GET | Query video task status |
+
+Video generation is asynchronous. Submit a task to receive a `task_id`, then poll the query endpoint for results.
 
 ## Claude (Anthropic) Endpoints
 
@@ -112,6 +119,7 @@ Requires token via `Authorization` or `mj-api-secret` header.
 | `/mj/submit/change` | POST | Upscale / variation |
 | `/mj/submit/describe` | POST | Describe image |
 | `/mj/submit/blend` | POST | Blend images |
+| `/mj/submit/video` | POST | Video generation |
 | `/mj/task/:id/fetch` | GET | Fetch task status |
 | `/mj/image/:id` | GET | Fetch result image |
 
@@ -129,9 +137,14 @@ Requires token via `Authorization` or `mj-api-secret` header.
 | --- | --- |
 | **ChatGPT Next Web** | Settings → API Host → `{{api-origin}}` |
 | **LobeChat** | API proxy URL + token |
-| **Cursor / Cline** | Override OpenAI Base URL |
+| **Cursor / Cline / Roo Code** | Override OpenAI Base URL |
+| **Claude Code** | Set `ANTHROPIC_BASE_URL` to `{{api-origin}}` |
 | **LangChain** | `OpenAI(base_url=..., api_key=...)` |
 | **Dify** | OpenAI-compatible provider |
+| **Chatbox** | Custom API host + token |
+| **SillyTavern** | Chat completion source → Custom (OpenAI-compatible) |
+| **Continue (VS Code)** | OpenAI-compatible provider config |
+| **DB-GPT** | OpenAI-compatible model provider |
 
 ## Environment Variables
 
@@ -140,12 +153,19 @@ OPENAI_API_BASE={{api-base-url}}
 OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 ```
 
+For Anthropic SDK:
+```bash
+ANTHROPIC_BASE_URL={{api-origin}}
+ANTHROPIC_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
 ## Troubleshooting
 
 | Issue | Solution |
 | --- | --- |
 | `401 Unauthorized` | Check token; use `Bearer sk-...` |
-| `403 Forbidden` | Model/IP restriction or banned user |
+| `403 Forbidden` | Model/IP restriction or account issue |
 | `404 Model not found` | Call `GET /v1/models` or check console pricing |
 | Connection timeout | Ensure base URL ends with `/v1` for OpenAI SDK |
 | SDK still hits OpenAI | Set `base_url` / `baseURL` explicitly |
+| `429 Rate limited` | Implement exponential backoff; reduce request rate |

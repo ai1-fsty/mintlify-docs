@@ -1,22 +1,26 @@
 ---
 title: "Midjourney"
-description: "Midjourney proxy API under `/mj`. Authenticate with your Starrise token."
+description: "Midjourney proxy API under `/mj` — image generation, variations, describe, blend, and video."
 ---
 
+Access Midjourney image and video generation through the Starrise AI gateway. Authenticate with your Starrise token.
+
+## Authentication
+
 ```bash
--H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+-H "Authorization: Bearer YOUR_API_KEY"
 # or
--H "mj-api-secret: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+-H "mj-api-secret: YOUR_API_KEY"
 ```
 
-## Submit Imagine
+## Submit Imagine (Text-to-Image)
 
 ```bash
 curl {{api-origin}}/mj/submit/imagine \
-  -H "Authorization: Bearer sk-xxx" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "prompt": "a futuristic city at night, cyberpunk style",
+    "prompt": "a futuristic city at night, cyberpunk style --ar 16:9",
     "botType": "MID_JOURNEY"
   }'
 ```
@@ -25,12 +29,12 @@ curl {{api-origin}}/mj/submit/imagine \
 
 | Endpoint | Description |
 | --- | --- |
-| `/mj/submit/imagine` | Text-to-image |
-| `/mj/submit/change` | Upscale / variation |
-| `/mj/submit/simple-change` | Simplified change |
-| `/mj/submit/describe` | Describe uploaded image |
-| `/mj/submit/blend` | Blend multiple images |
-| `/mj/submit/action` | Custom action |
+| `/mj/submit/imagine` | Text-to-image generation |
+| `/mj/submit/change` | Upscale, variation, reroll |
+| `/mj/submit/simple-change` | Simplified change actions |
+| `/mj/submit/describe` | Describe an uploaded image |
+| `/mj/submit/blend` | Blend multiple images together |
+| `/mj/submit/action` | Custom actions (pan, zoom, etc.) |
 | `/mj/submit/modal` | Modal operations |
 | `/mj/submit/edits` | Edit submission |
 | `/mj/submit/video` | Video generation |
@@ -40,23 +44,50 @@ curl {{api-origin}}/mj/submit/imagine \
 
 ```bash
 curl {{api-origin}}/mj/task/{task_id}/fetch \
-  -H "Authorization: Bearer sk-xxx"
+  -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
 ## Fetch Image
 
 ```bash
 curl {{api-origin}}/mj/image/{id} \
-  -H "Authorization: Bearer sk-xxx"
+  -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
 ## List Tasks
 
 ```bash
 curl {{api-origin}}/mj/task/list-by-condition \
-  -H "Authorization: Bearer sk-xxx" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{ ... }'
+  -d '{
+    "pageNumber": 1,
+    "pageSize": 10
+  }'
 ```
 
-Request/response bodies follow the Midjourney proxy specification configured on your upstream channel.
+## Task Status
+
+| Status | Description |
+| --- | --- |
+| `NOT_START` | Task created, waiting to process |
+| `SUBMITTED` | Submitted to Midjourney |
+| `IN_PROGRESS` | Processing (e.g., 0%–100%) |
+| `SUCCESS` | Completed, results available |
+| `FAILURE` | Task failed |
+
+## Parameters Quick Reference
+
+| Parameter | Type | Description |
+| --- | --- | --- |
+| `prompt` | string | Text prompt (supports Midjourney parameters) |
+| `botType` | string | `MID_JOURNEY` or `NIJI_JOURNEY` |
+| `state` | string | Custom state for webhook tracking |
+| `base64` | string | Base64-encoded image (describe/blend) |
+| `notifyHook` | string | Webhook URL for status updates |
+
+## Related
+
+- [Images](/en/api/images) — OpenAI-compatible image generation
+- [Video Generation](/en/api/video) — Video generation API
+- [Models](/en/api/models) — list available models

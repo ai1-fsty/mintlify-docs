@@ -5,47 +5,103 @@ description: "OpenAI-compatible image generation and editing."
 
 | Endpoint | Method | Description |
 | --- | --- | --- |
-| `/v1/images/generations` | POST | Text-to-image |
-| `/v1/images/edits` | POST | Edit with mask |
-| `/v1/edits` | POST | Legacy edit endpoint |
+| `/v1/images/generations` | POST | Text-to-image generation |
+| `/v1/images/edits` | POST | Edit image with mask |
 
-## Generate
+## Generate Image
 
 ```bash
 curl {{api-base-url}}/images/generations \
-  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
     "model": "dall-e-3",
-    "prompt": "A serene mountain lake at sunset",
+    "prompt": "A serene mountain lake at sunset, oil painting style",
     "n": 1,
-    "size": "1024x1024"
+    "size": "1024x1024",
+    "quality": "standard"
   }'
 ```
+
+### Response
+
+```json
+{
+  "created": 1710000000,
+  "data": [
+    {
+      "url": "https://...",
+      "revised_prompt": "A serene mountain lake at sunset..."
+    }
+  ]
+}
+```
+
+### Python SDK
 
 ```python
 from openai import OpenAI
 
 client = OpenAI(
     base_url="{{api-base-url}}",
-    api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    api_key="YOUR_API_KEY",
 )
 
 result = client.images.generate(
     model="dall-e-3",
     prompt="A serene mountain lake at sunset",
     size="1024x1024",
+    quality="standard",
+    n=1,
 )
 print(result.data[0].url)
 ```
 
-## Edit
+## Parameters
 
-Use `POST /v1/images/edits` with multipart form data (image + mask + prompt) per OpenAI spec.
+| Parameter | Type | Required | Description |
+| --- | --- | --- |
+| `model` | string | Yes | Model ID (e.g. `dall-e-3`, `gpt-image-2`) |
+| `prompt` | string | Yes | Text description of the desired image |
+| `n` | integer | No | Number of images (1–10), default `1` |
+| `size` | string | No | Image size (e.g. `1024x1024`, `1792x1024`) |
+| `quality` | string | No | `standard` or `hd` |
+| `style` | string | No | `vivid` or `natural` |
+| `response_format` | string | No | `url` or `b64_json` |
+
+## Edit Image
+
+Use `POST /v1/images/edits` with multipart form data (image + mask + prompt) per OpenAI spec:
+
+```bash
+curl {{api-base-url}}/images/edits \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F image=@original.png \
+  -F mask=@mask.png \
+  -F prompt="Add a rainbow to the sky" \
+  -F n=1 \
+  -F size="1024x1024"
+```
+
+## Available Models
+
+| Model | Provider | Type |
+| --- | --- | --- |
+| `dall-e-3` | OpenAI | Text-to-image |
+| `gpt-image-2` | OpenAI | Text-to-image & editing |
+| `gpt-image-1` | OpenAI | Text-to-image |
+| `gemini-2.5-flash-image` | Google | Text-to-image & editing |
+| `gemini-3-pro-image-preview` | Google | Text-to-image & editing |
+| `flux-2-pro` | Black Forest Labs | Text-to-image |
+| `flux-1.1-pro` | Black Forest Labs | Text-to-image |
+| `wan2.7-image` | Alibaba | Text-to-image & editing |
+| `seedream-5.0` | ByteDance | Text-to-image |
+
+See the console **Pricing** page for the complete list and availability.
 
 ## Midjourney
 
-For Midjourney-specific workflows, see [Midjourney API](/en/api/midjourney).
+For Midjourney-specific workflows (imagine, variations, describe), see [Midjourney API](/en/api/midjourney).
 
 <Warning>
 
