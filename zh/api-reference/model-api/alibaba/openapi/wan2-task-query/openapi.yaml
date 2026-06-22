@@ -4,7 +4,7 @@ info:
   description: 查询 Wan2 视频生成任务的状态和结果
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

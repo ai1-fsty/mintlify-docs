@@ -44,7 +44,7 @@ Seedance 2.0 素材管理让你可以上传和组织媒体素材（图片、视�
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.starrise.tech/volc/asset/CreateAssetGroup \
+  curl https://ai.alad.com/volc/asset/CreateAssetGroup \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -57,7 +57,7 @@ Seedance 2.0 素材管理让你可以上传和组织媒体素材（图片、视�
   import requests
 
   response = requests.post(
-      "https://ai.starrise.tech/volc/asset/CreateAssetGroup",
+      "https://ai.alad.com/volc/asset/CreateAssetGroup",
       headers={"Authorization": "Bearer YOUR_API_KEY"},
       json={
           "model": "volc-asset",
@@ -84,7 +84,7 @@ Seedance 2.0 素材管理让你可以上传和组织媒体素材（图片、视�
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.starrise.tech/volc/asset/CreateAsset \
+  curl https://ai.alad.com/volc/asset/CreateAsset \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -98,7 +98,7 @@ Seedance 2.0 素材管理让你可以上传和组织媒体素材（图片、视�
 
   ```python Python
   response = requests.post(
-      "https://ai.starrise.tech/volc/asset/CreateAsset",
+      "https://ai.alad.com/volc/asset/CreateAsset",
       headers={"Authorization": "Bearer YOUR_API_KEY"},
       json={
           "model": "volc-asset",
@@ -135,7 +135,7 @@ Seedance 2.0 素材管理让你可以上传和组织媒体素材（图片、视�
 > 上传视频时**必须**指定 `"model": "volc-asset-video"` 和 `"AssetType": "Video"`。
 
 ```bash cURL
-curl https://ai.starrise.tech/volc/asset/CreateAsset \
+curl https://ai.alad.com/volc/asset/CreateAsset \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -152,7 +152,7 @@ curl https://ai.starrise.tech/volc/asset/CreateAsset \
 > 上传音频时**必须**指定 `"model": "volc-asset-audio"` 和 `"AssetType": "Audio"`。
 
 ```bash cURL
-curl https://ai.starrise.tech/volc/asset/CreateAsset \
+curl https://ai.alad.com/volc/asset/CreateAsset \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -167,7 +167,7 @@ curl https://ai.starrise.tech/volc/asset/CreateAsset \
 ### 文件上传（multipart）
 
 ```bash 上传图片
-curl https://ai.starrise.tech/volc/asset/CreateAsset \
+curl https://ai.alad.com/volc/asset/CreateAsset \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -F "file=@/path/to/image.jpg" \
   -F "GroupId=group-20260427160000-xxxxx" \
@@ -175,7 +175,7 @@ curl https://ai.starrise.tech/volc/asset/CreateAsset \
 ```
 
 ```bash 上传视频
-curl https://ai.starrise.tech/volc/asset/CreateAsset \
+curl https://ai.alad.com/volc/asset/CreateAsset \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -F "model=volc-asset-video" \
   -F "file=@/path/to/video.mp4" \
@@ -185,7 +185,7 @@ curl https://ai.starrise.tech/volc/asset/CreateAsset \
 ```
 
 ```bash 上传音频
-curl https://ai.starrise.tech/volc/asset/CreateAsset \
+curl https://ai.alad.com/volc/asset/CreateAsset \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -F "model=volc-asset-audio" \
   -F "file=@/path/to/audio.mp3" \
@@ -201,7 +201,7 @@ curl https://ai.starrise.tech/volc/asset/CreateAsset \
 > **重要：** 素材需严格按照 text、image\_url、video\_url、audio\_url 的顺序传入。请勿调整顺序，否则可能导致报错；当包含多个素材时，也需确保其中不混入其他类型的素材。
 
 ```bash cURL
-curl https://ai.starrise.tech/v1/video/generations \
+curl https://ai.alad.com/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -245,7 +245,7 @@ curl https://ai.starrise.tech/v1/video/generations \
 使用任务 ID 检查生成状态。
 
 ```bash cURL
-curl https://ai.starrise.tech/v1/video/generations/asynxxxx \
+curl https://ai.alad.com/v1/video/generations/asynxxxx \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
@@ -259,7 +259,7 @@ curl https://ai.starrise.tech/v1/video/generations/asynxxxx \
 ### 查询素材组
 
 ```bash cURL
-curl https://ai.starrise.tech/volc/asset/ListAssetGroups \
+curl https://ai.alad.com/volc/asset/ListAssetGroups \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -273,7 +273,7 @@ curl https://ai.starrise.tech/volc/asset/ListAssetGroups \
 ### 查询素材组内的素材
 
 ```bash cURL
-curl https://ai.starrise.tech/volc/asset/ListAssets \
+curl https://ai.alad.com/volc/asset/ListAssets \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

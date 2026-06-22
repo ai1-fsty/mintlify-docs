@@ -21,7 +21,7 @@ gemini-3.1-flash-image-preview-c 是 Google 的图片生成模型，通过 Starr
 
 <CodeGroup>
   ```bash cURL
-  curl "https://ai.starrise.tech/v1beta/models/gemini-3.1-flash-image-preview-c:generateContent?key=YOUR_API_KEY" \
+  curl "https://ai.alad.com/v1beta/models/gemini-3.1-flash-image-preview-c:generateContent?key=YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
       "contents": [
@@ -45,7 +45,7 @@ gemini-3.1-flash-image-preview-c 是 Google 的图片生成模型，通过 Starr
   ```python Python
   import requests, base64
 
-  url = "https://ai.starrise.tech/v1beta/models/gemini-3.1-flash-image-preview-c:generateContent"
+  url = "https://ai.alad.com/v1beta/models/gemini-3.1-flash-image-preview-c:generateContent"
   response = requests.post(url, params={"key": "YOUR_API_KEY"}, json={
       "contents": [
           {
@@ -106,7 +106,7 @@ gemini-3.1-flash-image-preview-c 是 Google 的图片生成模型，通过 Starr
   # BASE64=$(base64 -i your_photo.jpg)
   #
   # 然后发送请求：
-  curl "https://ai.starrise.tech/v1beta/models/gemini-3.1-flash-image-preview-c:generateContent?key=YOUR_API_KEY" \
+  curl "https://ai.alad.com/v1beta/models/gemini-3.1-flash-image-preview-c:generateContent?key=YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
       "contents": [
@@ -142,7 +142,7 @@ gemini-3.1-flash-image-preview-c 是 Google 的图片生成模型，通过 Starr
   with open("your_photo.jpg", "rb") as f:
       image_b64 = base64.b64encode(f.read()).decode("utf-8")
 
-  url = "https://ai.starrise.tech/v1beta/models/gemini-3.1-flash-image-preview-c:generateContent"
+  url = "https://ai.alad.com/v1beta/models/gemini-3.1-flash-image-preview-c:generateContent"
   response = requests.post(url, params={"key": "YOUR_API_KEY"}, json={
       "contents": [
           {

@@ -42,7 +42,7 @@ Seedance 2.0 Ultra 是字节跳动最新的视频生成模型，通过 Starrise 
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.starrise.tech/v1/video/generations \
+  curl https://ai.alad.com/v1/video/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -67,7 +67,7 @@ Seedance 2.0 Ultra 是字节跳动最新的视频生成模型，通过 Starrise 
 
   # 步骤 1：创建任务
   resp = requests.post(
-      "https://ai.starrise.tech/v1/video/generations",
+      "https://ai.alad.com/v1/video/generations",
       headers=headers,
       json={
           "model": "seedance-2.0-ultra",
@@ -84,7 +84,7 @@ Seedance 2.0 Ultra 是字节跳动最新的视频生成模型，通过 Starrise 
   # 步骤 2：轮询结果
   while True:
       result = requests.get(
-          f"https://ai.starrise.tech/v1/video/generations/{task_id}",
+          f"https://ai.alad.com/v1/video/generations/{task_id}",
           headers=headers
       ).json()
       status = result["data"]["status"]
@@ -105,7 +105,7 @@ Seedance 2.0 Ultra 是字节跳动最新的视频生成模型，通过 Starrise 
 > **重要：** 素材需严格按照 text、image\_url、video\_url、audio\_url 的顺序传入。请勿调整顺序，否则可能导致报错；当包含多个素材时，也需确保其中不混入其他类型的素材。
 
 ```bash cURL
-curl https://ai.starrise.tech/v1/video/generations \
+curl https://ai.alad.com/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -140,7 +140,7 @@ curl https://ai.starrise.tech/v1/video/generations \
 ### 编辑视频
 
 ```bash cURL
-curl https://ai.starrise.tech/v1/video/generations \
+curl https://ai.alad.com/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -170,7 +170,7 @@ curl https://ai.starrise.tech/v1/video/generations \
 ### 联网搜索增强（仅文生视频）
 
 ```bash cURL
-curl https://ai.starrise.tech/v1/video/generations \
+curl https://ai.alad.com/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

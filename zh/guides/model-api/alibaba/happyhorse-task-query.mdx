@@ -15,7 +15,7 @@ GET /v1/video/generations/{task_id}
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.starrise.tech/v1/video/generations/asyntask_jwgfhsG0m2aDjLmiiELRf74eoWmss6ya \
+  curl https://ai.alad.com/v1/video/generations/asyntask_jwgfhsG0m2aDjLmiiELRf74eoWmss6ya \
     -H 'Authorization: Bearer YOUR_API_KEY'
   ```
 
@@ -25,7 +25,7 @@ GET /v1/video/generations/{task_id}
   task_id = "asyntask_jwgfhsG0m2aDjLmiiELRf74eoWmss6ya"
   while True:
       r = requests.get(
-          f"https://ai.starrise.tech/v1/video/generations/{task_id}",
+          f"https://ai.alad.com/v1/video/generations/{task_id}",
           headers={"Authorization": "Bearer YOUR_API_KEY"}
       ).json()
       status = r["data"]["status"]

@@ -4,7 +4,7 @@ info:
   description: 检测视频中的人脸，为对口型生成建立会话
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

@@ -4,7 +4,7 @@ info:
   description: 创建自定义主体（人物、场景、道具等），用于 Kling 视频生成
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

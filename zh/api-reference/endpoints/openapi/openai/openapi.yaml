@@ -4,7 +4,7 @@ info:
   description: 通过 Starrise AI 调用 OpenAI 兼容的对话补全接口，支持所有对话模型
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

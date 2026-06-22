@@ -16,7 +16,7 @@ Gemini 2.5 Pro (Stream) 提供基于 Google Gemini 2.5 Pro 模型的流式文本
 
 <CodeGroup>
   ```bash cURL
-  curl "https://ai.starrise.tech/v1beta/models/gemini-2.5-pro:streamGenerateContent?key=YOUR_API_KEY&alt=sse" \
+  curl "https://ai.alad.com/v1beta/models/gemini-2.5-pro:streamGenerateContent?key=YOUR_API_KEY&alt=sse" \
     -H "Content-Type: application/json" \
     -d '{
       "contents": [
@@ -39,7 +39,7 @@ Gemini 2.5 Pro (Stream) 提供基于 Google Gemini 2.5 Pro 模型的流式文本
   ```python Python
   import requests
 
-  url = "https://ai.starrise.tech/v1beta/models/gemini-2.5-pro:streamGenerateContent"
+  url = "https://ai.alad.com/v1beta/models/gemini-2.5-pro:streamGenerateContent"
   params = {"key": "YOUR_API_KEY", "alt": "sse"}
   data = {
       "contents": [

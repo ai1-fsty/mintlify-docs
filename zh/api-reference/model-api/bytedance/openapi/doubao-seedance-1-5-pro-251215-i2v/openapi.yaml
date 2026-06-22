@@ -4,7 +4,7 @@ info:
   description: 通过 Starrise AI API 调用字节跳动 Seedance 1.5 Pro 图生视频模型
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

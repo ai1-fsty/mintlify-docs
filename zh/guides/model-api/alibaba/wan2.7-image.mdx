@@ -24,7 +24,7 @@ description: "通过 Starrise AI API 调用阿里巴巴万相-图像生成与编
 
 <CodeGroup>
   ```bash 文生图
-  curl https://ai.starrise.tech/v1/images/generations \
+  curl https://ai.alad.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -36,7 +36,7 @@ description: "通过 Starrise AI API 调用阿里巴巴万相-图像生成与编
   ```
 
   ```bash 图像编辑
-  curl https://ai.starrise.tech/v1/images/generations \
+  curl https://ai.alad.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -51,7 +51,7 @@ description: "通过 Starrise AI API 调用阿里巴巴万相-图像生成与编
   import requests
 
   response = requests.post(
-      "https://ai.starrise.tech/v1/images/generations",
+      "https://ai.alad.com/v1/images/generations",
       headers={"Authorization": "Bearer YOUR_API_KEY"},
       json={
           "model": "wan2.7-image-pro",

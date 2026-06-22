@@ -4,7 +4,7 @@ info:
   description: 通过 Starrise AI OpenAI 兼容接口调用 DeepSeek V3.2 Exp
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

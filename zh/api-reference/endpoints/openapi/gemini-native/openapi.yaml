@@ -4,7 +4,7 @@ info:
   description: 通过 Starrise AI 调用 Google Gemini 原生 generateContent 接口
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

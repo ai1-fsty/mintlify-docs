@@ -4,7 +4,7 @@ info:
   description: 驱动视频中人物的嘴型匹配文本（TTS）或音频文件中的语音
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

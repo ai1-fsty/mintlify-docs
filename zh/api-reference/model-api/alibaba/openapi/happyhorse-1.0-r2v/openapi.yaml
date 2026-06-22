@@ -4,7 +4,7 @@ info:
   description: 通过 Starrise AI API 使用阿里 DashScope HappyHorse 1.0 参考图生视频模型
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

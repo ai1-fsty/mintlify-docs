@@ -4,7 +4,7 @@ info:
   description: 通过 Starrise AI 代理调用 Google Gemini 2.5 Flash
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security: []
 paths:
   /v1beta/models/gemini-2.5-flash:generateContent:

@@ -19,7 +19,7 @@ Claude Opus 4.8 是 Anthropic 目前最强大的通用模型，通过 Starrise A
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.starrise.tech/v1/messages \
+  curl https://ai.alad.com/v1/messages \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -35,7 +35,7 @@ Claude Opus 4.8 是 Anthropic 目前最强大的通用模型，通过 Starrise A
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.starrise.tech/v1"
+      base_url="https://ai.alad.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -53,7 +53,7 @@ Claude Opus 4.8 是 Anthropic 目前最强大的通用模型，通过 Starrise A
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.starrise.tech/v1"
+      base_url="https://ai.alad.com/v1"
   )
 
   stream = client.chat.completions.create(

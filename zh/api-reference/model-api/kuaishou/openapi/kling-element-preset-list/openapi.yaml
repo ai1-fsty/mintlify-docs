@@ -4,7 +4,7 @@ info:
   description: 查询 Kling 官方提供的预设主体列表，所有用户均可使用
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

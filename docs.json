@@ -13,9 +13,9 @@
     "dark": "#082f49"
   },
   "variables": {
-    "api-base-url": "https://ai.starrise.tech/v1",
-    "api-origin": "https://ai.starrise.tech",
-    "ws-base-url": "wss://ai.starrise.tech"
+    "api-base-url": "https://ai.alad.com/v1",
+    "api-origin": "https://ai.alad.com",
+    "ws-base-url": "wss://ai.alad.com"
   },
   "navigation": {
     "languages": [
@@ -671,12 +671,12 @@
     "primary": {
       "type": "button",
       "label": "控制台",
-      "href": "https://ai.starrise.tech/console/token"
+      "href": "https://ai.alad.com/console/token"
     }
   },
   "footer": {
     "socials": {
-      "website": "https://ai.starrise.tech"
+      "website": "https://ai.alad.com"
     }
   }
 }

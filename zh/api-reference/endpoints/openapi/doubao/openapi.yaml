@@ -4,7 +4,7 @@ info:
   description: 通过 Starrise AI 使用火山方舟 Ark Chat API 兼容端点访问豆包模型
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

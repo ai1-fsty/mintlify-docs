@@ -9,11 +9,11 @@ Starrise AI 提供统一的 API，支持调用多家提供商的 AI 模型，包
 
 ### 第一步：创建账号
 
-访问 [ai.starrise.tech](https://ai.starrise.tech) 注册你的账号。
+访问 [ai.alad.com](https://ai.alad.com) 注册你的账号。
 
 ### 第二步：获取 API Key
 
-前往 [控制台](https://ai.starrise.tech/console/token) 生成你的 API Key，妥善保管——每次请求都需要用它进行认证。
+前往 [控制台](https://ai.alad.com/console/token) 生成你的 API Key，妥善保管——每次请求都需要用它进行认证。
 
 <Tip>
   新建令牌默认按照 **Direct（直连）→ Aggregate（优质）** 分组优先级调用。
@@ -25,7 +25,7 @@ Starrise AI 提供统一的 API，支持调用多家提供商的 AI 模型，包
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.starrise.tech/v1/chat/completions \
+  curl https://ai.alad.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -44,7 +44,7 @@ Starrise AI 提供统一的 API，支持调用多家提供商的 AI 模型，包
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.starrise.tech/v1"
+      base_url="https://ai.alad.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -62,7 +62,7 @@ Starrise AI 提供统一的 API，支持调用多家提供商的 AI 模型，包
 
   const client = new OpenAI({
     apiKey: "YOUR_API_KEY",
-    baseURL: "https://ai.starrise.tech/v1",
+    baseURL: "https://ai.alad.com/v1",
   });
 
   const response = await client.chat.completions.create({
@@ -75,7 +75,7 @@ Starrise AI 提供统一的 API，支持调用多家提供商的 AI 模型，包
 </CodeGroup>
 
 <Warning>
-  **请先配置渠道。** 不同模型对应不同的渠道，只有在控制台中开通了对应渠道，才能成功调用该模型。前往 [控制台](https://ai.starrise.tech/console) 确认渠道已启用。
+  **请先配置渠道。** 不同模型对应不同的渠道，只有在控制台中开通了对应渠道，才能成功调用该模型。前往 [控制台](https://ai.alad.com/console) 确认渠道已启用。
 </Warning>
 
 ## 下一步

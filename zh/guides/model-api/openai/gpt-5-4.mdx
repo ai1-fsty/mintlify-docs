@@ -17,7 +17,7 @@ GPT-5.4 通过 Starrise AI 以 OpenAI Responses API (`/v1/responses`) 提供服�
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.starrise.tech/v1/responses \
+  curl https://ai.alad.com/v1/responses \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -42,7 +42,7 @@ GPT-5.4 通过 Starrise AI 以 OpenAI Responses API (`/v1/responses`) 提供服�
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.starrise.tech/v1"
+      base_url="https://ai.alad.com/v1"
   )
 
   response = client.responses.create(
@@ -63,7 +63,7 @@ GPT-5.4 通过 Starrise AI 以 OpenAI Responses API (`/v1/responses`) 提供服�
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.starrise.tech/v1"
+      base_url="https://ai.alad.com/v1"
   )
 
   stream = client.responses.create(

@@ -15,7 +15,7 @@ Qwen Image Plus 是通过 Starrise AI 提供的文生图模型。API 为**同步
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.starrise.tech/v1/images/generations \
+  curl https://ai.alad.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -30,7 +30,7 @@ Qwen Image Plus 是通过 Starrise AI 提供的文生图模型。API 为**同步
   import requests
 
   response = requests.post(
-      "https://ai.starrise.tech/v1/images/generations",
+      "https://ai.alad.com/v1/images/generations",
       headers={"Authorization": "Bearer YOUR_API_KEY"},
       json={
           "model": "qwen-image-plus",

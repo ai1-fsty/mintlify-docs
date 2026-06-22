@@ -4,7 +4,7 @@ info:
   description: 通过 Starrise AI API 下载已完成的 Sora 2 视频
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

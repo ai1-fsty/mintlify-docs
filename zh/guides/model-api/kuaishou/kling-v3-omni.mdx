@@ -19,7 +19,7 @@ Kling V3 Omni 是快手最新的视频生成模型，通过 Starrise AI API 提�
 
 <CodeGroup>
   ```bash cURL — 文生视频
-  curl https://ai.starrise.tech/kling/v1/videos/omni-video \
+  curl https://ai.alad.com/kling/v1/videos/omni-video \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -35,7 +35,7 @@ Kling V3 Omni 是快手最新的视频生成模型，通过 Starrise AI API 提�
   import requests
 
   response = requests.post(
-      "https://ai.starrise.tech/kling/v1/videos/omni-video",
+      "https://ai.alad.com/kling/v1/videos/omni-video",
       headers={
           "Authorization": "Bearer YOUR_API_KEY",
           "Content-Type": "application/json"
@@ -57,7 +57,7 @@ Kling V3 Omni 是快手最新的视频生成模型，通过 Starrise AI API 提�
   import requests
 
   response = requests.post(
-      "https://ai.starrise.tech/kling/v1/videos/omni-video",
+      "https://ai.alad.com/kling/v1/videos/omni-video",
       headers={
           "Authorization": "Bearer YOUR_API_KEY",
           "Content-Type": "application/json"
@@ -84,7 +84,7 @@ Kling V3 Omni 是快手最新的视频生成模型，通过 Starrise AI API 提�
 创建任务后，使用任务 ID 查询状态：
 
 ```bash cURL
-curl https://ai.starrise.tech/kling/v1/videos/text2video/{task_id} \
+curl https://ai.alad.com/kling/v1/videos/text2video/{task_id} \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 

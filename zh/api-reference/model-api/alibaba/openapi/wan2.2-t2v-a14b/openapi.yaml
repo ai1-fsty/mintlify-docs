@@ -4,7 +4,7 @@ info:
   description: 通过 Starrise AI API 调用阿里巴巴 Wan2.2 文生视频模型（异步任务）
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

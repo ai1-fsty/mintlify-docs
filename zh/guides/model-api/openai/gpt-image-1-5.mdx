@@ -27,7 +27,7 @@ GPT Image 1.5 是 OpenAI 基于 GPT-5 架构的最新图像生成模型，通过
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.starrise.tech/v1/images/generations \
+  curl https://ai.alad.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -43,7 +43,7 @@ GPT Image 1.5 是 OpenAI 基于 GPT-5 架构的最新图像生成模型，通过
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.starrise.tech/v1"
+      base_url="https://ai.alad.com/v1"
   )
 
   response = client.images.generate(

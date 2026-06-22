@@ -16,7 +16,7 @@ Gemini 3 Pro Preview (Stream) 提供基于 Google Gemini 3 Pro Preview 模型的
 
 <CodeGroup>
   ```bash cURL
-  curl "https://ai.starrise.tech/v1beta/models/gemini-3-pro-preview:streamGenerateContent?key=YOUR_API_KEY&alt=sse" \
+  curl "https://ai.alad.com/v1beta/models/gemini-3-pro-preview:streamGenerateContent?key=YOUR_API_KEY&alt=sse" \
     -H "Content-Type: application/json" \
     -d '{
       "contents": [
@@ -39,7 +39,7 @@ Gemini 3 Pro Preview (Stream) 提供基于 Google Gemini 3 Pro Preview 模型的
   ```python Python
   import requests
 
-  url = "https://ai.starrise.tech/v1beta/models/gemini-3-pro-preview:streamGenerateContent"
+  url = "https://ai.alad.com/v1beta/models/gemini-3-pro-preview:streamGenerateContent"
   params = {"key": "YOUR_API_KEY", "alt": "sse"}
   data = {
       "contents": [

@@ -16,7 +16,7 @@ Wan2.2 I2V A14B 是通过 Starrise AI 提供的图生视频模型。视频生成
 <CodeGroup>
   ```bash cURL
   # 第一步 — 创建任务
-  curl https://ai.starrise.tech/v1/video/generations \
+  curl https://ai.alad.com/v1/video/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -27,7 +27,7 @@ Wan2.2 I2V A14B 是通过 Starrise AI 提供的图生视频模型。视频生成
     }'
 
   # 第二步 — 轮询直到完成
-  curl https://ai.starrise.tech/v1/video/generations/{TASK_ID} \
+  curl https://ai.alad.com/v1/video/generations/{TASK_ID} \
     -H "Authorization: Bearer YOUR_API_KEY"
   ```
 
@@ -38,7 +38,7 @@ Wan2.2 I2V A14B 是通过 Starrise AI 提供的图生视频模型。视频生成
 
   # 第一步 — 创建任务
   resp = requests.post(
-      "https://ai.starrise.tech/v1/video/generations",
+      "https://ai.alad.com/v1/video/generations",
       headers=headers,
       json={
           "model": "wan2.2-i2v-a14b",
@@ -52,7 +52,7 @@ Wan2.2 I2V A14B 是通过 Starrise AI 提供的图生视频模型。视频生成
   # 第二步 — 轮询直到完成
   while True:
       result = requests.get(
-          f"https://ai.starrise.tech/v1/video/generations/{task_id}",
+          f"https://ai.alad.com/v1/video/generations/{task_id}",
           headers=headers
       ).json()
       status = result["data"]["status"]

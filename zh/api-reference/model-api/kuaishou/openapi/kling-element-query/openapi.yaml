@@ -4,7 +4,7 @@ info:
   description: 通过 task_id 查询自定义主体创建任务的状态和结果
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

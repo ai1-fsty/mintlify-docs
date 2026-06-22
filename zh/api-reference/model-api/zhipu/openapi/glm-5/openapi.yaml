@@ -4,7 +4,7 @@ info:
   description: Zhipu AI's GLM-5 chat model via Starrise AI OpenAI-compatible API
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

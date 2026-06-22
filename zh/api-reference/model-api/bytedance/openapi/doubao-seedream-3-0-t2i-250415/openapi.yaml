@@ -4,7 +4,7 @@ info:
   description: 通过 Starrise AI API 调用字节跳动 Seedream 3.0 文生图模型
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

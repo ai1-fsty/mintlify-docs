@@ -6,7 +6,7 @@ info:
     视频生成模型，支持文生视频、图生视频、多模态参考、视频编辑、视频延长、联网搜索增强等能力
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

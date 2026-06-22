@@ -4,7 +4,7 @@ info:
   description: 通过 Starrise AI API 查询 Sora 2 视频生成任务状态
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

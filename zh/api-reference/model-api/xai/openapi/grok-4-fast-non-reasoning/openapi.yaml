@@ -4,7 +4,7 @@ info:
   description: 通过 Starrise AI API 调用 xAI Grok 4 Fast Non-Reasoning 模型
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:

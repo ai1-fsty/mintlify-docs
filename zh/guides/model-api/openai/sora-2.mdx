@@ -27,7 +27,7 @@ Sora 2 API 是异步的。请按以下步骤操作：
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.starrise.tech/v1/videos \
+  curl https://ai.alad.com/v1/videos \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -F "model=sora-2" \
     -F "prompt=一只猫在金色日落时分穿过向日葵田" \
@@ -39,7 +39,7 @@ Sora 2 API 是异步的。请按以下步骤操作：
   import requests
 
   response = requests.post(
-      "https://ai.starrise.tech/v1/videos",
+      "https://ai.alad.com/v1/videos",
       headers={"Authorization": "Bearer YOUR_API_KEY"},
       data={
           "model": "sora-2",
@@ -58,13 +58,13 @@ Sora 2 API 是异步的。请按以下步骤操作：
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.starrise.tech/v1/videos/video_69b131ea03548190925a6a06febf993b \
+  curl https://ai.alad.com/v1/videos/video_69b131ea03548190925a6a06febf993b \
     -H "Authorization: Bearer YOUR_API_KEY"
   ```
 
   ```python Python
   status = requests.get(
-      f"https://ai.starrise.tech/v1/videos/{task['id']}",
+      f"https://ai.alad.com/v1/videos/{task['id']}",
       headers={"Authorization": "Bearer YOUR_API_KEY"}
   ).json()
 
@@ -76,13 +76,13 @@ Sora 2 API 是异步的。请按以下步骤操作：
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.starrise.tech/v1/videos/video_69b131ea03548190925a6a06febf993b/content \
+  curl https://ai.alad.com/v1/videos/video_69b131ea03548190925a6a06febf993b/content \
     -H "Authorization: Bearer YOUR_API_KEY"
   ```
 
   ```python Python
   result = requests.get(
-      f"https://ai.starrise.tech/v1/videos/{task['id']}/content",
+      f"https://ai.alad.com/v1/videos/{task['id']}/content",
       headers={"Authorization": "Bearer YOUR_API_KEY"}
   ).json()
 

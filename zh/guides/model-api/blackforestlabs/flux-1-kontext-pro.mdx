@@ -21,7 +21,7 @@ FLUX.1 Kontext \[pro] 是 Black Forest Labs 推出的上下文感知图片生成
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.starrise.tech/v1/images/generations \
+  curl https://ai.alad.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -35,7 +35,7 @@ FLUX.1 Kontext \[pro] 是 Black Forest Labs 推出的上下文感知图片生成
   import requests
 
   response = requests.post(
-      "https://ai.starrise.tech/v1/images/generations",
+      "https://ai.alad.com/v1/images/generations",
       headers={"Authorization": "Bearer YOUR_API_KEY"},
       json={
           "model": "flux-1-kontext-pro",
@@ -53,7 +53,7 @@ FLUX.1 Kontext \[pro] 是 Black Forest Labs 推出的上下文感知图片生成
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.starrise.tech/v1/images/edits \
+  curl https://ai.alad.com/v1/images/edits \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -F "model=flux-1-kontext-pro" \
     -F "image=@/path/to/photo.jpg" \
@@ -65,7 +65,7 @@ FLUX.1 Kontext \[pro] 是 Black Forest Labs 推出的上下文感知图片生成
   import requests
 
   response = requests.post(
-      "https://ai.starrise.tech/v1/images/edits",
+      "https://ai.alad.com/v1/images/edits",
       headers={"Authorization": "Bearer YOUR_API_KEY"},
       files={"image": open("/path/to/photo.jpg", "rb")},
       data={

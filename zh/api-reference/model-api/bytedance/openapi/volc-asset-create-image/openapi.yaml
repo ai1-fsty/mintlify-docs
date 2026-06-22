@@ -4,7 +4,7 @@ info:
   description: 通过 Starrise AI API 上传图片素材到素材组
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:
@@ -106,7 +106,7 @@ paths:
         - lang: bash
           label: cURL
           source: |
-            curl https://ai.starrise.tech/volc/asset/CreateAsset \
+            curl https://ai.alad.com/volc/asset/CreateAsset \
               -H "Authorization: Bearer YOUR_API_KEY" \
               -H "Content-Type: application/json" \
               -d '{

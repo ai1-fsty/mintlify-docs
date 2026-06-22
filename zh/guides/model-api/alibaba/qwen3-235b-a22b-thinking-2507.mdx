@@ -16,7 +16,7 @@ Qwen3-235B-A22B-Thinking-2507 是通过 Starrise AI 以 OpenAI 兼容接口提�
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.starrise.tech/v1/chat/completions \
+  curl https://ai.alad.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -32,7 +32,7 @@ Qwen3-235B-A22B-Thinking-2507 是通过 Starrise AI 以 OpenAI 兼容接口提�
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.starrise.tech/v1"
+      base_url="https://ai.alad.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -50,7 +50,7 @@ Qwen3-235B-A22B-Thinking-2507 是通过 Starrise AI 以 OpenAI 兼容接口提�
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.starrise.tech/v1"
+      base_url="https://ai.alad.com/v1"
   )
 
   stream = client.chat.completions.create(

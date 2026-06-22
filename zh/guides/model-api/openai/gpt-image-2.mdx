@@ -30,7 +30,7 @@ GPT Image 2 是 OpenAI 的新一代图像生成模型，通过 Starrise AI API �
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.starrise.tech/v1/images/generations \
+  curl https://ai.alad.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -46,7 +46,7 @@ GPT Image 2 是 OpenAI 的新一代图像生成模型，通过 Starrise AI API �
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.starrise.tech/v1"
+      base_url="https://ai.alad.com/v1"
   )
 
   response = client.images.generate(
@@ -92,7 +92,7 @@ GPT Image 2 是 OpenAI 的新一代图像生成模型，通过 Starrise AI API �
 
 <CodeGroup>
   ```bash 单张图片
-  curl https://ai.starrise.tech/v1/images/edits \
+  curl https://ai.alad.com/v1/images/edits \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -F "image=@/path/to/source.jpeg" \
     -F model="gpt-image-2" \
@@ -102,7 +102,7 @@ GPT Image 2 是 OpenAI 的新一代图像生成模型，通过 Starrise AI API �
   ```
 
   ```bash 多张图片（最多 16 张）
-  curl https://ai.starrise.tech/v1/images/edits \
+  curl https://ai.alad.com/v1/images/edits \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -F "image[]=@/path/to/image1.png" \
     -F "image[]=@/path/to/image2.png" \
@@ -143,7 +143,7 @@ GPT Image 2 是 OpenAI 的新一代图像生成模型，通过 Starrise AI API �
 > 遮罩编辑与 `n` 参数**均需在控制台选择 Direct 分组。**
 
 ```bash cURL
-curl https://ai.starrise.tech/v1/images/edits \
+curl https://ai.alad.com/v1/images/edits \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -F image=@/path/to/source.jpeg \
   -F mask=@/path/to/mask.png \

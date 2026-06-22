@@ -4,7 +4,7 @@ info:
   description: 通过 Starrise AI API 创建素材组，用于管理 Seedance 使用的媒体资源
   version: 1.0.0
 servers:
-  - url: https://ai.starrise.tech
+  - url: https://ai.alad.com
 security:
   - bearerAuth: []
 paths:
