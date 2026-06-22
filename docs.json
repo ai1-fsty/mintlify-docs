@@ -1,0 +1,49 @@
+{
+  "$schema": "https://mintlify.com/docs.json",
+  "theme": "aspen",
+  "name": "StarriseAPI Docs",
+  "colors": {
+    "primary": "#1538a3",
+    "light": "#1538a3",
+    "dark": "#1538a3"
+  },
+  "favicon": {
+    "light": "/images/4.png",
+    "dark": "/images/5.png"
+  },
+  "navigation": {
+    "pages": [
+      {
+        "group": "Getting Started",
+        "pages": [
+          "index",
+          "quickstart"
+        ]
+      }
+    ]
+  },
+  "logo": {
+    "light": "/images/2.png",
+    "dark": "/images/3.png"
+  },
+  "navbar": {
+    "links": [],
+    "primary": {
+      "type": "button",
+      "label": "Dashboard",
+      "href": "https://app.mintlify.com"
+    }
+  },
+  "contextual": {
+    "options": [
+      "copy",
+      "view",
+      "chatgpt",
+      "claude",
+      "perplexity",
+      "mcp",
+      "cursor",
+      "vscode"
+    ]
+  }
+}
