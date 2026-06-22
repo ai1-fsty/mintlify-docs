@@ -1,0 +1,39 @@
+---
+title: "Claude Messages"
+description: "Anthropic 兼容的 Messages API。"
+---
+
+**端点：** `POST /v1/messages`
+
+## 认证
+
+网关标准令牌：
+
+```bash
+-H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+或 Anthropic 原生请求头（网关会自动映射）：
+
+```bash
+-H "x-api-key: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+-H "anthropic-version: 2023-06-01"
+```
+
+## 示例
+
+```bash
+curl {{api-base-url}}/messages \
+  -H "x-api-key: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "anthropic-version: 2023-06-01" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-sonnet-4-20250514",
+    "max_tokens": 1024,
+    "messages": [
+      {"role": "user", "content": "你好，Claude"}
+    ]
+  }'
+```
+
+使用官方 `@anthropic-ai/sdk`，设置 `baseURL: '{{api-origin}}'`，`apiKey` 填 Starrise 令牌即可。流式输出与 Anthropic SSE 格式一致。

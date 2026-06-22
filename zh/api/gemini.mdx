@@ -1,0 +1,48 @@
+---
+title: "Gemini"
+description: "Google Gemini 原生 API，路径前缀 `/v1beta`。"
+---
+
+## 模型列表
+
+```bash
+curl "{{api-origin}}/v1beta/models?key=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+## 生成内容
+
+路径格式：`POST /v1beta/models/{model}:{action}`
+
+```bash
+curl "{{api-origin}}/v1beta/models/gemini-2.0-flash:generateContent?key=sk-xxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [{
+      "parts": [{"text": "用一句话解释量子计算。"}]
+    }]
+  }'
+```
+
+认证方式（任选）：
+
+- `Authorization: Bearer sk-...`
+- 请求头 `x-goog-api-key: sk-...`
+- 查询参数 `key=sk-...`
+
+## OpenAI 兼容路径
+
+部分客户端使用：
+
+```
+POST /v1/models/{model}:generateContent
+```
+
+Starrise-api 同样支持该路径。
+
+## 向量（Gemini）
+
+```
+POST /v1/engines/{model}/embeddings
+```
+
+具体可用模型请查看控制台 **模型定价** 页面。

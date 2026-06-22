@@ -1,0 +1,54 @@
+---
+title: "图片"
+description: "OpenAI 兼容的文生图与图片编辑。"
+---
+
+| 端点 | 方法 | 说明 |
+| --- | --- | --- |
+| `/v1/images/generations` | POST | 文生图 |
+| `/v1/images/edits` | POST | 带蒙版编辑 |
+| `/v1/edits` | POST | 旧版编辑端点 |
+
+## 生成
+
+```bash
+curl {{api-base-url}}/images/generations \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "dall-e-3",
+    "prompt": "日落时分的宁静山湖",
+    "n": 1,
+    "size": "1024x1024"
+  }'
+```
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="{{api-base-url}}",
+    api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+)
+
+result = client.images.generate(
+    model="dall-e-3",
+    prompt="日落时分的宁静山湖",
+    size="1024x1024",
+)
+print(result.data[0].url)
+```
+
+## 编辑
+
+使用 `POST /v1/images/edits`，按 OpenAI 规范提交 multipart（图片 + 蒙版 + prompt）。
+
+## Midjourney
+
+Midjourney 专用流程见 [Midjourney API](/zh/api/midjourney)。
+
+<Warning>
+
+`/v1/images/variations` 在本网关上未实现。
+
+</Warning>

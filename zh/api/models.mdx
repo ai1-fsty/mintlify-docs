@@ -1,0 +1,60 @@
+---
+title: "模型列表"
+description: "查询当前令牌与账户可用的模型。"
+---
+
+## 列表（OpenAI 格式）
+
+```bash
+curl {{api-base-url}}/models \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+响应遵循 OpenAI `list` 结构，`data[]` 含 `id`、`object`、`owned_by` 等字段。
+
+## 获取单个模型
+
+```bash
+curl {{api-base-url}}/models/gpt-4o \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+## Claude 模型列表
+
+使用 Anthropic 风格请求头：
+
+```bash
+curl {{api-base-url}}/models \
+  -H "x-api-key: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "anthropic-version: 2023-06-01"
+```
+
+## Gemini 模型列表
+
+```bash
+curl "{{api-origin}}/v1beta/models?key=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+或：
+
+```bash
+curl {{api-origin}}/v1beta/models \
+  -H "x-goog-api-key: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+OpenAI 兼容列表：
+
+```bash
+curl {{api-origin}}/v1beta/openai/models \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+## 控制台
+
+在控制台 **模型定价** 页面查看完整定价与可用模型。
+
+<Info>
+
+可用模型取决于您的账户权限及令牌是否启用了 **模型限制**。
+
+</Info>

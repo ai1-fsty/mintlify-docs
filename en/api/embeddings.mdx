@@ -1,0 +1,58 @@
+---
+title: "Embeddings & Rerank"
+description: "Text embeddings and document reranking endpoints."
+---
+
+## Embeddings
+
+**Endpoint:** `POST /v1/embeddings`
+
+```bash
+curl {{api-base-url}}/embeddings \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "text-embedding-3-small",
+    "input": "The food was delicious and the service was excellent."
+  }'
+```
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="{{api-base-url}}",
+    api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+)
+
+response = client.embeddings.create(
+    model="text-embedding-3-small",
+    input=["Document one", "Document two"],
+)
+print(len(response.data[0].embedding))
+```
+
+Use cases: semantic search, RAG, clustering, recommendation.
+
+## Rerank
+
+**Endpoint:** `POST /v1/rerank`
+
+Jina-compatible reranking for improving retrieval quality:
+
+```bash
+curl {{api-base-url}}/rerank \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "jina-reranker-v2-base-multilingual",
+    "query": "What is the capital of France?",
+    "documents": ["Paris is the capital.", "Berlin is in Germany."]
+  }'
+```
+
+<Info>
+
+Available embedding and rerank models are listed on the console **Pricing** page and in `GET /v1/models`.
+
+</Info>

@@ -1,0 +1,64 @@
+---
+title: Overview
+description: Starrise-api unified AI gateway — OpenAI, Claude, Gemini and 40+ providers through one endpoint.
+---
+
+Starrise-api is a unified AI gateway compatible with OpenAI-style clients. Access chat, Claude, Gemini, images, audio, embeddings, Midjourney, and Suno through one Base URL — replace the host and use your API token.
+
+<CardGroup cols={3}>
+  <Card title="Quick Start" href="/en/guide/quick-start">
+    Make your first API call in minutes
+  </Card>
+  <Card title="Authentication" href="/en/guide/authentication">
+    Create and manage API tokens
+  </Card>
+  <Card title="Client Compatibility" href="/en/guide/client-compatibility">
+    OpenAI, Claude, Gemini SDKs and tools
+  </Card>
+  <Card title="Chat API" href="/en/api/chat">
+    Completions, streaming, tools
+  </Card>
+  <Card title="All Endpoints" href="/en/api/models">
+    Models, images, audio, MJ, Suno
+  </Card>
+</CardGroup>
+
+## Supported Capabilities
+
+| Category | Endpoints | Description |
+| --- | --- | --- |
+| **Chat** | `/v1/chat/completions` | Multi-turn, streaming, function calling |
+| **Responses** | `/v1/responses` | OpenAI Responses API |
+| **Claude** | `/v1/messages` | Anthropic Messages API |
+| **Gemini** | `/v1beta/models/*` | Google Gemini native API |
+| **Embeddings** | `/v1/embeddings`, `/v1/rerank` | Vectors and reranking |
+| **Images** | `/v1/images/*` | Generation and editing |
+| **Audio** | `/v1/audio/*` | STT, TTS, translation |
+| **Realtime** | `/v1/realtime` | WebSocket voice/chat |
+| **Midjourney** | `/mj/*` | Image and video tasks |
+| **Suno** | `/suno/*` | AI music generation |
+
+## Three Steps to Integrate
+
+1. **Create an account** — register in the console
+2. **Create an API token** — create one under **Tokens** and copy your `sk-...` key
+3. **Set Base URL** — copy the API address from the console home page into your SDK `base_url`
+
+## Base URL
+
+Copy your **API address** from the console home page. Example:
+
+```
+{{api-base-url}}
+```
+
+<Info>
+
+If your app already uses the OpenAI SDK, change `base_url` and `api_key` only. No code refactor required.
+
+</Info>
+
+
+## Providers
+
+40+ models including OpenAI, Claude, Gemini, DeepSeek, Qwen, Moonshot, Zhipu, and more. See **Pricing** in the console for the full list and rates.

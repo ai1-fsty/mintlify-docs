@@ -1,0 +1,64 @@
+---
+title: 概览
+description: Starrise-api 统一 AI 网关 — 通过一个端点访问 OpenAI、Claude、Gemini 及 40+ 供应商。
+---
+
+Starrise-api 是统一 AI 网关，兼容 OpenAI 风格客户端。通过一个 Base URL 访问对话、Claude、Gemini、图片、音频、向量、Midjourney、Suno 等能力 — 替换 Host 并使用 API 令牌即可。
+
+<CardGroup cols={3}>
+  <Card title="快速开始" href="/zh/guide/quick-start">
+    几分钟内完成第一次 API 调用
+  </Card>
+  <Card title="身份认证" href="/zh/guide/authentication">
+    创建与管理 API 令牌
+  </Card>
+  <Card title="客户端兼容" href="/zh/guide/client-compatibility">
+    OpenAI、Claude、Gemini SDK 与工具
+  </Card>
+  <Card title="对话 API" href="/zh/api/chat">
+    补全、流式、工具调用
+  </Card>
+  <Card title="全部接口" href="/zh/api/models">
+    模型、图片、音频、MJ、Suno
+  </Card>
+</CardGroup>
+
+## 支持的能力
+
+| 类别 | 端点 | 说明 |
+| --- | --- | --- |
+| **对话** | `/v1/chat/completions` | 多轮、流式、函数调用 |
+| **Responses** | `/v1/responses` | OpenAI Responses API |
+| **Claude** | `/v1/messages` | Anthropic Messages API |
+| **Gemini** | `/v1beta/models/*` | Google Gemini 原生 API |
+| **向量** | `/v1/embeddings`、`/v1/rerank` | Embedding 与重排序 |
+| **图片** | `/v1/images/*` | 文生图与编辑 |
+| **音频** | `/v1/audio/*` | 转写、合成、翻译 |
+| **Realtime** | `/v1/realtime` | WebSocket 实时对话 |
+| **Midjourney** | `/mj/*` | 绘图与视频任务 |
+| **Suno** | `/suno/*` | AI 音乐生成 |
+
+## 三步接入
+
+1. **创建账户** — 在控制台注册
+2. **创建 API 密钥** — 在 **令牌** 页面创建并复制 `sk-...`
+3. **配置 Base URL** — 从控制台首页复制 API 地址，填入 OpenAI SDK 的 `base_url`
+
+## Base URL
+
+登录控制台，在首页复制 **API 地址**。示例：
+
+```
+{{api-base-url}}
+```
+
+<Info>
+
+若应用已使用 OpenAI SDK，通常只需修改 `base_url` 和 `api_key`，无需改造业务代码。
+
+</Info>
+
+
+## 模型生态
+
+支持 OpenAI、Claude、Gemini、DeepSeek、通义千问、Moonshot、智谱 等 40+ 模型。完整列表与定价请在控制台 **模型定价** 页面查看。

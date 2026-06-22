@@ -1,0 +1,98 @@
+---
+title: "身份认证"
+description: "创建 API 令牌（`sk-...`），并在调用 Starrise-api 接口时通过请求头传入。"
+---
+
+<Info title="术语说明">
+
+**API Token** 是调用模型接口的凭证；**LLM Token** 是模型计量文本长度的计费单位。
+
+</Info>
+
+
+
+## 创建令牌
+
+1. 注册并登录控制台
+2. 打开 **令牌** 页面
+3. 点击 **创建令牌**
+4. 按需配置以下选项：
+
+| 配置项 | 说明 |
+| --- | --- |
+| **名称** | 便于识别的备注，如 `生产环境` |
+| **过期时间** | 留空或设为永不过期 |
+| **配额** | 限制该令牌可使用的额度 |
+| **无限配额** | 开启后不受单令牌配额限制（账户余额仍生效） |
+| **模型限制** | 仅允许调用指定模型 |
+| **IP 白名单** | 限制允许调用的来源 IP |
+
+5. 提交后在列表中 **复制** 完整 Key（创建时仅显示一次）。
+
+```
+sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+表单支持一次批量创建多个令牌。
+
+## 在 API 请求中使用
+
+```bash
+curl {{api-base-url}}/chat/completions \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{"model":"gpt-4o","messages":[{"role":"user","content":"你好"}]}'
+```
+
+后端支持的认证方式：
+
+- `Authorization: Bearer sk-...`（会剥离 `sk-` 前缀）
+- Claude：`/v1/messages`、`/v1/models` 可用 `x-api-key: sk-...`
+- Gemini：`x-goog-api-key` 或查询参数 `?key=sk-...`
+- Midjourney：`mj-api-secret: sk-...`
+- Realtime WebSocket：在 `Sec-WebSocket-Protocol` 子协议中携带 Key
+
+建议使用环境变量：
+
+```bash
+export STARRISE_API_KEY="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+## 管理令牌
+
+| 操作 | 说明 |
+| --- | --- |
+| **查看** | 名称、状态、配额用量、过期时间 |
+| **编辑** | 修改配置（Key 本身不可改） |
+| **复制** | 从列表操作获取完整 Key |
+| **删除** | 立即吊销 |
+
+## 安全最佳实践
+
+<Tip title="推荐做法">
+
+- 每个应用与环境使用独立令牌
+- 非生产环境设置配额上限
+- 按需启用模型限制与 IP 白名单
+- 勿提交到 Git 或写入前端代码
+- 团队变动后及时轮换
+
+</Tip>
+
+
+
+## 常见错误
+
+| 状态码 | 原因 | 解决方案 |
+| --- | --- | --- |
+| `401` | 令牌无效或缺失 | 检查 Key 与请求头 |
+| `403` | 模型/IP 受限或账户异常 | 检查令牌设置或联系客服 |
+| `429` | 配额或速率超限 | 充值或提高限额 |
+
+## 常见问题
+
+**创建后还能查看完整 Key 吗？**
+若列表仍可 **复制** 则可用；否则请新建令牌。
+
+**无限配额会绕过账户余额吗？**
+不会，账户余额与平台策略仍然生效。

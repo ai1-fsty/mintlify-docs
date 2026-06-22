@@ -1,0 +1,53 @@
+---
+title: "Audio"
+description: "OpenAI-compatible speech and transcription APIs."
+---
+
+| Endpoint | Method | Description |
+| --- | --- | --- |
+| `/v1/audio/transcriptions` | POST | Speech-to-text |
+| `/v1/audio/translations` | POST | Translate audio to English text |
+| `/v1/audio/speech` | POST | Text-to-speech |
+
+## Transcription
+
+```bash
+curl {{api-base-url}}/audio/transcriptions \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -F file=@audio.mp3 \
+  -F model=whisper-1
+```
+
+## Speech (TTS)
+
+```bash
+curl {{api-base-url}}/audio/speech \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "tts-1",
+    "input": "Hello from Starrise API.",
+    "voice": "alloy"
+  }' \
+  --output speech.mp3
+```
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="{{api-base-url}}",
+    api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+)
+
+with client.audio.speech.with_streaming_response.create(
+    model="tts-1",
+    voice="alloy",
+    input="Hello from Starrise API.",
+) as response:
+    response.stream_to_file("speech.mp3")
+```
+
+## Suno Music
+
+For AI music generation, see [Suno API](/en/api/suno).

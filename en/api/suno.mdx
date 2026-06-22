@@ -1,0 +1,40 @@
+---
+title: "Suno"
+description: "AI music generation API under `/suno`."
+---
+
+**Auth:** `Authorization: Bearer sk-...`
+
+## Submit
+
+```bash
+curl {{api-origin}}/suno/submit/generate \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "upbeat electronic dance track",
+    "mv": "chirp-v4"
+  }'
+```
+
+`:action` in the path matches the upstream Suno task type (e.g. `generate`, `custom_generate`).
+
+## Fetch Single Task
+
+```bash
+curl {{api-origin}}/suno/fetch/{task_id} \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+## Batch Fetch
+
+```bash
+curl {{api-origin}}/suno/fetch \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "ids": ["task-id-1", "task-id-2"]
+  }'
+```
+
+Tasks are asynchronous — poll fetch endpoints until status indicates completion. Billing is recorded in the console usage logs like other relay calls.

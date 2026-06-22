@@ -1,0 +1,151 @@
+---
+title: "客户端兼容"
+description: "Starrise-api 完全兼容 OpenAI API 格式。任何支持 OpenAI 的客户端、SDK 或工具，只需修改 Base URL 和 API Key 即可接入。"
+---
+
+## 配置对照
+
+| 配置项 | OpenAI 默认 | Starrise-api |
+| --- | --- | --- |
+| Base URL | `https://api.openai.com/v1` | `{{api-base-url}}` |
+| API Key | OpenAI API Key | Starrise-api 令牌（`sk-...`） |
+
+登录控制台，在首页复制 **API 地址**（Base URL），填入 SDK 或第三方工具的 Base URL / API Host 配置即可。示例：
+
+```
+{{api-base-url}}
+```
+
+<Info>
+
+若使用 OpenAI 官方 SDK，请确保 Base URL 以 `/v1` 结尾。
+
+</Info>
+
+## 官方 SDK
+
+### Python
+
+```bash
+pip install openai
+```
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="{{api-base-url}}",
+    api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+)
+```
+
+### Node.js
+
+```bash
+npm install openai
+```
+
+```javascript
+import OpenAI from 'openai'
+
+const client = new OpenAI({
+  baseURL: '{{api-base-url}}',
+  apiKey: 'sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+})
+```
+
+## OpenAI 兼容接口
+
+以下路由使用 `Authorization: Bearer sk-...`（部分工具也支持直接传 `sk-` 前缀）。
+
+| 接口 | 方法 | 说明 |
+| --- | --- | --- |
+| `/v1/chat/completions` | POST | 对话补全（支持流式） |
+| `/v1/completions` | POST | 旧版文本补全 |
+| `/v1/responses` | POST | OpenAI Responses API |
+| `/v1/responses/compact` | POST | Responses 压缩 |
+| `/v1/embeddings` | POST | 文本向量 |
+| `/v1/rerank` | POST | 文档重排序（Jina 风格） |
+| `/v1/images/generations` | POST | 文生图 |
+| `/v1/images/edits` | POST | 图片编辑 |
+| `/v1/edits` | POST | 旧版图片编辑 |
+| `/v1/audio/transcriptions` | POST | 语音转文字 |
+| `/v1/audio/translations` | POST | 音频翻译 |
+| `/v1/audio/speech` | POST | 文字转语音 |
+| `/v1/moderations` | POST | 内容审核 |
+| `/v1/models` | GET | 模型列表（OpenAI 格式） |
+| `/v1/models/:model` | GET | 获取单个模型 |
+| `/v1/realtime` | GET (WebSocket) | OpenAI Realtime |
+
+<Info title="未实现">
+
+`/v1/images/variations`、`/v1/files/*`、`/v1/fine-tunes/*` 在本网关上返回未实现。
+
+</Info>
+
+
+
+## Claude（Anthropic）接口
+
+| 接口 | 方法 | 认证 |
+| --- | --- | --- |
+| `/v1/messages` | POST | `Authorization: Bearer sk-...` 或 `x-api-key` + `anthropic-version` |
+
+带 Anthropic 请求头的模型列表：`GET /v1/models`（需 `x-api-key` 与 `anthropic-version`）。
+
+## Gemini 接口
+
+| 接口 | 方法 | 认证 |
+| --- | --- | --- |
+| `/v1beta/models` | GET | `Authorization`、`x-goog-api-key` 或 `?key=` |
+| `/v1beta/models/*path` | POST | 同上 |
+| `/v1beta/openai/models` | GET | OpenAI 风格模型列表 |
+| `/v1/models/*path` | POST | OpenAI 路径下的 Gemini 调用 |
+
+## Midjourney（`/mj`）
+
+需通过 `Authorization` 或 `mj-api-secret` 传递令牌。
+
+| 接口 | 方法 | 说明 |
+| --- | --- | --- |
+| `/mj/submit/imagine` | POST | 提交绘图 |
+| `/mj/submit/change` | POST | 放大 / 变体 |
+| `/mj/submit/describe` | POST | 图片描述 |
+| `/mj/submit/blend` | POST | 图片混合 |
+| `/mj/task/:id/fetch` | GET | 查询任务 |
+| `/mj/image/:id` | GET | 获取结果图 |
+
+## Suno（`/suno`）
+
+| 接口 | 方法 | 说明 |
+| --- | --- | --- |
+| `/suno/submit/:action` | POST | 提交音乐生成 |
+| `/suno/fetch` | POST | 批量查询任务 |
+| `/suno/fetch/:id` | GET | 查询单个任务 |
+
+## 第三方工具
+
+| 工具 | 配置方式 |
+| --- | --- |
+| **ChatGPT Next Web** | 设置 → API Host → `{{api-origin}}` |
+| **LobeChat** | API 代理地址 + 令牌 |
+| **Cursor / Cline** | 覆盖 OpenAI Base URL |
+| **LangChain** | `OpenAI(base_url=..., api_key=...)` |
+| **Dify** | OpenAI 兼容供应商 |
+
+## 环境变量
+
+```bash
+OPENAI_API_BASE={{api-base-url}}
+OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+## 故障排查
+
+| 问题 | 解决方案 |
+| --- | --- |
+| `401 Unauthorized` | 检查令牌；使用 `Bearer sk-...` |
+| `403 Forbidden` | 模型/IP 限制或用户被封禁 |
+| `404 Model not found` | 调用 `GET /v1/models` 或查看控制台模型定价页 |
+| 连接超时 | 确认 Base URL 含 `/v1` 后缀 |
+| SDK 仍请求 OpenAI | 显式设置 `base_url` / `baseURL` |

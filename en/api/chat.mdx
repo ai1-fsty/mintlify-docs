@@ -1,0 +1,58 @@
+---
+title: "Chat Completions"
+description: "Primary endpoint for multi-turn chat, streaming, tool/function calling, and vision (model-dependent)."
+---
+
+**Endpoint:** `POST /v1/chat/completions`
+
+## Request
+
+```bash
+curl {{api-base-url}}/chat/completions \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-4o",
+    "messages": [
+      {"role": "system", "content": "You are a helpful assistant."},
+      {"role": "user", "content": "Hello!"}
+    ]
+  }'
+```
+
+## Streaming
+
+Set `"stream": true`. Response uses Server-Sent Events (SSE) with `data: {...}` chunks.
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="{{api-base-url}}",
+    api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+)
+
+stream = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role": "user", "content": "Tell me a story"}],
+    stream=True,
+)
+
+for chunk in stream:
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="")
+```
+
+## Legacy Completions
+
+**Endpoint:** `POST /v1/completions` — OpenAI legacy prompt format.
+
+## Parameters
+
+Supports standard OpenAI fields: `model`, `messages`, `temperature`, `top_p`, `max_tokens`, `tools`, `tool_choice`, `response_format`, `stream`, etc. Unsupported fields may be ignored or forwarded depending on upstream channel.
+
+## Related
+
+- [Responses API](/en/api/responses) — OpenAI Responses format
+- [Claude Messages](/en/api/claude) — Anthropic-native path
+- [Models](/en/api/models) — list available models

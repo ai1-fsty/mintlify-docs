@@ -1,0 +1,62 @@
+---
+title: "Midjourney"
+description: "Midjourney proxy API under `/mj`. Authenticate with your Starrise token."
+---
+
+```bash
+-H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+# or
+-H "mj-api-secret: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+## Submit Imagine
+
+```bash
+curl {{api-origin}}/mj/submit/imagine \
+  -H "Authorization: Bearer sk-xxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "a futuristic city at night, cyberpunk style",
+    "botType": "MID_JOURNEY"
+  }'
+```
+
+## Common Submit Endpoints
+
+| Endpoint | Description |
+| --- | --- |
+| `/mj/submit/imagine` | Text-to-image |
+| `/mj/submit/change` | Upscale / variation |
+| `/mj/submit/simple-change` | Simplified change |
+| `/mj/submit/describe` | Describe uploaded image |
+| `/mj/submit/blend` | Blend multiple images |
+| `/mj/submit/action` | Custom action |
+| `/mj/submit/modal` | Modal operations |
+| `/mj/submit/edits` | Edit submission |
+| `/mj/submit/video` | Video generation |
+| `/mj/submit/shorten` | Prompt shortening |
+
+## Fetch Task
+
+```bash
+curl {{api-origin}}/mj/task/{task_id}/fetch \
+  -H "Authorization: Bearer sk-xxx"
+```
+
+## Fetch Image
+
+```bash
+curl {{api-origin}}/mj/image/{id} \
+  -H "Authorization: Bearer sk-xxx"
+```
+
+## List Tasks
+
+```bash
+curl {{api-origin}}/mj/task/list-by-condition \
+  -H "Authorization: Bearer sk-xxx" \
+  -H "Content-Type: application/json" \
+  -d '{ ... }'
+```
+
+Request/response bodies follow the Midjourney proxy specification configured on your upstream channel.

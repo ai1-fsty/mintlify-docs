@@ -1,0 +1,48 @@
+---
+title: "Gemini"
+description: "Google Gemini native API under `/v1beta`."
+---
+
+## List Models
+
+```bash
+curl "{{api-origin}}/v1beta/models?key=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+## Generate Content
+
+Path format: `POST /v1beta/models/{model}:{action}`
+
+```bash
+curl "{{api-origin}}/v1beta/models/gemini-2.0-flash:generateContent?key=sk-xxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "contents": [{
+      "parts": [{"text": "Explain quantum computing in one sentence."}]
+    }]
+  }'
+```
+
+Authentication alternatives:
+
+- `Authorization: Bearer sk-...`
+- Header `x-goog-api-key: sk-...`
+- Query parameter `key=sk-...`
+
+## OpenAI-Compatible Path
+
+Some clients use:
+
+```
+POST /v1/models/{model}:generateContent
+```
+
+Also supported via the gateway relay.
+
+## Embeddings (Gemini)
+
+```
+POST /v1/engines/{model}/embeddings
+```
+
+Relayed with Gemini format when the upstream channel supports it.

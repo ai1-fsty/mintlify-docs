@@ -1,0 +1,58 @@
+---
+title: "向量与重排序"
+description: "文本向量嵌入与文档重排序接口。"
+---
+
+## Embeddings
+
+**端点：** `POST /v1/embeddings`
+
+```bash
+curl {{api-base-url}}/embeddings \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "text-embedding-3-small",
+    "input": "食物很美味，服务也很好。"
+  }'
+```
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="{{api-base-url}}",
+    api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+)
+
+response = client.embeddings.create(
+    model="text-embedding-3-small",
+    input=["文档一", "文档二"],
+)
+print(len(response.data[0].embedding))
+```
+
+适用于语义搜索、RAG、聚类、推荐等场景。
+
+## Rerank
+
+**端点：** `POST /v1/rerank`
+
+Jina 兼容的重排序接口，用于提升检索质量：
+
+```bash
+curl {{api-base-url}}/rerank \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "jina-reranker-v2-base-multilingual",
+    "query": "法国的首都是什么？",
+    "documents": ["巴黎是法国首都。", "柏林在德国。"]
+  }'
+```
+
+<Info>
+
+可用向量与重排序模型以控制台 **模型定价** 页面及 `GET /v1/models` 返回结果为准。
+
+</Info>

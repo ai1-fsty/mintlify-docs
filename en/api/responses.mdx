@@ -1,0 +1,38 @@
+---
+title: "Responses API"
+description: "OpenAI Responses API for agentic workflows with built-in tool and state handling."
+---
+
+| Endpoint | Method |
+| --- | --- |
+| `/v1/responses` | POST |
+| `/v1/responses/compact` | POST |
+
+## Create Response
+
+```bash
+curl {{api-base-url}}/responses \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-4o",
+    "input": "Summarize the latest project status."
+  }'
+```
+
+## Compaction
+
+```bash
+curl {{api-base-url}}/responses/compact \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{ ... }'
+```
+
+Use the OpenAI SDK with `client.responses.create(...)` and `base_url` pointed at Starrise-api.
+
+<Info>
+
+Availability depends on upstream channel support for the selected model.
+
+</Info>

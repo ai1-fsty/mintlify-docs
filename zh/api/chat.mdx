@@ -1,0 +1,58 @@
+---
+title: "对话补全"
+description: "多轮对话、流式输出、工具/函数调用及视觉能力（视模型而定）的主要接口。"
+---
+
+**端点：** `POST /v1/chat/completions`
+
+## 请求示例
+
+```bash
+curl {{api-base-url}}/chat/completions \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "gpt-4o",
+    "messages": [
+      {"role": "system", "content": "你是一个有帮助的助手。"},
+      {"role": "user", "content": "你好！"}
+    ]
+  }'
+```
+
+## 流式输出
+
+设置 `"stream": true`，响应为 SSE 格式（`data: {...}` 分块）。
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="{{api-base-url}}",
+    api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+)
+
+stream = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role": "user", "content": "讲一个故事"}],
+    stream=True,
+)
+
+for chunk in stream:
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="")
+```
+
+## 旧版 Completions
+
+**端点：** `POST /v1/completions` — OpenAI 旧版 prompt 格式。
+
+## 参数
+
+支持 OpenAI 标准字段：`model`、`messages`、`temperature`、`top_p`、`max_tokens`、`tools`、`tool_choice`、`response_format`、`stream` 等。上游不支持的字段可能被忽略或透传。
+
+## 相关文档
+
+- [Responses API](/zh/api/responses)
+- [Claude Messages](/zh/api/claude)
+- [模型列表](/zh/api/models)

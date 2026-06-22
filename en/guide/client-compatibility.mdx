@@ -1,0 +1,151 @@
+---
+title: "Client Compatibility"
+description: "Starrise-api is fully compatible with the OpenAI API format. Any client, SDK, or tool that supports OpenAI can connect by changing Base URL and API Key."
+---
+
+## Configuration
+
+| Setting | OpenAI Default | Starrise-api |
+| --- | --- | --- |
+| Base URL | `https://api.openai.com/v1` | `{{api-base-url}}` |
+| API Key | OpenAI API key | Starrise-api token (`sk-...`) |
+
+Sign in to the console and copy your **API address** (Base URL) from the home page. Paste it into your SDK or third-party tool as the Base URL / API Host. Example:
+
+```
+{{api-base-url}}
+```
+
+<Info>
+
+When using the official OpenAI SDK, make sure the Base URL ends with `/v1`.
+
+</Info>
+
+## Official SDKs
+
+### Python
+
+```bash
+pip install openai
+```
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="{{api-base-url}}",
+    api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+)
+```
+
+### Node.js
+
+```bash
+npm install openai
+```
+
+```javascript
+import OpenAI from 'openai'
+
+const client = new OpenAI({
+  baseURL: '{{api-base-url}}',
+  apiKey: 'sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+})
+```
+
+## OpenAI-Compatible Endpoints
+
+These routes use `Authorization: Bearer sk-...` (or `sk-` prefix without Bearer in some tools).
+
+| Endpoint | Method | Description |
+| --- | --- | --- |
+| `/v1/chat/completions` | POST | Chat completions (streaming supported) |
+| `/v1/completions` | POST | Legacy text completions |
+| `/v1/responses` | POST | OpenAI Responses API |
+| `/v1/responses/compact` | POST | Responses compaction |
+| `/v1/embeddings` | POST | Text embeddings |
+| `/v1/rerank` | POST | Document reranking (Jina-style) |
+| `/v1/images/generations` | POST | Image generation |
+| `/v1/images/edits` | POST | Image editing |
+| `/v1/edits` | POST | Legacy image edit |
+| `/v1/audio/transcriptions` | POST | Speech-to-text |
+| `/v1/audio/translations` | POST | Audio translation |
+| `/v1/audio/speech` | POST | Text-to-speech |
+| `/v1/moderations` | POST | Content moderation |
+| `/v1/models` | GET | List models (OpenAI format) |
+| `/v1/models/:model` | GET | Retrieve model |
+| `/v1/realtime` | GET (WebSocket) | OpenAI Realtime API |
+
+<Info title="Not implemented">
+
+`/v1/images/variations`, `/v1/files/*`, and `/v1/fine-tunes/*` return not-implemented on this gateway.
+
+</Info>
+
+
+
+## Claude (Anthropic) Endpoints
+
+| Endpoint | Method | Auth |
+| --- | --- | --- |
+| `/v1/messages` | POST | `Authorization: Bearer sk-...` or `x-api-key` + `anthropic-version` |
+
+Model list with Anthropic headers: `GET /v1/models` with `x-api-key` and `anthropic-version`.
+
+## Gemini Endpoints
+
+| Endpoint | Method | Auth |
+| --- | --- | --- |
+| `/v1beta/models` | GET | `Authorization`, `x-goog-api-key`, or `?key=` |
+| `/v1beta/models/*path` | POST | Same as above |
+| `/v1beta/openai/models` | GET | OpenAI-style model list |
+| `/v1/models/*path` | POST | Gemini relay under OpenAI path prefix |
+
+## Midjourney (`/mj`)
+
+Requires token via `Authorization` or `mj-api-secret` header.
+
+| Endpoint | Method | Description |
+| --- | --- | --- |
+| `/mj/submit/imagine` | POST | Create image job |
+| `/mj/submit/change` | POST | Upscale / variation |
+| `/mj/submit/describe` | POST | Describe image |
+| `/mj/submit/blend` | POST | Blend images |
+| `/mj/task/:id/fetch` | GET | Fetch task status |
+| `/mj/image/:id` | GET | Fetch result image |
+
+## Suno (`/suno`)
+
+| Endpoint | Method | Description |
+| --- | --- | --- |
+| `/suno/submit/:action` | POST | Submit music generation |
+| `/suno/fetch` | POST | Batch fetch tasks |
+| `/suno/fetch/:id` | GET | Fetch single task |
+
+## Third-Party Tools
+
+| Tool | Configuration |
+| --- | --- |
+| **ChatGPT Next Web** | Settings → API Host → `{{api-origin}}` |
+| **LobeChat** | API proxy URL + token |
+| **Cursor / Cline** | Override OpenAI Base URL |
+| **LangChain** | `OpenAI(base_url=..., api_key=...)` |
+| **Dify** | OpenAI-compatible provider |
+
+## Environment Variables
+
+```bash
+OPENAI_API_BASE={{api-base-url}}
+OPENAI_API_KEY=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+```
+
+## Troubleshooting
+
+| Issue | Solution |
+| --- | --- |
+| `401 Unauthorized` | Check token; use `Bearer sk-...` |
+| `403 Forbidden` | Model/IP restriction or banned user |
+| `404 Model not found` | Call `GET /v1/models` or check console pricing |
+| Connection timeout | Ensure base URL ends with `/v1` for OpenAI SDK |
+| SDK still hits OpenAI | Set `base_url` / `baseURL` explicitly |

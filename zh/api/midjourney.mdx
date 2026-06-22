@@ -1,0 +1,62 @@
+---
+title: "Midjourney"
+description: "Midjourney 代理 API，路径前缀 `/mj`。使用 Starrise 令牌认证。"
+---
+
+```bash
+-H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+# 或
+-H "mj-api-secret: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+## 提交 Imagine
+
+```bash
+curl {{api-origin}}/mj/submit/imagine \
+  -H "Authorization: Bearer sk-xxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "赛博朋克风格的未来都市夜景",
+    "botType": "MID_JOURNEY"
+  }'
+```
+
+## 常用提交端点
+
+| 端点 | 说明 |
+| --- | --- |
+| `/mj/submit/imagine` | 文生图 |
+| `/mj/submit/change` | 放大 / 变体 |
+| `/mj/submit/simple-change` | 简化变更 |
+| `/mj/submit/describe` | 图片描述 |
+| `/mj/submit/blend` | 多图混合 |
+| `/mj/submit/action` | 自定义动作 |
+| `/mj/submit/modal` | Modal 操作 |
+| `/mj/submit/edits` | 编辑提交 |
+| `/mj/submit/video` | 视频生成 |
+| `/mj/submit/shorten` | Prompt 缩短 |
+
+## 查询任务
+
+```bash
+curl {{api-origin}}/mj/task/{task_id}/fetch \
+  -H "Authorization: Bearer sk-xxx"
+```
+
+## 获取图片
+
+```bash
+curl {{api-origin}}/mj/image/{id} \
+  -H "Authorization: Bearer sk-xxx"
+```
+
+## 条件列表
+
+```bash
+curl {{api-origin}}/mj/task/list-by-condition \
+  -H "Authorization: Bearer sk-xxx" \
+  -H "Content-Type: application/json" \
+  -d '{ ... }'
+```
+
+请求/响应体遵循上游 Midjourney 代理通道的配置规范。

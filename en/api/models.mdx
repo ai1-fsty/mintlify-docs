@@ -1,0 +1,60 @@
+---
+title: "Models"
+description: "List models available to your token and account."
+---
+
+## List Models (OpenAI format)
+
+```bash
+curl {{api-base-url}}/models \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+Response follows OpenAI `list` object shape with `data[]` entries (`id`, `object`, `owned_by`, etc.).
+
+## Retrieve Model
+
+```bash
+curl {{api-base-url}}/models/gpt-4o \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+## Claude Model List
+
+Use Anthropic-style headers:
+
+```bash
+curl {{api-base-url}}/models \
+  -H "x-api-key: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "anthropic-version: 2023-06-01"
+```
+
+## Gemini Model List
+
+```bash
+curl "{{api-origin}}/v1beta/models?key=sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+Or:
+
+```bash
+curl {{api-origin}}/v1beta/models \
+  -H "x-goog-api-key: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+OpenAI-compatible Gemini list:
+
+```bash
+curl {{api-origin}}/v1beta/openai/models \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+## Console
+
+Browse full pricing and availability under **Pricing** in the console.
+
+<Info>
+
+Model availability depends on your account and whether **model limits** are enabled on your token.
+
+</Info>

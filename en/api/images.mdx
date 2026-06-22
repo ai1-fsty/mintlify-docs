@@ -1,0 +1,54 @@
+---
+title: "Images"
+description: "OpenAI-compatible image generation and editing."
+---
+
+| Endpoint | Method | Description |
+| --- | --- | --- |
+| `/v1/images/generations` | POST | Text-to-image |
+| `/v1/images/edits` | POST | Edit with mask |
+| `/v1/edits` | POST | Legacy edit endpoint |
+
+## Generate
+
+```bash
+curl {{api-base-url}}/images/generations \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "dall-e-3",
+    "prompt": "A serene mountain lake at sunset",
+    "n": 1,
+    "size": "1024x1024"
+  }'
+```
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="{{api-base-url}}",
+    api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+)
+
+result = client.images.generate(
+    model="dall-e-3",
+    prompt="A serene mountain lake at sunset",
+    size="1024x1024",
+)
+print(result.data[0].url)
+```
+
+## Edit
+
+Use `POST /v1/images/edits` with multipart form data (image + mask + prompt) per OpenAI spec.
+
+## Midjourney
+
+For Midjourney-specific workflows, see [Midjourney API](/en/api/midjourney).
+
+<Warning>
+
+`/v1/images/variations` is not implemented on this gateway.
+
+</Warning>

@@ -1,49 +1,85 @@
 {
   "$schema": "https://mintlify.com/docs.json",
-  "theme": "aspen",
-  "name": "StarriseAPI Docs",
-  "colors": {
-    "primary": "#1538a3",
-    "light": "#1538a3",
-    "dark": "#1538a3"
+  "theme": "mint",
+  "name": "RiseStar AI",
+  "favicon": "/favicon.ico",
+  "logo": {
+    "light": "/images/logo-light.png",
+    "dark": "/images/logo-dark.png"
   },
-  "favicon": {
-    "light": "/images/4.png",
-    "dark": "/images/5.png"
+  "colors": {
+    "primary": "#0284c7",
+    "light": "#f0f9ff",
+    "dark": "#082f49"
+  },
+  "variables": {
+    "api-base-url": "https://ai.starrise.tech/v1",
+    "api-origin": "https://ai.starrise.tech",
+    "ws-base-url": "wss://ai.starrise.tech"
   },
   "navigation": {
-    "pages": [
+    "languages": [
       {
-        "group": "Getting Started",
-        "pages": [
-          "index",
-          "quickstart"
+        "language": "en",
+        "default": true,
+        "pages": ["en/overview"],
+        "groups": [
+          {
+            "group": "Guide",
+            "pages": [
+              "en/guide/quick-start",
+              "en/guide/authentication",
+              "en/guide/client-compatibility"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "en/api/models",
+              "en/api/chat",
+              "en/api/responses",
+              "en/api/claude",
+              "en/api/gemini",
+              "en/api/embeddings",
+              "en/api/images",
+              "en/api/audio",
+              "en/api/realtime",
+              "en/api/midjourney",
+              "en/api/suno"
+            ]
+          }
+        ]
+      },
+      {
+        "language": "zh",
+        "pages": ["zh/overview"],
+        "groups": [
+          {
+            "group": "指南",
+            "pages": [
+              "zh/guide/quick-start",
+              "zh/guide/authentication",
+              "zh/guide/client-compatibility"
+            ]
+          },
+          {
+            "group": "API 参考",
+            "pages": [
+              "zh/api/models",
+              "zh/api/chat",
+              "zh/api/responses",
+              "zh/api/claude",
+              "zh/api/gemini",
+              "zh/api/embeddings",
+              "zh/api/images",
+              "zh/api/audio",
+              "zh/api/realtime",
+              "zh/api/midjourney",
+              "zh/api/suno"
+            ]
+          }
         ]
       }
-    ]
-  },
-  "logo": {
-    "light": "/images/2.png",
-    "dark": "/images/3.png"
-  },
-  "navbar": {
-    "links": [],
-    "primary": {
-      "type": "button",
-      "label": "Dashboard",
-      "href": "https://app.mintlify.com"
-    }
-  },
-  "contextual": {
-    "options": [
-      "copy",
-      "view",
-      "chatgpt",
-      "claude",
-      "perplexity",
-      "mcp",
-      "cursor",
-      "vscode"
     ]
   }
 }

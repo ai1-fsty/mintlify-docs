@@ -1,0 +1,32 @@
+---
+title: "Realtime"
+description: "基于 WebSocket 的 OpenAI Realtime API。"
+---
+
+**端点：** `GET /v1/realtime`（WebSocket 升级）
+
+## 认证
+
+网关从 WebSocket 子协议头读取 API Key：
+
+```
+Sec-WebSocket-Protocol: realtime, openai-insecure-api-key.sk-xxx, openai-beta.realtime-v1
+```
+
+若客户端支持，也可在升级前设置 `Authorization: Bearer sk-...`。
+
+## 使用
+
+将 OpenAI Realtime 客户端指向：
+
+```
+{{ws-base-url}}/realtime?model=gpt-4o-realtime-preview
+```
+
+协议行为与 OpenAI Realtime 一致（音频/文本事件、会话配置等）。
+
+<Info>
+
+需要上游通道支持所选模型的 OpenAI Realtime 能力。
+
+</Info>

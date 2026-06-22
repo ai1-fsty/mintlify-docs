@@ -1,0 +1,40 @@
+---
+title: "Suno"
+description: "AI 音乐生成 API，路径前缀 `/suno`。"
+---
+
+**认证：** `Authorization: Bearer sk-...`
+
+## 提交任务
+
+```bash
+curl {{api-origin}}/suno/submit/generate \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "prompt": "轻快的电子舞曲",
+    "mv": "chirp-v4"
+  }'
+```
+
+路径中的 `:action` 对应 Suno 任务类型（如 `generate`、`custom_generate`）。
+
+## 查询单个任务
+
+```bash
+curl {{api-origin}}/suno/fetch/{task_id} \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+## 批量查询
+
+```bash
+curl {{api-origin}}/suno/fetch \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "ids": ["task-id-1", "task-id-2"]
+  }'
+```
+
+任务为异步模式，需轮询 fetch 接口直至完成。用量与计费可在控制台 **日志** 页面查看。

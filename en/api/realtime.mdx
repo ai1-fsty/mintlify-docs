@@ -1,0 +1,32 @@
+---
+title: "Realtime"
+description: "OpenAI Realtime API over WebSocket."
+---
+
+**Endpoint:** `GET /v1/realtime` (WebSocket upgrade)
+
+## Authentication
+
+The gateway reads the API key from the WebSocket subprotocol header:
+
+```
+Sec-WebSocket-Protocol: realtime, openai-insecure-api-key.sk-xxx, openai-beta.realtime-v1
+```
+
+Alternatively, set `Authorization: Bearer sk-...` before upgrade if your client supports it.
+
+## Usage
+
+Point the OpenAI Realtime client at:
+
+```
+{{ws-base-url}}/realtime?model=gpt-4o-realtime-preview
+```
+
+Behavior follows OpenAI Realtime protocol (audio/text events, session config, etc.).
+
+<Info>
+
+Requires an upstream channel that supports OpenAI Realtime for the requested model.
+
+</Info>

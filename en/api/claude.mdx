@@ -1,0 +1,41 @@
+---
+title: "Claude Messages"
+description: "Anthropic-compatible Messages API."
+---
+
+**Endpoint:** `POST /v1/messages`
+
+## Authentication
+
+Either standard gateway token:
+
+```bash
+-H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+```
+
+Or native Anthropic headers (auto-mapped by the gateway):
+
+```bash
+-H "x-api-key: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+-H "anthropic-version: 2023-06-01"
+```
+
+## Example
+
+```bash
+curl {{api-base-url}}/messages \
+  -H "x-api-key: sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -H "anthropic-version: 2023-06-01" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "claude-sonnet-4-20250514",
+    "max_tokens": 1024,
+    "messages": [
+      {"role": "user", "content": "Hello, Claude"}
+    ]
+  }'
+```
+
+Use the official `@anthropic-ai/sdk` with `baseURL: '{{api-origin}}'` and your Starrise token as `apiKey`.
+
+Streaming uses the same SSE pattern as Anthropic's API.

@@ -1,0 +1,122 @@
+---
+title: "Quick Start"
+description: "Get from registration to your first API call in three steps — matching the console onboarding flow."
+---
+
+## Prerequisites
+
+- A Starrise-api account (click **Get Started** on the home page)
+- An API token ([Authentication](/en/guide/authentication))
+
+## Step 1: Create an Account
+
+1. Open the Starrise-api console
+2. Register with email or supported OAuth (GitHub, Discord, etc.)
+3. New accounts may receive starter quota (as shown in your account dashboard)
+
+## Step 2: Create an API Token
+
+1. Open **Tokens** in the console
+2. Click **Create Token**
+3. Set a name and optional quota, expiration, and other limits
+4. Submit and **Copy** the key from the list — format: `sk-...`
+
+<Warning>
+
+The full key is shown once. Store it securely.
+
+</Warning>
+
+
+## Step 3: Make Your First Request
+
+```bash
+curl {{api-base-url}}/chat/completions \
+  -H "Content-Type: application/json" \
+  -H "Authorization: Bearer sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx" \
+  -d '{
+    "model": "gpt-4o",
+    "messages": [
+      { "role": "user", "content": "Hello!" }
+    ]
+  }'
+```
+
+Example response:
+
+```json
+{
+  "id": "chatcmpl-xxx",
+  "object": "chat.completion",
+  "choices": [{
+    "index": 0,
+    "message": {
+      "role": "assistant",
+      "content": "Hello! How can I help you today?"
+    },
+    "finish_reason": "stop"
+  }],
+  "usage": {
+    "prompt_tokens": 10,
+    "completion_tokens": 12,
+    "total_tokens": 22
+  }
+}
+```
+
+## Use the SDK
+
+### Python
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    base_url="{{api-base-url}}",
+    api_key="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+)
+
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role": "user", "content": "Hello!"}]
+)
+print(response.choices[0].message.content)
+```
+
+### Node.js
+
+```javascript
+import OpenAI from 'openai'
+
+const client = new OpenAI({
+  baseURL: '{{api-base-url}}',
+  apiKey: 'sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx'
+})
+
+const response = await client.chat.completions.create({
+  model: 'gpt-4o',
+  messages: [{ role: 'user', content: 'Hello!' }]
+})
+
+console.log(response.choices[0].message.content)
+```
+
+## Streaming
+
+```python
+stream = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[{"role": "user", "content": "Tell me a story"}],
+    stream=True
+)
+
+for chunk in stream:
+    if chunk.choices[0].delta.content:
+        print(chunk.choices[0].delta.content, end="")
+```
+
+## Next Steps
+
+- [Authentication](/en/guide/authentication) — token options and security
+- [Client Compatibility](/en/guide/client-compatibility) — all supported endpoints
+- [Chat API](/en/api/chat) — full chat reference
