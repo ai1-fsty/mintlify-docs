@@ -1,0 +1,54 @@
+---
+title: "Using with Chatbox"
+description: "Integrate Starrise AI models with Chatbox — a cross-platform LLM chat client."
+---
+
+## 1 About Chatbox
+
+Chatbox is a popular cross-platform chat client for large language models, known for its powerful features and easy setup. You can use it to connect to various LLMs and chat with AI on any device (desktop, mobile, or web).
+
+Chatbox not only provides a simple and user-friendly AI chat experience, but also offers a range of powerful features:
+
+* **Artifact Preview**: Preview the actual output of AI-generated code in Chatbox — for example, ask the AI to build a webpage or a snake game and run it directly inside Chatbox.
+* **Chart Creation**: Ask the AI to create mind maps, flowcharts, and statistical charts.
+* **Document & Vision Understanding**: Send documents or images to the AI.
+* **Webpage Parsing & Recognition**: Send links to the AI to discuss webpage content.
+
+## 2 Installing Chatbox
+
+Visit the [Chatbox official website](https://chatboxai.app/) to download the installer. Chatbox supports all major operating systems including Windows, macOS, and Linux, as well as iOS and Android on mobile. Download and install the package directly on your system, or use the Chatbox web version.
+
+## 3 Using Starrise AI Models in Chatbox
+
+### 3.1 Get Your Starrise AI API Key
+
+Visit the [Starrise AI Console](https://ai.alad.com/), go to **API Keys**, and create or copy an existing key.
+
+### 3.2 Configure in Chatbox
+
+#### 3.2.1 Open Chatbox and go to Settings
+
+#### 3.2.2 Create a Custom Model Provider
+
+Click the "Model Provider" toggle button, then click "Add Custom Provider" at the bottom of the popup menu.
+
+#### 3.2.3 Enter Starrise AI Connection Details
+
+Fill in the Starrise AI configuration in the form that opens:
+
+* **Name**: `Starrise AI` (for easy identification later)
+* **API Domain**: `https://ai.alad.com`
+* **API Path**: `/v1/chat/completions`
+* **API Key**: Enter the API key created in the Starrise AI Console
+* **Model**: Add the models you want to use in the model input field (e.g. `gpt-4o`, `claude-opus-4-7`)
+
+Click Save to start chatting.
+
+#### 3.2.4 Start Chatting
+
+Once you've followed the steps above, the configuration is complete. Run a quick chat test to verify everything works.
+
+### 3.3 Tips
+
+* For better results, choose smarter and more capable models (e.g. `claude-opus-4-7`, `gpt-4o`) — model capability directly determines the quality of chart and code generation.
+* Chatbox also has powerful features like Artifact Preview and a chart assistant, which are worth exploring.

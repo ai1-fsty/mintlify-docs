@@ -1,0 +1,50 @@
+---
+title: "Wan2 Task Query"
+description: "Query the status and result of Wan2 video generation tasks."
+---
+
+After submitting a video task via `wan2.2-t2v-a14b` or `wan2.2-i2v-a14b`, use this endpoint to poll the task status until completion.
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/video/generations/{TASK_ID} \
+    -H "Authorization: Bearer YOUR_API_KEY"
+  ```
+
+  ```python Python
+  import requests, time
+
+  headers = {"Authorization": "Bearer YOUR_API_KEY"}
+
+  while True:
+      result = requests.get(
+          f"https://ai.alad.com/v1/video/generations/{task_id}",
+          headers=headers
+      ).json()
+      status = result["data"]["status"]
+      print(f"Status: {status}")
+      if status == "succeeded":
+          print("Video URL:", result["data"]["url"])
+          break
+      elif status == "failed":
+          print("Error:", result["data"]["error"])
+          break
+      time.sleep(3)
+  ```
+</CodeGroup>
+
+## Response Fields
+
+| Field          | Description                                                     |
+| -------------- | --------------------------------------------------------------- |
+| `data.task_id` | Task ID                                                         |
+| `data.status`  | `queued` → `processing` → `succeeded` / `failed`               |
+| `data.format`  | Video format, always `mp4`                                      |
+| `data.url`     | Video download URL (valid ~24 hours, only present on `succeeded`) |
+| `data.error`   | Error message (only present on `failed`)                        |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/alibaba/wan2-task-query">
+  View the interactive API Playground for Wan2 Task Query.
+</Card>

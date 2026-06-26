@@ -1,0 +1,162 @@
+---
+title: "Gemini 2.5 Flash Image"
+description: "Call Google Gemini 2.5 Flash Image via Gemini API for AI image generation and editing."
+---
+
+Gemini 2.5 Flash Image is Google's image generation model, available through Starrise AI via the native Gemini API. It supports text-to-image generation and image editing with reference images.
+
+## Key Capabilities
+
+* **Text-to-image** — Generate images from text descriptions
+* **Image editing** — Pass a reference image via `inline_data` combined with text instructions for editing
+* **Aspect ratio control** — `1:1`, `4:3`, `3:4`, `16:9`, `9:16`
+* **Resolution control** — `1K` (\~1024px), `2K` (\~2048px), `4K` (\~4096px, by longest side)
+* **Multimodal output** — Return both image and text description via `responseModalities: ["TEXT", "IMAGE"]`
+
+## Text-to-Image Example
+
+<CodeGroup>
+  ```bash cURL
+  curl "https://ai.alad.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "contents": [
+        {
+          "role": "user",
+          "parts": [
+            { "text": "Generate an image of a mountain sunset" }
+          ]
+        }
+      ],
+      "generationConfig": {
+        "responseModalities": ["TEXT", "IMAGE"],
+        "imageConfig": {
+          "aspectRatio": "16:9",
+          "imageSize": "1K"
+        }
+      }
+    }'
+  ```
+
+  ```python Python
+  import requests, base64
+
+  url = "https://ai.alad.com/v1beta/models/gemini-2.5-flash-image:generateContent"
+  response = requests.post(url, params={"key": "YOUR_API_KEY"}, json={
+      "contents": [
+          {
+              "role": "user",
+              "parts": [{"text": "Generate an image of a mountain sunset"}]
+          }
+      ],
+      "generationConfig": {
+          "responseModalities": ["TEXT", "IMAGE"],
+          "imageConfig": {"aspectRatio": "16:9", "imageSize": "1K"}
+      }
+  })
+
+  for part in response.json()["candidates"][0]["content"]["parts"]:
+      if "inline_data" in part:
+          with open("output.jpg", "wb") as f:
+              f.write(base64.b64decode(part["inline_data"]["data"]))
+          print("Image saved to output.jpg")
+      elif "text" in part:
+          print("Caption:", part["text"])
+  ```
+</CodeGroup>
+
+## Image Editing Example (with Reference Image)
+
+Pass both a `text` instruction and an `inline_data` reference image in the same `parts` array.
+
+<CodeGroup>
+  ```bash cURL
+  # First convert image to base64:
+  # BASE64=$(base64 -i your_photo.jpg)
+  #
+  # Then send the request:
+  curl "https://ai.alad.com/v1beta/models/gemini-2.5-flash-image:generateContent?key=YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "contents": [
+        {
+          "role": "user",
+          "parts": [
+            {
+              "text": "This is a photo of me, please add an alpaca beside me"
+            },
+            {
+              "inline_data": {
+                "mime_type": "image/jpeg",
+                "data": "<YOUR_BASE64_ENCODED_IMAGE>"
+              }
+            }
+          ]
+        }
+      ],
+      "generationConfig": {
+        "responseModalities": ["TEXT", "IMAGE"],
+        "imageConfig": {
+          "aspectRatio": "1:1",
+          "imageSize": "1K"
+        }
+      }
+    }'
+  ```
+
+  ```python Python
+  import requests, base64
+
+  # Read and encode the reference image
+  with open("your_photo.jpg", "rb") as f:
+      image_b64 = base64.b64encode(f.read()).decode("utf-8")
+
+  url = "https://ai.alad.com/v1beta/models/gemini-2.5-flash-image:generateContent"
+  response = requests.post(url, params={"key": "YOUR_API_KEY"}, json={
+      "contents": [
+          {
+              "role": "user",
+              "parts": [
+                  {
+                      "text": "This is a photo of me, please add an alpaca beside me"
+                  },
+                  {
+                      "inline_data": {
+                          "mime_type": "image/jpeg",
+                          "data": image_b64          # ← paste base64 string here
+                      }
+                  }
+              ]
+          }
+      ],
+      "generationConfig": {
+          "responseModalities": ["TEXT", "IMAGE"],
+          "imageConfig": {"aspectRatio": "1:1", "imageSize": "1K"}
+      }
+  })
+
+  for part in response.json()["candidates"][0]["content"]["parts"]:
+      if "inline_data" in part:
+          with open("output.jpg", "wb") as f:
+              f.write(base64.b64decode(part["inline_data"]["data"]))
+          print("Image saved to output.jpg")
+      elif "text" in part:
+          print("Caption:", part["text"])
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ------------------------------------------ | ------ | -- | ------------------------------------------- |
+| `key` | string | Yes | API key (query parameter) |
+| `contents[].parts[].text` | string | Yes | Text prompt or instruction |
+| `contents[].parts[].inline_data.mime_type` | string | No | Reference image type: `image/jpeg`, `image/png`, `image/webp` |
+| `contents[].parts[].inline_data.data` | string | No | Base64-encoded reference image data |
+| `generationConfig.responseModalities` | array | Yes | `["IMAGE"]` or `["TEXT", "IMAGE"]` |
+| `generationConfig.imageConfig.aspectRatio` | string | No | `1:1` / `4:3` / `3:4` / `16:9` / `9:16` |
+| `generationConfig.imageConfig.imageSize` | string | No | `1K` / `2K` / `4K` (default `1K`) |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/google/gemini-2-5-flash-image">
+  View the interactive API Playground for Gemini 2.5 Flash Image.
+</Card>

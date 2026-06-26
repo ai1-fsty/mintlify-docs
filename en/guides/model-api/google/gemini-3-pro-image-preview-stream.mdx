@@ -1,0 +1,218 @@
+---
+title: "Gemini 3 Pro Image Preview (Streaming)"
+description: "Call Google Gemini 3 Pro Image Preview via Gemini API for streaming image generation. SSE delivers thinking chunks and image chunks in real time."
+---
+
+Gemini 3 Pro Image Preview (Streaming) is available through Starrise AI via the native Gemini API, supporting real-time SSE streaming of image generation results. Thinking chunks are pushed first, followed immediately by the final image chunk.
+
+## Key Capabilities
+
+* **SSE streaming** — Real-time delivery of thinking chunks and image chunks
+* **Thinking mode** — Internal reasoning chunks (`thought: true`) streamed before the image
+* **Text-to-image** — Generate images from text descriptions
+* **Image editing** — Pass a reference image via `inline_data` combined with text instructions
+* **Aspect ratio control** — `1:1`, `4:3`, `3:4`, `16:9`, `9:16`
+* **Resolution control** — `1K` (\~1024px), `2K` (\~2048px), `4K` (\~4096px, by longest side)
+
+## SSE Response Format
+
+The streaming endpoint returns newline-delimited SSE data lines, each starting with `data:` followed by a JSON object. There are three chunk types:
+
+1. **Thinking chunk** — Arrives first; `parts[0].thought` is `true`
+2. **Image chunk** — Contains `parts[0].inlineData` with `mimeType` and base64 `data` (note: camelCase in streaming responses)
+3. **Final usage chunk** — Contains top-level `usageMetadata` with `thoughtsTokenCount` and per-modality token details
+
+```
+data: {"candidates":[{"content":{"role":"model","parts":[{"text":"...","thought":true}]}}],"usageMetadata":{"trafficType":"ON_DEMAND"},"modelVersion":"gemini-3-pro-image-preview","createTime":"...","responseId":"..."}
+
+data: {"candidates":[{"content":{"role":"model","parts":[{"inlineData":{"mimeType":"image/png","data":"<base64>"}}]}}],...}
+
+data: {"usageMetadata":{"promptTokenCount":8,"candidatesTokenCount":1120,"totalTokenCount":1392,"trafficType":"ON_DEMAND","promptTokensDetails":[{"modality":"TEXT","tokenCount":8}],"candidatesTokensDetails":[{"modality":"IMAGE","tokenCount":1120}],"thoughtsTokenCount":264}}
+```
+
+<Note>
+  In streaming responses, the image field is `inlineData` (camelCase), while in the request body it is `inline_data` (snake_case). This is native Gemini API behavior.
+</Note>
+
+## Text-to-Image Example
+
+<CodeGroup>
+  ```bash cURL
+  curl "https://ai.alad.com/v1beta/models/gemini-3-pro-image-preview:streamGenerateContent?key=YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "contents": [
+        {
+          "role": "user",
+          "parts": [
+            { "text": "Generate an image of a mountain sunset" }
+          ]
+        }
+      ],
+      "generationConfig": {
+        "responseModalities": ["TEXT", "IMAGE"],
+        "imageConfig": {
+          "aspectRatio": "16:9",
+          "imageSize": "1K"
+        }
+      }
+    }'
+  ```
+
+  ```python Python
+  import requests, base64, json
+
+  url = "https://ai.alad.com/v1beta/models/gemini-3-pro-image-preview:streamGenerateContent"
+  params = {"key": "YOUR_API_KEY"}
+  data = {
+      "contents": [
+          {
+              "role": "user",
+              "parts": [{"text": "Generate an image of a mountain sunset"}]
+          }
+      ],
+      "generationConfig": {
+          "responseModalities": ["TEXT", "IMAGE"],
+          "imageConfig": {"aspectRatio": "16:9", "imageSize": "1K"}
+      }
+  }
+
+  response = requests.post(url, params=params, json=data, stream=True)
+
+  for line in response.iter_lines():
+      if not line:
+          continue
+      decoded = line.decode("utf-8")
+      if not decoded.startswith("data:"):
+          continue
+      chunk = json.loads(decoded[len("data:"):].strip())
+
+      candidates = chunk.get("candidates", [])
+      if not candidates:
+          continue
+      parts = candidates[0].get("content", {}).get("parts", [])
+      for part in parts:
+          # Skip thinking chunks
+          if part.get("thought"):
+              continue
+          # Save image chunk
+          if "inlineData" in part:
+              img_bytes = base64.b64decode(part["inlineData"]["data"])
+              with open("output.png", "wb") as f:
+                  f.write(img_bytes)
+              print("Image saved to output.png")
+  ```
+</CodeGroup>
+
+## Image Editing Example (with Reference Image)
+
+Pass both a `text` instruction and an `inline_data` reference image in the same `parts` array.
+
+<CodeGroup>
+  ```bash cURL
+  # First convert image to base64:
+  # BASE64=$(base64 -i your_photo.jpg)
+  #
+  # Then send the request:
+  curl "https://ai.alad.com/v1beta/models/gemini-3-pro-image-preview:streamGenerateContent?key=YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "contents": [
+        {
+          "role": "user",
+          "parts": [
+            {
+              "text": "This is a photo of me, please add an alpaca beside me"
+            },
+            {
+              "inline_data": {
+                "mime_type": "image/jpeg",
+                "data": "<YOUR_BASE64_ENCODED_IMAGE>"
+              }
+            }
+          ]
+        }
+      ],
+      "generationConfig": {
+        "responseModalities": ["TEXT", "IMAGE"],
+        "imageConfig": {
+          "aspectRatio": "1:1",
+          "imageSize": "1K"
+        }
+      }
+    }'
+  ```
+
+  ```python Python
+  import requests, base64, json
+
+  # Read and encode the reference image
+  with open("your_photo.jpg", "rb") as f:
+      image_b64 = base64.b64encode(f.read()).decode("utf-8")
+
+  url = "https://ai.alad.com/v1beta/models/gemini-3-pro-image-preview:streamGenerateContent"
+  params = {"key": "YOUR_API_KEY"}
+  data = {
+      "contents": [
+          {
+              "role": "user",
+              "parts": [
+                  {
+                      "text": "This is a photo of me, please add an alpaca beside me"
+                  },
+                  {
+                      "inline_data": {
+                          "mime_type": "image/jpeg",
+                          "data": image_b64
+                      }
+                  }
+              ]
+          }
+      ],
+      "generationConfig": {
+          "responseModalities": ["TEXT", "IMAGE"],
+          "imageConfig": {"aspectRatio": "1:1", "imageSize": "1K"}
+      }
+  }
+
+  response = requests.post(url, params=params, json=data, stream=True)
+
+  for line in response.iter_lines():
+      if not line:
+          continue
+      decoded = line.decode("utf-8")
+      if not decoded.startswith("data:"):
+          continue
+      chunk = json.loads(decoded[len("data:"):].strip())
+
+      candidates = chunk.get("candidates", [])
+      if not candidates:
+          continue
+      parts = candidates[0].get("content", {}).get("parts", [])
+      for part in parts:
+          if part.get("thought"):
+              continue
+          if "inlineData" in part:
+              img_bytes = base64.b64decode(part["inlineData"]["data"])
+              with open("output.png", "wb") as f:
+                  f.write(img_bytes)
+              print("Image saved to output.png")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ------------------------------------------ | ------ | -- | ------------------------------------------- |
+| `key` | string | Yes | API key (query parameter) |
+| `alt` | string | No | Set to `sse` to explicitly enable SSE mode (optional, streaming is the default behavior) |
+| `contents[].parts[].text` | string | Yes | Text prompt or instruction |
+| `contents[].parts[].inline_data.mime_type` | string | No | Reference image type: `image/jpeg`, `image/png`, `image/webp` |
+| `contents[].parts[].inline_data.data` | string | No | Base64-encoded reference image data |
+| `generationConfig.responseModalities` | array | Yes | `["IMAGE"]` or `["TEXT", "IMAGE"]` |
+| `generationConfig.imageConfig.aspectRatio` | string | No | `1:1` / `4:3` / `3:4` / `16:9` / `9:16` |
+| `generationConfig.imageConfig.imageSize` | string | No | `1K` / `2K` / `4K` (default `1K`) |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/google/gemini-3-pro-image-preview-stream">
+  View the interactive API Playground for Gemini 3 Pro Image Preview (Streaming).
+</Card>

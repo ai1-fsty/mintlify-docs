@@ -1,0 +1,76 @@
+---
+title: "Gemini 3.5 Flash"
+description: "Call Google Gemini 3.5 Flash via Gemini API. The most intelligent Flash model, optimized for agentic and coding tasks."
+---
+
+Gemini 3.5 Flash is Google's most intelligent Flash model, available through Starrise AI via the native Gemini API. It delivers frontier performance in agentic execution, coding, and long-running tasks.
+
+## Key Capabilities
+
+* **1M token context window** — Handles massive documents and conversations, up to 65,000 output tokens
+* **Thinking levels** — Control reasoning depth via `minimal`, `low`, `medium` (default), and `high`
+* **Thinking persistence** — Model automatically retains intermediate reasoning across multi-turn conversations
+* **Agentic execution** — Optimized for multi-agent deployments, problem solving, and large-scale agentic loops
+* **Coding** — Excels at iterative coding cycles, rapid exploration, and prototyping
+* **Production-ready** — Stable model, suitable for large-scale production use
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl "https://ai.alad.com/v1beta/models/gemini-3.5-flash:generateContent?key=YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "contents": [
+        {
+          "role": "user",
+          "parts": [{ "text": "Explain how parallel agentic execution works in three sentences." }]
+        }
+      ],
+      "generationConfig": {
+        "thinkingConfig": {
+          "thinkingLevel": "medium"
+        }
+      }
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  url = "https://ai.alad.com/v1beta/models/gemini-3.5-flash:generateContent"
+  params = {"key": "YOUR_API_KEY"}
+  data = {
+      "contents": [
+          {
+              "role": "user",
+              "parts": [{"text": "Explain how parallel agentic execution works in three sentences."}]
+          }
+      ],
+      "generationConfig": {
+          "thinkingConfig": {
+              "thinkingLevel": "medium"
+          }
+      }
+  }
+
+  response = requests.post(url, params=params, json=data)
+  result = response.json()
+  print(result["candidates"][0]["content"]["parts"][0]["text"])
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ----------------------------------------------- | ------ | -- | ------------------------------------------ |
+| `key` | string | Yes | API key (query parameter) |
+| `contents` | array | Yes | Array of `{ role, parts }` objects |
+| `systemInstruction` | object | No | System instruction with `parts` array |
+| `generationConfig.thinkingConfig.thinkingLevel` | string | No | `minimal`, `low`, `medium` (default), `high` — controls reasoning depth |
+| `generationConfig.temperature` | float | No | `0`–`2`. Not recommended for Gemini 3.5 Flash |
+| `generationConfig.topP` | float | No | Not recommended for Gemini 3.5 Flash |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/google/gemini-3.5-flash">
+  View the interactive API Playground for Gemini 3.5 Flash.
+</Card>

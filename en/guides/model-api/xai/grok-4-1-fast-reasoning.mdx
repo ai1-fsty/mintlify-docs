@@ -1,0 +1,61 @@
+---
+title: "Grok 4.1 Fast Reasoning"
+description: "Call xAI Grok 4.1 Fast Reasoning via Starrise AI API. Grok 4.1 reasoning variant."
+---
+
+Grok 4.1 Fast Reasoning is xAI's language model, available through Starrise AI. Grok 4.1 reasoning variant.
+
+## Key Capabilities
+
+* **OpenAI-compatible** — Use directly with the OpenAI SDK
+* **Streaming** — Supports real-time SSE streaming
+* **Strong reasoning** — Suitable for complex, multi-step tasks
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/chat/completions \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "grok-4-1-fast-reasoning",
+      "messages": [
+        { "role": "user", "content": "Explain quantum entanglement in simple terms." }
+      ]
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="grok-4-1-fast-reasoning",
+      messages=[
+          {"role": "user", "content": "Explain quantum entanglement in simple terms."}
+      ]
+  )
+
+  print(response.choices[0].message.content)
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ------------- | ------- | -- | ------------------------------- |
+| `model` | string | Yes | Fixed value: `grok-4-1-fast-reasoning` |
+| `messages` | array | Yes | List of `{ role, content }` objects |
+| `max_tokens` | integer | No | Maximum number of tokens to generate |
+| `temperature` | float | No | `0`–`2`, controls randomness, default `1` |
+| `stream` | boolean | No | Enable SSE streaming, default `false` |
+| `top_p` | float | No | Nucleus sampling threshold |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/xai/grok-4-1-fast-reasoning">
+  View the interactive API Playground for Grok 4.1 Fast Reasoning.
+</Card>

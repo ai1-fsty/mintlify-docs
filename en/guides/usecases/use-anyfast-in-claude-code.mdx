@@ -1,0 +1,89 @@
+---
+title: "Using with Claude Code"
+description: "Integrate Starrise AI models with Claude Code — an AI coding assistant for the terminal."
+---
+
+## Overview
+
+Claude Code is a command-line AI assistant that helps with coding tasks. By integrating with Starrise AI, you can access powerful AI models directly from your terminal for code generation, debugging, and analysis.
+
+## Prerequisites
+
+* macOS or Linux (or WSL on Windows)
+* Terminal access with a bash shell
+* A valid Starrise AI API key
+* Internet connection
+
+## Method 1: Manual Configuration (Recommended)
+
+### Environment Variable Setup
+
+Configure the required environment variables in your shell profile (`.bashrc`, `.zshrc`, or `.profile`):
+
+```bash
+# Starrise AI API configuration
+export ANTHROPIC_BASE_URL="https://ai.alad.com/"
+export ANTHROPIC_MODEL="claude-opus-4-7"
+export ANTHROPIC_API_KEY="sk-your-api-key-here"
+```
+
+### Apply Configuration
+
+```bash
+# For bash users
+source ~/.bashrc
+
+# For zsh users
+source ~/.zshrc
+```
+
+### Start Claude Code
+
+```bash
+claude
+```
+
+## Method 2: OpenAI Compatible Mode
+
+Add to your shell profile:
+
+```bash
+export OPENAI_API_KEY="sk-your-api-key-here"
+export OPENAI_BASE_URL="https://ai.alad.com/v1"
+```
+
+## Switching Models
+
+To change the model, update the environment variable:
+
+```bash
+export ANTHROPIC_MODEL="claude-sonnet-4-6"
+source ~/.zshrc
+```
+
+## Tips
+
+* Use specific, detailed prompts for better code suggestions.
+* Break complex tasks into smaller, manageable requests.
+* Review generated code before implementing it.
+* Monitor your usage in the [Starrise AI Console](https://ai.alad.com/).
+
+## Troubleshooting
+
+**Authentication Error:**
+
+```bash
+echo $ANTHROPIC_API_KEY
+```
+
+**Model Not Found:**
+
+```bash
+echo $ANTHROPIC_MODEL
+```
+
+**Connection Issues:**
+
+```bash
+curl -H "Authorization: Bearer $ANTHROPIC_API_KEY" https://ai.alad.com/v1/models
+```

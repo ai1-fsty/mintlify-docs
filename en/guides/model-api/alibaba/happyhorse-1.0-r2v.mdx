@@ -1,0 +1,101 @@
+---
+title: "HappyHorse 1.0 R2V"
+description: "Alibaba DashScope HappyHorse 1.0 reference-image-to-video model. Generate videos from 1–3 reference images via an asynchronous task interface."
+---
+
+HappyHorse 1.0 R2V generates videos from 1–3 reference images combined with a text prompt. Uses an **asynchronous task interface** — submit a task and poll until completion.
+
+## Key Capabilities
+
+* **Reference-image-to-video** — Use 1–3 images as visual references
+* **Resolution** — 720P / 1080P
+* **Aspect ratio** — 16:9, 9:16, 1:1, 4:3, 3:4
+* **Duration** — 3–15 seconds
+* **Watermark control** — Optionally disable the bottom-right watermark
+
+## Workflow
+
+```
+1. POST /v1/video/generations  →  task_id
+2. GET  /v1/video/generations/{task_id}  →  Poll until SUCCESS / FAILURE
+3. Read data.result_url  (valid for 24 hours)
+```
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/video/generations \
+    -H 'Authorization: Bearer YOUR_API_KEY' \
+    -H 'Content-Type: application/json' \
+    -d '{
+      "model": "happyhorse-1.0-r2v",
+      "prompt": "A woman in a red qipao gently raises her hand and opens a folding fan",
+      "images": [
+        "https://example.com/ref1.jpg",
+        "https://example.com/ref2.jpg",
+        "https://example.com/ref3.jpg"
+      ],
+      "parameters": {
+        "resolution": "720P",
+        "ratio": "16:9",
+        "duration": 5,
+        "watermark": false
+      }
+    }'
+  ```
+
+  ```python Python
+  import requests, time
+
+  headers = {"Authorization": "Bearer YOUR_API_KEY"}
+
+  resp = requests.post(
+      "https://ai.alad.com/v1/video/generations",
+      headers=headers,
+      json={
+          "model": "happyhorse-1.0-r2v",
+          "prompt": "A woman in a red qipao gently raises her hand and opens a folding fan",
+          "images": [
+              "https://example.com/ref1.jpg",
+              "https://example.com/ref2.jpg",
+              "https://example.com/ref3.jpg",
+          ],
+          "parameters": {
+              "resolution": "720P",
+              "ratio": "16:9",
+              "duration": 5,
+              "watermark": False,
+          }
+      }
+  )
+  task_id = resp.json()["task_id"]
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter    | Type     | Required | Description                                              |
+| ------------ | -------- | -------- | -------------------------------------------------------- |
+| `model`      | string   | Yes      | Must be `happyhorse-1.0-r2v`                             |
+| `prompt`     | string   | Yes      | Video description text                                   |
+| `images`     | string[] | Yes      | 1–3 reference image URLs                                 |
+| `resolution` | string   | No       | `720P` / `1080P`, default `1080P`                        |
+| `ratio`      | string   | No       | `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, default `16:9`     |
+| `duration`   | integer  | No       | Video duration 3–15 seconds, default `5`                 |
+| `watermark`  | boolean  | No       | Default `true`, set to `false` to disable watermark      |
+| `seed`       | integer  | No       | Random seed `[0, 2147483647]`                            |
+
+## Billing
+
+Billed by **resolution tier × user-requested duration**. The pre-charged amount is the final amount. Failed tasks are automatically refunded.
+
+<CardGroup cols={2}>
+  <Card title="API Reference" icon="code" href="/en/api-reference/model-api/alibaba/happyhorse-1.0-r2v">
+    HappyHorse 1.0 R2V interactive Playground.
+  </Card>
+
+  <Card title="Task Query" icon="magnifying-glass" href="/en/guides/model-api/alibaba/happyhorse-task-query">
+    Poll task status and retrieve the final video URL.
+  </Card>
+</CardGroup>

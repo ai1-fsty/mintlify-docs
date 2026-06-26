@@ -1,0 +1,83 @@
+---
+title: "Doubao Seed 2.0 Code"
+description: "ByteDance's Seed 2.0 Code programming model — optimized for code generation and understanding."
+---
+
+Doubao Seed 2.0 Code is a chat model available through Starrise AI via an OpenAI-compatible API. ByteDance's Seed 2.0 Code programming model — optimized for code generation and understanding.
+
+## Key Capabilities
+
+* **OpenAI compatible** — Use the OpenAI SDK directly with no code changes
+* **Code generation** — Generate, complete, and refactor code across multiple programming languages
+* **Code understanding** — Explain, review, and debug existing code
+* **Streaming** — Supports real-time streaming output via SSE
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/chat/completions \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "doubao-seed-2.0-code",
+      "messages": [
+        { "role": "user", "content": "Explain quantum entanglement in simple terms." }
+      ]
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="doubao-seed-2.0-code",
+      messages=[
+          {"role": "user", "content": "Explain quantum entanglement in simple terms."}
+      ]
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```python Streaming
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  stream = client.chat.completions.create(
+      model="doubao-seed-2.0-code",
+      messages=[
+          {"role": "user", "content": "Write a short poem about the ocean."}
+      ],
+      stream=True
+  )
+
+  for chunk in stream:
+      print(chunk.choices[0].delta.content or "", end="")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter     | Type           | Required | Description                              |
+| ------------- | -------------- | -------- | ---------------------------------------- |
+| `model`       | string         | Yes      | Must be `doubao-seed-2.0-code`           |
+| `messages`    | array          | Yes      | List of `{ role, content }` messages     |
+| `max_tokens`  | integer        | No       | Maximum number of tokens to generate     |
+| `temperature` | float          | No       | `0`–`2`, controls randomness, default `1` |
+| `stream`      | boolean        | No       | Enable SSE streaming output, default `false` |
+| `top_p`       | float          | No       | Nucleus sampling threshold, default `1`  |
+| `stop`        | string / array | No       | Sequences that trigger generation stop   |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/bytedance/doubao-seed-2.0-code">
+  View the interactive API documentation for Doubao Seed 2.0 Code.
+</Card>

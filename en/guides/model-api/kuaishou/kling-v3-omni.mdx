@@ -1,0 +1,110 @@
+---
+title: "Kling V3 Omni"
+description: "Kuaishou Kling V3 Omni video generation model with text-to-video, image-to-video, video editing, multi-shot scenes, and synchronized sound effect generation."
+---
+
+Kling V3 Omni is Kuaishou's latest video generation model, available through the Starrise AI API. The Omni model combines elements, images, videos, and more via prompts for diverse capabilities — supporting text-to-video, image-to-video, video editing, multi-shot scenes, and synchronized sound effect generation.
+
+## Key Capabilities
+
+* **Text-to-video** — Generate videos up to 15 seconds from text prompts
+* **Image-to-video** — Use reference images as first/last frames to guide video generation
+* **Video editing** — Edit existing videos: add/remove elements, change style, color, weather, etc.
+* **Multi-shot scenes** — Create up to 6 shots with custom prompt and duration per shot
+* **Sound effects** — Optional synchronized video sound effect generation
+* **Flexible aspect ratio** — Supports 16:9, 9:16, and 1:1 output formats
+* **Standard & Pro modes** — Choose cost-effective standard mode or high-quality pro mode
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL — Text-to-Video
+  curl https://ai.alad.com/kling/v1/videos/omni-video \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model_name": "kling-v3-omni",
+      "prompt": "A cat elegantly walks through a sun-drenched garden, cinematic lighting",
+      "duration": "5",
+      "mode": "pro",
+      "aspect_ratio": "16:9"
+    }'
+  ```
+
+  ```python Python — Text-to-Video
+  import requests
+
+  response = requests.post(
+      "https://ai.alad.com/kling/v1/videos/omni-video",
+      headers={
+          "Authorization": "Bearer YOUR_API_KEY",
+          "Content-Type": "application/json"
+      },
+      json={
+          "model_name": "kling-v3-omni",
+          "prompt": "A cat elegantly walks through a sun-drenched garden, cinematic lighting",
+          "duration": "5",
+          "mode": "pro",
+          "aspect_ratio": "16:9"
+      }
+  )
+
+  task = response.json()
+  print(f"Task ID: {task['task_id']}")
+  ```
+
+  ```python Python — Image-to-Video
+  import requests
+
+  response = requests.post(
+      "https://ai.alad.com/kling/v1/videos/omni-video",
+      headers={
+          "Authorization": "Bearer YOUR_API_KEY",
+          "Content-Type": "application/json"
+      },
+      json={
+          "model_name": "kling-v3-omni",
+          "prompt": "Make the person in <<<image_1>>> wave to the camera",
+          "image_list": [
+              {"image_url": "https://example.com/photo.jpg"}
+          ],
+          "duration": "5",
+          "mode": "pro",
+          "aspect_ratio": "16:9"
+      }
+  )
+
+  task = response.json()
+  print(f"Task ID: {task['task_id']}")
+  ```
+</CodeGroup>
+
+## Query Task Result
+
+After creating a task, use the task ID to query the status:
+
+```bash cURL
+curl https://ai.alad.com/kling/v1/videos/text2video/{task_id} \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+## Parameters
+
+| Parameter      | Type    | Required          | Description                                                           |
+| -------------- | ------- | ----------------- | --------------------------------------------------------------------- |
+| `model_name`   | string  | No                | Model name, default `kling-v3-omni`                                   |
+| `prompt`       | string  | Conditionally yes | Text prompt (up to 2500 characters), required when `multi_shot` is false |
+| `mode`         | string  | No                | `std` (standard) or `pro` (professional), default `pro`               |
+| `aspect_ratio` | string  | Conditionally yes | `16:9`, `9:16`, or `1:1`, required when not using first-frame reference or video editing |
+| `duration`     | string  | No                | Video duration `3`–`15` seconds, default `5`                          |
+| `image_list`   | array   | No                | Reference images (first/last frame, scene, or style references)       |
+| `video_list`   | array   | No                | Reference videos (editing or style references)                        |
+| `element_list` | array   | No                | Reference elements from the Kling element library                     |
+| `multi_shot`   | boolean | No                | Enable multi-shot scene mode, default `false`                         |
+| `multi_prompt` | array   | Conditionally yes | Shot information (1–6 shots), required when `multi_shot` is true      |
+| `sound`        | string  | No                | `on` or `off`, whether to generate sound effects, default `off`       |
+| `callback_url` | string  | No                | Callback URL for task status change notifications                     |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/kuaishou/kling-v3-omni">
+  View the interactive API Playground for Kling V3 Omni.
+</Card>

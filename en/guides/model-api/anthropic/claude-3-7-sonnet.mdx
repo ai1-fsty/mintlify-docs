@@ -1,0 +1,84 @@
+---
+title: "Claude 3.7 Sonnet"
+description: "Call Anthropic's Claude 3.7 Sonnet via OpenAI-compatible interface — an advanced reasoning model with Extended Thinking support."
+---
+
+Claude 3.7 Sonnet is Anthropic's latest high-performance conversational model, available through Starrise AI via OpenAI-compatible interface. It features Extended Thinking capability and excels at complex coding, analysis, and multi-step reasoning tasks.
+
+## Key Capabilities
+
+* **OpenAI-compatible** — Drop-in replacement for the OpenAI SDK, no other code changes needed
+* **Extended Thinking** — Supports step-by-step reasoning to solve complex problems
+* **Long context** — Supports large document processing and multi-turn conversations
+* **Streaming** — Real-time token streaming via SSE
+* **Advanced reasoning** — Ideal for complex multi-step tasks with higher accuracy
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/messages \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "claude-3-7-sonnet",
+      "messages": [
+        { "role": "user", "content": "Explain quantum entanglement in simple terms." }
+      ]
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="claude-3-7-sonnet",
+      messages=[
+          {"role": "user", "content": "Explain quantum entanglement in simple terms."}
+      ]
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```python Streaming
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  stream = client.chat.completions.create(
+      model="claude-3-7-sonnet",
+      messages=[
+          {"role": "user", "content": "Write a short poem about the ocean."}
+      ],
+      stream=True
+  )
+
+  for chunk in stream:
+      print(chunk.choices[0].delta.content or "", end="")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ------------- | -------------- | -- | ------------------------ |
+| `model` | string | Yes | Fixed value: `claude-3-7-sonnet` |
+| `messages` | array | Yes | Array of `{ role, content }` objects |
+| `max_tokens` | integer | No | Maximum number of tokens to generate |
+| `temperature` | float | No | `0`–`2`, controls randomness, default `1` |
+| `stream` | boolean | No | Enable SSE streaming, default `false` |
+| `top_p` | float | No | Nucleus sampling threshold, default `1` |
+| `stop` | string / array | No | Sequences where generation stops |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/introduction">
+  View the interactive API Playground for Claude 3.7 Sonnet.
+</Card>

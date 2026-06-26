@@ -1,0 +1,69 @@
+---
+title: "Wan2.6 T2I"
+description: "Call Alibaba's Wan2.6 T2I text-to-image model via the Starrise AI API."
+---
+
+Wan2.6 T2I is a text-to-image model available through Starrise AI. The API is **synchronous** — it automatically polls the upstream asynchronous task and directly returns the final image URL.
+
+## Key Capabilities
+
+* **Text-to-image** — Generate images from text descriptions
+* **Flexible sizes** — Specify output resolution via `size`
+* **URL or Base64** — Choose the return format via `response_format`
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/images/generations \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "wan2.6-t2i",
+      "prompt": "A cute cat in Ghibli style",
+      "size": "1024x1024",
+      "response_format": "url"
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  response = requests.post(
+      "https://ai.alad.com/v1/images/generations",
+      headers={"Authorization": "Bearer YOUR_API_KEY"},
+      json={
+          "model": "wan2.6-t2i",
+          "prompt": "A cute cat in Ghibli style",
+          "size": "1024x1024",
+          "response_format": "url"
+      }
+  )
+
+  result = response.json()
+  print(result["data"][0]["url"])
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter         | Type    | Required | Description                           |
+| ----------------- | ------- | -------- | ------------------------------------- |
+| `model`           | string  | Yes      | Must be `wan2.6-t2i`                  |
+| `prompt`          | string  | Yes      | Image description text                |
+| `n`               | integer | No       | Number of images to generate, default `1` |
+| `size`            | string  | No       | Output size, e.g. `1024x1024`         |
+| `response_format` | string  | No       | `url` (default) or `b64_json`         |
+
+## Response Fields
+
+| Field                   | Description                                                          |
+| ----------------------- | -------------------------------------------------------------------- |
+| `data[].url`            | Image download URL (valid ~24 hours)                                 |
+| `data[].b64_json`       | Base64-encoded image (only returned when `response_format=b64_json`) |
+| `data[].revised_prompt` | Actual prompt after AI expansion                                     |
+| `created`               | Creation timestamp                                                   |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/alibaba/wan2.6-t2i">
+  View the interactive API Playground for Wan2.6 T2I.
+</Card>

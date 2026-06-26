@@ -1,0 +1,90 @@
+---
+title: "Wan2.2 T2V A14B"
+description: "Call Alibaba's Wan2.2 T2V A14B text-to-video model via the Starrise AI API."
+---
+
+Wan2.2 T2V A14B is a text-to-video model available through Starrise AI. Video generation is an **asynchronous call** — after submitting a task, poll `GET /v1/video/generations/{task_id}` until `status` is `succeeded`.
+
+## Key Capabilities
+
+* **Text-to-video** — Generate video from text descriptions
+* **Duration control** — 3–5 seconds
+* **Custom resolution** — Set `width` × `height`
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  # Step 1 — Create task
+  curl https://ai.alad.com/v1/video/generations \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "wan2.2-t2v-a14b",
+      "prompt": "A cat playing the piano",
+      "duration": 5
+    }'
+
+  # Step 2 — Poll until complete
+  curl https://ai.alad.com/v1/video/generations/{TASK_ID} \
+    -H "Authorization: Bearer YOUR_API_KEY"
+  ```
+
+  ```python Python
+  import requests, time
+
+  headers = {"Authorization": "Bearer YOUR_API_KEY"}
+
+  # Step 1 — Create task
+  resp = requests.post(
+      "https://ai.alad.com/v1/video/generations",
+      headers=headers,
+      json={
+          "model": "wan2.2-t2v-a14b",
+          "prompt": "A cat playing the piano",
+          "duration": 5,
+      }
+  )
+  task_id = resp.json()["task_id"]
+
+  # Step 2 — Poll until complete
+  while True:
+      result = requests.get(
+          f"https://ai.alad.com/v1/video/generations/{task_id}",
+          headers=headers
+      ).json()
+      status = result["data"]["status"]
+      if status == "succeeded":
+          print(result["data"]["url"])
+          break
+      elif status == "failed":
+          print("Failed:", result["data"]["error"])
+          break
+      time.sleep(3)
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter  | Type    | Required | Description                              |
+| ---------- | ------- | -------- | ---------------------------------------- |
+| `model`    | string  | Yes      | Must be `wan2.2-t2v-a14b`               |
+| `prompt`   | string  | Yes      | Video description text                   |
+| `duration` | number  | No       | 3–5 seconds, default `5`                 |
+| `width`    | integer | No       | Output video width (pixels)              |
+| `height`   | integer | No       | Output video height (pixels)             |
+| `seed`     | integer | No       | Random seed for reproducible results     |
+| `metadata` | object  | No       | Extra parameters passed to upstream API  |
+
+## Task Status
+
+| Status       | Description                                                          |
+| ------------ | -------------------------------------------------------------------- |
+| `queued`     | Waiting in queue                                                     |
+| `processing` | Video generating                                                     |
+| `succeeded`  | Complete — `data.url` is the video link (valid ~24 hours)            |
+| `failed`     | Failed — `data.error` contains the error message                     |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/alibaba/wan2.2-t2v-a14b">
+  View the interactive API Playground for Wan2.2 T2V A14B.
+</Card>

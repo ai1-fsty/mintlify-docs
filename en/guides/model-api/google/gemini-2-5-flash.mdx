@@ -1,0 +1,63 @@
+---
+title: "Gemini 2.5 Flash"
+description: "Call Google Gemini 2.5 Flash via Gemini API with Google Search enhancement."
+---
+
+Gemini 2.5 Flash is Google's fast, efficient model with integrated Google Search functionality, available through Starrise AI via the native Gemini API. Responses can be enhanced with real-time search results.
+
+## Key Capabilities
+
+* **Google Search enhancement** — Augment responses with real-time web search
+* **Document processing** — Process and analyze documents
+* **Multimodal input** — Accepts text and file input
+* **Fast inference** — Optimized for speed and efficiency
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl "https://ai.alad.com/v1beta/models/gemini-2.5-flash:generateContent?key=YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "contents": [
+        {
+          "role": "user",
+          "parts": [{ "text": "What is the latest AI news today?" }]
+        }
+      ],
+      "tools": [{ "googleSearch": {} }]
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  url = "https://ai.alad.com/v1beta/models/gemini-2.5-flash:generateContent"
+  params = {"key": "YOUR_API_KEY"}
+  data = {
+      "contents": [
+          {
+              "role": "user",
+              "parts": [{"text": "What is the latest AI news today?"}]
+          }
+      ],
+      "tools": [{"googleSearch": {}}]
+  }
+
+  response = requests.post(url, params=params, json=data)
+  result = response.json()
+  print(result["candidates"][0]["content"]["parts"][0]["text"])
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ---------- | ------ | -- | --------------------------------- |
+| `key` | string | Yes | API key (query parameter) |
+| `contents` | array | Yes | Array of `{ role, parts }` objects |
+| `tools` | array | No | Include `{ "googleSearch": {} }` to enable search |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/google/gemini-2-5-flash">
+  View the interactive API Playground for Gemini 2.5 Flash.
+</Card>

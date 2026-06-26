@@ -1,0 +1,75 @@
+---
+title: "GET /v1/models"
+description: "OpenAI-compatible model list endpoint that returns all models available for the current API key and their supported API formats."
+---
+
+`/v1/models` is an OpenAI-compatible model list endpoint that returns all models available for the current token. SDKs and clients use this endpoint to automatically discover available models and their supported API formats.
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/models \
+    -H "Authorization: Bearer YOUR_API_KEY"
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  models = client.models.list()
+  for model in models:
+      print(f"{model.id} → {model.owned_by}")
+  ```
+</CodeGroup>
+
+## Request
+
+| Header | Required | Description |
+| --------------------------------- | -- | ---------- |
+| `Authorization: Bearer <api-key>` | Yes | Authenticate with your token key |
+| `Content-Type: application/json` | No | Optional |
+
+No request body (GET).
+
+## Response Body
+
+```json
+{
+  "data": [
+    {
+      "id": "gpt-4o",
+      "object": "model",
+      "created": 1626777600,
+      "owned_by": "openai",
+      "supported_endpoint_types": ["openai"]
+    },
+    {
+      "id": "claude-sonnet-4-5-20250929",
+      "object": "model",
+      "created": 1626777600,
+      "owned_by": "vertex-ai",
+      "supported_endpoint_types": ["openai", "anthropic"]
+    }
+  ]
+}
+```
+
+## Response Fields
+
+| Field | Description |
+| -------------------------- | ------------------------------------------------------------------------------------------------- |
+| `id` | Model identifier — use this value in the `model` parameter when calling the relay |
+| `object` | Always `"model"` |
+| `created` | Fixed timestamp (no practical meaning) |
+| `owned_by` | Model provider: `openai`, `vertex-ai`, `custom`, `xai`, `volcengine`, `codex`, `aws`, `coze`, `ali`, `minimax`, etc. |
+| `supported_endpoint_types` | API formats supported by this model: `openai`, `anthropic`, `openai-response`, `gemini`, `image-generation`, `video`, `mj-*`, etc. |
+
+## Notes
+
+* Different tokens may see different model lists depending on provider configuration and pricing coverage.
+* If no token is provided, returns `401 {"error":{"message":"No token provided"}}`.

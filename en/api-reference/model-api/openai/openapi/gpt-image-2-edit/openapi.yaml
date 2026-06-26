@@ -1,0 +1,128 @@
+openapi: 3.1.0
+info:
+  title: GPT Image 2 — 图片编辑
+  description: 通过 Starrise AI API 使用 GPT Image 2 编辑已有图片
+  version: 1.0.0
+servers:
+  - url: https://ai.alad.com
+security:
+  - bearerAuth: []
+paths:
+  /v1/images/edits:
+    post:
+      summary: 编辑图片
+      description: >-
+        使用 GPT Image 2 模型基于文本提示词编辑已有图片，请求体格式为 multipart/form-data。
+
+
+        每次请求最多支持 16 张输入图片（`image[]`）。支持格式：PNG、JPEG。图片必须通过 multipart/form-data
+        文件上传方式传入。
+
+
+        **注意：** 使用 `gpt-image-2-c` 时，选择较高画质会影响 `n` 张图片的稳定输出，若需稳定生成多张图片，建议使用较低画质。
+      operationId: editGptImage2
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+              properties:
+                image:
+                  type: string
+                  format: binary
+                  description: 单张源图片文件（PNG 或 JPEG）。多图时请改用 `image[]`。
+                image[]:
+                  type: array
+                  items:
+                    type: string
+                    format: binary
+                  description: 多张源图片文件（PNG 或 JPEG），每次请求最多 16 张。多图时用此参数替代 `image`。
+                mask:
+                  type: string
+                  format: binary
+                  description: >-
+                    蒙版图片文件（含 Alpha 通道），用于指定源图片中要编辑的区域。必须与源图片格式和尺寸一致（<
+                    50MB）。**需在控制台选择 Direct 分组。**
+                model:
+                  type: string
+                  enum:
+                    - gpt-image-2
+                    - gpt-image-2-c
+                  description: >-
+                    模型 ID。`gpt-image-2` 为官方模型，`gpt-image-2-c` 为高性价比版本（支持
+                    `response_format`）。
+                  example: gpt-image-2
+                prompt:
+                  type: string
+                  description: 编辑指令文本。
+                  example: 将图片背景替换为海上日落
+                output_format:
+                  type: string
+                  enum:
+                    - png
+                    - jpeg
+                  default: png
+                  description: 输出图片格式，默认 `png`。
+                output_compression:
+                  type: integer
+                  minimum: 0
+                  maximum: 100
+                  description: jpeg 格式的压缩级别（0–100）。
+                'n':
+                  type: integer
+                  minimum: 1
+                  maximum: 10
+                  default: 1
+                  description: 返回图片数量，支持 `1–10`，默认 `1`。**需在控制台选择 Direct 分组。**
+                  example: 1
+                size:
+                  type: string
+                  default: 1024x1024
+                  description: 输出图片尺寸，格式 `{宽}x{高}`，约束与图片生成接口一致（灵活分辨率）。
+                  example: 1024x1024
+                response_format:
+                  type: string
+                  enum:
+                    - url
+                  default: url
+                  description: 响应格式。**仅 `gpt-image-2-c`（高性价比版本）支持该参数**，当前仅 `url`。
+                  example: url
+      responses:
+        '200':
+          description: 图片编辑成功。
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: array
+                    description: 编辑后的图片数组。
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          description: 编辑后图片的预签名 URL（`response_format=url` 时返回）。
+                        b64_json:
+                          type: string
+                          description: >-
+                            Base64 编码的图片数据（`response_format=b64_json`
+                            时返回，仅官方模型）。
+                        revised_prompt:
+                          type: string
+                          description: 模型实际使用的修改后提示词。
+        '400':
+          description: 请求错误。参数无效。
+        '401':
+          description: 未授权。API 密钥无效或缺失。
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+

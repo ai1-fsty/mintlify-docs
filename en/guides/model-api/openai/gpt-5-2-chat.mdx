@@ -1,0 +1,101 @@
+---
+title: "GPT-5.2 Chat"
+description: "OpenAI GPT-5.2 Chat — conversation-optimized version of GPT-5.2."
+---
+
+GPT-5.2 Chat is available through Starrise AI via OpenAI Responses API (`/v1/responses`).
+
+## Key Capabilities
+
+* **Responses API** — Uses the new `/v1/responses` endpoint, replacing `messages` with `input`
+* **Reasoning control** — Configurable reasoning effort (minimal / low / medium / high) and summary
+* **Verbosity control** — Set response verbosity to low, medium, or high
+* **Streaming** — Real-time token streaming via SSE
+* **Tool calling** — Supports function calling and tool use
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/responses \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "gpt-5.2-chat",
+      "input": [
+        { "role": "user", "content": "Explain quantum entanglement in simple terms." }
+      ],
+      "reasoning": {
+        "effort": "high",
+        "summary": "auto"
+      },
+      "text": {
+        "format": { "type": "text" },
+        "verbosity": "medium"
+      },
+      "store": true
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.responses.create(
+      model="gpt-5.2-chat",
+      input=[
+          {"role": "user", "content": "Explain quantum entanglement in simple terms."}
+      ],
+      reasoning={"effort": "high", "summary": "auto"},
+      text={"format": {"type": "text"}, "verbosity": "medium"},
+      store=True
+  )
+
+  print(response.output[0].content[0].text)
+  ```
+
+  ```python Streaming
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  stream = client.responses.create(
+      model="gpt-5.2-chat",
+      input=[
+          {"role": "user", "content": "Write a short poem about the ocean."}
+      ],
+      stream=True
+  )
+
+  for event in stream:
+      if hasattr(event, 'delta'):
+          print(event.delta, end="")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ------------------- | -------------- | -- | ------------------------------------ |
+| `model` | string | Yes | Fixed value: `gpt-5.2-chat` |
+| `input` | array | Yes | Array of `{ role, content }` objects |
+| `stream` | boolean | No | Enable SSE streaming, default `false` |
+| `temperature` | float | No | `0`–`2`, controls randomness, default `1` |
+| `top_p` | float | No | Nucleus sampling threshold, default `1` |
+| `max_output_tokens` | integer | No | Maximum output tokens |
+| `stop` | string / array | No | Sequences where generation stops |
+| `reasoning` | object | No | `{ effort, summary }` — Controls reasoning depth |
+| `text` | object | No | `{ format, verbosity }` — Controls output format and verbosity |
+| `tools` | array | No | List of tools the model can call |
+| `store` | boolean | No | Store response for later retrieval, default `true` |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/openai/gpt-5-2-chat">
+  View the interactive API Playground for GPT-5.2 Chat.
+</Card>

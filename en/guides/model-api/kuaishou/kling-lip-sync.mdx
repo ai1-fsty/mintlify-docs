@@ -1,0 +1,144 @@
+---
+title: "Kling Lip Sync Generation"
+description: "Drive a person's lip movement in a source video to match speech from text (TTS) or an existing audio file."
+---
+
+Lip sync generation makes a person in a video appear to "say" what you specify, supporting two input modes — text-driven (with built-in TTS synthesis) or audio file-driven.
+
+**This endpoint requires a `session_id`**, which must be obtained first by calling the [face identification](/en/guides/model-api/kuaishou/kling-identify-face) endpoint.
+
+## Workflow Overview
+
+```
+1. identify-face  →  session_id
+2. advanced-lip-sync (session_id + audio input)  →  task_id
+3. Poll GET /kling/v1/videos/advanced-lip-sync/{task_id}  →  video URL
+```
+
+## Input Modes
+
+### Text-Driven — Built-in TTS
+
+Provide `text`, `voice_id`, and `voice_language`. The platform synthesizes speech from the text using the specified voice, then drives the lip movement.
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/kling/v1/videos/advanced-lip-sync \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "input": {
+        "session_id": "YOUR_SESSION_ID",
+        "text": "Hello, welcome to my channel",
+        "voice_id": "girlfriend_1_cn",
+        "voice_language": "zh"
+      }
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  response = requests.post(
+      "https://ai.alad.com/kling/v1/videos/advanced-lip-sync",
+      headers={
+          "Authorization": "Bearer YOUR_API_KEY",
+          "Content-Type": "application/json"
+      },
+      json={
+          "input": {
+              "session_id": "YOUR_SESSION_ID",
+              "text": "Hello, welcome to my channel",
+              "voice_id": "girlfriend_1_cn",
+              "voice_language": "zh"
+          }
+      }
+  )
+  task = response.json()
+  print(f"Task ID: {task['task_id']}")
+  ```
+</CodeGroup>
+
+### Audio-Driven — Using an Existing Audio File
+
+Provide `audio_url` to drive lip movement directly with an audio file.
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/kling/v1/videos/advanced-lip-sync \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "input": {
+        "session_id": "YOUR_SESSION_ID",
+        "audio_url": "https://example.com/speech.mp3"
+      }
+    }'
+  ```
+
+  ```python Python
+  import requests
+  import time
+
+  # Step 1: Create task
+  response = requests.post(
+      "https://ai.alad.com/kling/v1/videos/advanced-lip-sync",
+      headers={
+          "Authorization": "Bearer YOUR_API_KEY",
+          "Content-Type": "application/json"
+      },
+      json={
+          "input": {
+              "session_id": "YOUR_SESSION_ID",
+              "audio_url": "https://example.com/speech.mp3"
+          }
+      }
+  )
+  task_id = response.json()["task_id"]
+
+  # Step 2: Poll for result
+  while True:
+      result = requests.get(
+          f"https://ai.alad.com/kling/v1/videos/advanced-lip-sync/{task_id}",
+          headers={"Authorization": "Bearer YOUR_API_KEY"}
+      ).json()
+      status = result["data"]["status"]
+      print(f"Status: {status}")
+      if status == "succeeded":
+          print("Video URL:", result["data"]["data"]["task_result"]["videos"][0]["url"])
+          break
+      elif status == "failed":
+          print("Failure reason:", result["data"].get("fail_reason"))
+          break
+      time.sleep(5)
+  ```
+</CodeGroup>
+
+## Request Parameters
+
+| Parameter              | Type   | Required              | Description                                                                                                                             |
+| ---------------------- | ------ | --------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| `input.session_id`     | string | ✅                    | Session ID returned from the face identification step                                                                                   |
+| `input.face_image_url` | string | No                    | Face reference image URL for improved character consistency                                                                             |
+| `input.text`           | string | Required (text mode)  | The text the character should speak                                                                                                     |
+| `input.voice_id`       | string | Required (text mode)  | TTS voice ID. See the [voice ID reference](https://docs.qingque.cn/s/home/eZQDvafJ4vXQkP8T9ZPvmye8S?identityId=2E1MlYrrPk4) to preview and choose a voice. |
+| `input.voice_language` | string | Required (text mode)  | Language code: `zh` (Chinese) or `en` (English)                                                                                         |
+| `input.audio_url`      | string | Required (audio mode) | Public URL of the audio file                                                                                                            |
+
+## Polling Results
+
+After creating a task, use `GET /kling/v1/videos/advanced-lip-sync/{task_id}` to query the status. Refer to the [task query](/en/guides/model-api/kuaishou/kling-task-query) documentation. Status progression: `queued` → `processing` → `succeeded` / `failed`.
+
+On success, the video download URL is at `data.data.task_result.videos[0].url`.
+
+<Card title="Prerequisite: Face Identification" icon="user" href="/en/guides/model-api/kuaishou/kling-identify-face">
+  Must call this endpoint first to obtain the session\_id.
+</Card>
+
+<Card title="Voice ID Reference" icon="volume" href="https://docs.qingque.cn/s/home/eZQDvafJ4vXQkP8T9ZPvmye8S?identityId=2E1MlYrrPk4">
+  Preview all available voices online and choose the right voice\_id parameter value.
+</Card>
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/kuaishou/kling-lip-sync">
+  View the interactive API documentation for Kling Lip Sync Generation.
+</Card>

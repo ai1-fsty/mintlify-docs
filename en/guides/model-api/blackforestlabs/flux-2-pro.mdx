@@ -1,0 +1,67 @@
+---
+title: "FLUX.2 [pro]"
+description: "Call the Black Forest Labs FLUX.2 [pro] text-to-image model via the Starrise AI API."
+---
+
+FLUX.2 \[pro] is an advanced text-to-image model from Black Forest Labs, available through Starrise AI. It supports up to 4MP resolution and multi-reference-image consistency. The API uses **synchronous calls** — it directly returns Base64-encoded image data.
+
+## Key Capabilities
+
+* **Text-to-image** — Generate images from text descriptions
+* **High resolution** — supports up to 4MP output resolution
+* **Reproducible** — Use `seed` for deterministic generation
+* **Format options** — supports `jpeg` or `png` output
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/images/generations \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "flux-2-pro",
+      "prompt": "A cute baby polar bear",
+      "size": "1024x1024"
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  response = requests.post(
+      "https://ai.alad.com/v1/images/generations",
+      headers={"Authorization": "Bearer YOUR_API_KEY"},
+      json={
+          "model": "flux-2-pro",
+          "prompt": "A cute baby polar bear",
+          "size": "1024x1024"
+      }
+  )
+
+  result = response.json()
+  # result["data"][0]["b64_json"] contains the Base64-encoded image
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter       | Type    | Required | Description                                              |
+| --------------- | ------- | -------- | -------------------------------------------------------- |
+| `model`         | string  | Yes      | Fixed value: `flux-2-pro`                                |
+| `prompt`        | string  | Yes      | Text description for the image                           |
+| `n`             | integer | No       | Number of images to generate (1–4), default `1`          |
+| `size`          | string  | No       | Output resolution, e.g. `1024x1024`, supports up to 4MP |
+| `output_format` | string  | No       | `jpeg` or `png`                                         |
+| `seed`          | integer | No       | Random seed for reproducibility                          |
+
+## Response Fields
+
+| Field             | Description                     |
+| ----------------- | ------------------------------- |
+| `data[].b64_json` | Base64-encoded image data       |
+| `created`         | Creation timestamp              |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/blackforestlabs/flux-2-pro">
+  View the interactive API Playground for FLUX.2 \[pro].
+</Card>

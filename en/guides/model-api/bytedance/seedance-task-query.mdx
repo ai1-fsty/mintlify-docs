@@ -1,0 +1,187 @@
+---
+title: "Seedance 2.0 Task Query"
+description: "Query the status and results of ByteDance Seedance 2.0 video generation tasks."
+---
+
+After creating a Seedance 2.0 video generation task, use this endpoint to poll the task status and retrieve the result when complete.
+
+## Endpoint
+
+```
+GET /v1/video/generations/{task_id}
+```
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/video/generations/asyntask_h81efT0qwtLnzyt6VENmCZ6VXSfNxE2E \
+    -H "Authorization: Bearer YOUR_API_KEY"
+  ```
+
+  ```python Python
+  import requests, time
+
+  task_id = "asyntask_h81efT0qwtLnzyt6VENmCZ6VXSfNxE2E"
+  while True:
+      r = requests.get(
+          f"https://ai.alad.com/v1/video/generations/{task_id}",
+          headers={"Authorization": "Bearer YOUR_API_KEY"}
+      ).json()
+      status = r["data"]["status"]
+      if status == "SUCCESS":
+          print("Video URL:", r["data"]["result_url"])
+          break
+      if status == "FAILURE":
+          print("Failed:", r["data"]["fail_reason"])
+          break
+      time.sleep(15)
+  ```
+</CodeGroup>
+
+## Task Status
+
+| `data.status` | Meaning | Next action |
+| ------------- | ------- | ----------- |
+| `NOT_START`   | Task received, not yet queued | Continue polling |
+| `QUEUED`      | In queue | Continue polling |
+| `IN_PROGRESS` | Processing (`progress` starts at 50% and increments) | Continue polling, recommended 15s interval |
+| `SUCCESS`     | Complete | Read `data.result_url` |
+| `FAILURE`     | Failed | Read `data.fail_reason`, platform automatically refunds |
+
+Video generation takes approximately 1–5 minutes. `result_url` is valid for **24 hours** — download or save immediately.
+
+## Top-Level Response Fields
+
+| Field | Type | Description |
+| ----- | ---- | ----------- |
+| `data.task_id` | string | Platform task ID (format `asyntask_xxx`) |
+| `data.action` | string | Task subtype: `generate`, `referenceGenerate`, `firstTailGenerate`, `omniGenerate` |
+| `data.status` | string | Task status (see table above) |
+| `data.result_url` | string | Pre-signed download URL, **valid for 24 hours**. Omitted for failed tasks |
+| `data.original_result_url` | string | **Only returned for super-resolution tasks.** Original (pre-enhancement) video URL from upstream |
+| `data.fail_reason` | string | Error message on failure. *Legacy compatibility:* on success this field is copied from `result_url` for older clients |
+| `data.submit_time` | int64 | Submission timestamp (Unix seconds) |
+| `data.start_time` | int64 | Upstream start timestamp; `0` if not started |
+| `data.finish_time` | int64 | Completion timestamp |
+| `data.progress` | string | Progress percentage text, e.g. `"50%"`, `"100%"` |
+| `data.request_id` | string | Request tracing ID |
+| `data.data` | object | Raw upstream output (see below) |
+
+## `data.data` — Raw Upstream Output
+
+| Field | Description |
+| ----- | ----------- |
+| `content.video_url` | Generated video URL (same as outer `result_url` for normal tasks) |
+| `id` | Upstream task ID |
+| `model` | Upstream model ID |
+| `duration` | Video duration (seconds) |
+| `ratio` | Aspect ratio |
+| `resolution` | Raw upstream resolution. **For super-resolution tasks**, this is the downscaled upstream resolution; the user-perceived final resolution is in the `super_resolution` field |
+| `super_resolution` | **Only returned for super-resolution tasks.** Final resolution after upscaling (e.g. `720p`, `2k`) |
+| `framespersecond` | Frame rate |
+| `generate_audio` | Whether audio was generated |
+| `seed` | Random seed used |
+| `status` | Upstream status (`succeeded`, `failed`, `running`, etc.) |
+| `usage.completion_tokens` | Raw upstream completion tokens |
+| `usage.total_tokens` | Raw upstream total tokens |
+| `usage.super_resolution_tokens` | **Only returned for super-resolution tasks.** Token count after super-resolution multiplier, corresponding to actual billed tokens |
+
+## Success Response (Normal Task)
+
+```json
+{
+  "code": "success",
+  "message": "",
+  "data": {
+    "task_id": "asyntask_h81efT0qwtLnzyt6VENmCZ6VXSfNxE2E",
+    "action": "generate",
+    "status": "SUCCESS",
+    "result_url": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?...",
+    "fail_reason": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?...",
+    "submit_time": 1777288506,
+    "start_time": 1777288508,
+    "finish_time": 1777288800,
+    "progress": "100%",
+    "request_id": "20260427111505260254000NBdvZFoP",
+    "data": {
+      "content": {"video_url": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?..."},
+      "id": "cgt-20260427191505-9j2q7",
+      "model": "doubao-seedance-2-0-260128",
+      "duration": 5,
+      "ratio": "16:9",
+      "resolution": "720p",
+      "framespersecond": 24,
+      "generate_audio": true,
+      "seed": 4304,
+      "status": "succeeded",
+      "usage": {"completion_tokens": 108900, "total_tokens": 108900}
+    }
+  }
+}
+```
+
+## Success Response (Super-Resolution Task)
+
+Super-resolution models (e.g. `seedance-turbo`) use a two-stage pipeline: upstream low-resolution generation + MediaKit super-resolution enhancement. Compared to normal tasks, these additional fields are returned:
+
+```json
+{
+  "code": "success",
+  "message": "",
+  "data": {
+    "task_id": "asyntask_2cEAvaCpERzvSo7wfCCPZmNlGx8cjnu4",
+    "action": "generate",
+    "status": "SUCCESS",
+    "result_url": "https://...vod.cn-north-1.volcvideo.com/...?preview=1&auth_key=...",
+    "original_result_url": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?...",
+    "fail_reason": "https://...vod.cn-north-1.volcvideo.com/...?preview=1&auth_key=...",
+    "submit_time": 1777288507,
+    "start_time": 1777288509,
+    "finish_time": 1777288834,
+    "progress": "100%",
+    "request_id": "20260427111507187625000wErxKeB6",
+    "data": {
+      "content": {"video_url": "https://ark-acg-cn-beijing.tos-cn-beijing.volces.com/...mp4?..."},
+      "id": "cgt-20260427191507-f5n97",
+      "duration": 5,
+      "ratio": "16:9",
+      "resolution": "480p",
+      "super_resolution": "720p",
+      "usage": {
+        "completion_tokens": 50638,
+        "total_tokens": 50638,
+        "super_resolution_tokens": 114441
+      }
+    }
+  }
+}
+```
+
+> Note that `data.resolution = "480p"` is the raw upstream value (the system downscales the user-requested 720p to 480p when sending to upstream to save costs); `data.super_resolution = "720p"` is the final resolution perceived by the user.
+
+## Failure Response
+
+```json
+{
+  "code": "success",
+  "message": "",
+  "data": {
+    "task_id": "asyntask_xxx",
+    "action": "generate",
+    "status": "FAILURE",
+    "fail_reason": "task failed, code: InvalidParameter, message: img_url must be set for image to video method",
+    "submit_time": 1775802896,
+    "start_time": 0,
+    "finish_time": 1775802902,
+    "progress": "100%",
+    "request_id": "..."
+  }
+}
+```
+
+The platform **automatically refunds** the pre-deducted quota — no action required from the caller.
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/bytedance/seedance-task-query">
+  View the interactive API Playground for Seedance 2.0 Task Query.
+</Card>

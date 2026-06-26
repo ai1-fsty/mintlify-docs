@@ -1,0 +1,106 @@
+---
+title: "Sora 2"
+description: "OpenAI Sora 2 video generation model. Generate videos from text prompts and reference images."
+---
+
+Sora 2 is OpenAI's video generation model, available through the Starrise AI API. It supports text-to-video, image-to-video (first-frame reference), and video remixing.
+
+## Key Capabilities
+
+* **Text-to-video** — Generate videos from natural language descriptions
+* **Image-to-video** — Use a reference image as the first frame
+* **Video remixing** — Reuse the structure, motion, and framing from a previous video
+* **Flexible duration** — 4, 8, or 12 seconds
+* **Multiple resolutions** — Portrait (720x1280), landscape (1280x720), and more
+
+## Workflow
+
+The Sora 2 API is asynchronous. Follow these steps:
+
+1. **Create task** — `POST /v1/videos`
+2. **Query status** — `GET /v1/videos/{id}` (poll until `status` is `completed`)
+3. **Download video** — `GET /v1/videos/{id}/content`
+
+## Quick Example
+
+### Step 1: Create Task
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/videos \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -F "model=sora-2" \
+    -F "prompt=A cat walking through a sunflower field at golden sunset" \
+    -F "seconds=12" \
+    -F "size=1280x720"
+  ```
+
+  ```python Python
+  import requests
+
+  response = requests.post(
+      "https://ai.alad.com/v1/videos",
+      headers={"Authorization": "Bearer YOUR_API_KEY"},
+      data={
+          "model": "sora-2",
+          "prompt": "A cat walking through a sunflower field at golden sunset",
+          "seconds": "12",
+          "size": "1280x720"
+      }
+  )
+
+  task = response.json()
+  print(f"Task ID: {task['id']}")
+  ```
+</CodeGroup>
+
+### Step 2: Query Status
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/videos/video_69b131ea03548190925a6a06febf993b \
+    -H "Authorization: Bearer YOUR_API_KEY"
+  ```
+
+  ```python Python
+  status = requests.get(
+      f"https://ai.alad.com/v1/videos/{task['id']}",
+      headers={"Authorization": "Bearer YOUR_API_KEY"}
+  ).json()
+
+  print(f"Status: {status['status']}, Progress: {status['progress']}")
+  ```
+</CodeGroup>
+
+### Step 3: Download Video
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/videos/video_69b131ea03548190925a6a06febf993b/content \
+    -H "Authorization: Bearer YOUR_API_KEY"
+  ```
+
+  ```python Python
+  result = requests.get(
+      f"https://ai.alad.com/v1/videos/{task['id']}/content",
+      headers={"Authorization": "Bearer YOUR_API_KEY"}
+  ).json()
+
+  print(f"Video URL: {result['video_url']}")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ----------------- | ------ | -- | ------------------------------------------------------------ |
+| `model` | string | Yes | Must be `sora-2` |
+| `prompt` | string | Yes | Natural language description of the video. Include shot type, subject, action, scene, and lighting. Keep to a single purpose for best results. |
+| `seconds` | string | No | `4`, `8`, `12`. Default: `4` |
+| `size` | string | No | `720x1280`, `1280x720`, `1024x1792`, `1792x1024`. Default: `720x1280` |
+| `input_reference` | file | No | Reference image for the first frame. Accepts image/jpeg, image/png, image/webp. |
+| `remix_video_id` | string | No | ID of a completed video to reuse its structure, motion, and framing. |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/openai/sora-2">
+  View the interactive API Playground for Sora 2.
+</Card>

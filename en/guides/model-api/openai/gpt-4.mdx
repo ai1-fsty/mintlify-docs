@@ -1,0 +1,83 @@
+---
+title: "GPT-4"
+description: "Call OpenAI GPT-4 via OpenAI-compatible interface — powerful, reliable, ideal for complex tasks."
+---
+
+GPT-4 is OpenAI's large multimodal model, available through Starrise AI via OpenAI-compatible interface. It excels at complex reasoning, coding, writing, and analysis tasks.
+
+## Key Capabilities
+
+* **OpenAI-compatible** — Drop-in replacement for the OpenAI SDK, no other code changes needed
+* **Long context** — Supports large document processing and multi-turn conversations
+* **Streaming** — Real-time token streaming via SSE
+* **Strong reasoning** — Ideal for complex multi-step tasks
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/chat/completions \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "gpt-4",
+      "messages": [
+        { "role": "user", "content": "Explain quantum entanglement in simple terms." }
+      ]
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="gpt-4",
+      messages=[
+          {"role": "user", "content": "Explain quantum entanglement in simple terms."}
+      ]
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```python Streaming
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  stream = client.chat.completions.create(
+      model="gpt-4",
+      messages=[
+          {"role": "user", "content": "Write a short poem about the ocean."}
+      ],
+      stream=True
+  )
+
+  for chunk in stream:
+      print(chunk.choices[0].delta.content or "", end="")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ------------- | -------------- | -- | ------------------------ |
+| `model` | string | Yes | Fixed value: `gpt-4` |
+| `messages` | array | Yes | Array of `{ role, content }` objects |
+| `max_tokens` | integer | No | Maximum number of tokens to generate |
+| `temperature` | float | No | `0`–`2`, controls randomness, default `1` |
+| `stream` | boolean | No | Enable SSE streaming, default `false` |
+| `top_p` | float | No | Nucleus sampling threshold, default `1` |
+| `stop` | string / array | No | Sequences where generation stops |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/openai/gpt-4">
+  View the interactive API Playground for GPT-4.
+</Card>

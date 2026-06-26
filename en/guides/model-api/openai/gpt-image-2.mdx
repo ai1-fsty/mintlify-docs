@@ -1,0 +1,177 @@
+---
+title: "GPT Image 2"
+description: "OpenAI GPT Image 2 image generation model. Next-generation autoregressive + reasoning hybrid architecture, supporting flexible resolution up to 4K with near-perfect text rendering."
+---
+
+GPT Image 2 is OpenAI's next-generation image generation model, available through the Starrise AI API. Built on an autoregressive + reasoning hybrid architecture, it supports native 2K resolution, near-perfect text rendering (~99% character-level accuracy across 12+ languages), and excellent multi-object scene composition.
+
+## Key Capabilities
+
+* **Text-to-image** — Generate images from natural language descriptions
+* **Image editing** — Edit existing images using text prompts via `/v1/images/edits`
+* **Flexible resolution** — Supports arbitrary custom dimensions up to 4K (3840px), sides must be multiples of 16
+* **Precise text rendering** — ~99% character-level accuracy across 12+ languages
+* **Multi-object composition** — Complex scenes without occlusion or misalignment
+* **Multi-style** — Photorealistic, illustration, anime, vector, 3D, data visualization
+
+> For both `/v1/images/generations` and `/v1/images/edits`, **`n` supports 1–10, default 1**. **Requires selecting the Direct group in the console.**
+
+## Output Specs
+
+| Property | Values |
+| -- | ------------------------------------------ |
+| Size | Flexible resolution (e.g., 1024x1024, 2048x2048, 3840x2160) |
+| Size constraints | Sides: multiples of 16; aspect ratio ≤ 3:1; total pixels 655,360–8,294,400 |
+| Quality | low, medium, high |
+| Output format | png, jpeg |
+| Input format (edit endpoint) | png, jpeg |
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/images/generations \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "gpt-image-2",
+      "prompt": "A futuristic city skyline at sunset with flying cars in the sky",
+      "size": "2048x2048",
+      "quality": "high"
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.images.generate(
+      model="gpt-image-2",
+      prompt="A futuristic city skyline at sunset with flying cars in the sky",
+      size="2048x2048",
+      quality="high"
+  )
+
+  print(response.data[0].b64_json[:100])
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| -------------------- | ------- | -- | ------------------------------------------------------------------------------------- |
+| `model` | string | Yes | Must be `gpt-image-2` |
+| `prompt` | string | Yes | Image description text |
+| `n` | integer | No | Number of images to generate (1–10), default `1`. **Requires selecting the Direct group in the console.** |
+| `size` | string | No | `{width}x{height}` format; sides must be multiples of 16; aspect ratio ≤ 3:1; total pixels 655,360–8,294,400; max single side 3,840px. Default `1024x1024` |
+| `quality` | string | No | `low`, `medium`, `high`, default `medium` |
+| `output_format` | string | No | `png`, `jpeg`, default `png` |
+| `moderation` | string | No | `auto` or `low`, default `auto` |
+| `output_compression` | integer | No | Compression level for jpeg format (0–100) |
+
+## Image Editing
+
+Edit existing images via `POST /v1/images/edits`. Request body uses multipart/form-data; images are uploaded as files.
+
+**Up to 16 input images per request** (`image[]`).
+
+### Input Image Formats
+
+Supported formats: **PNG, JPEG**. Images must be submitted via **multipart/form-data file upload**.
+
+Two available model IDs:
+
+* `gpt-image-2` — Official model
+* `gpt-image-2-c` — Cost-effective version (supports `response_format`)
+
+> **Note:** When using `gpt-image-2-c`, selecting higher quality may affect stable output for `n` images. For stable multi-image generation, lower quality is recommended.
+
+<CodeGroup>
+  ```bash Single image
+  curl https://ai.alad.com/v1/images/edits \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -F "image=@/path/to/source.jpeg" \
+    -F model="gpt-image-2" \
+    -F prompt="Replace the background with an ocean sunset" \
+    -F n=1 \
+    -F size="1024x1024"
+  ```
+
+  ```bash Multiple images (up to 16)
+  curl https://ai.alad.com/v1/images/edits \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -F "image[]=@/path/to/image1.png" \
+    -F "image[]=@/path/to/image2.png" \
+    -F "image[]=@/path/to/image3.png" \
+    -F model="gpt-image-2" \
+    -F prompt="Combine the items from these reference images into a gift basket" \
+    -F size="1024x1024"
+  ```
+</CodeGroup>
+
+### Edit Endpoint Parameters
+
+| Parameter | Type | Required | Description |
+| -------------------- | ------- | --- | -------------------------------------------------------------------------- |
+| `image` | file | Yes | Single source image (PNG or JPEG, multipart upload) |
+| `image[]` | file array | Yes\* | Multiple source images, up to **16** (PNG or JPEG). Use instead of `image` for multiple images |
+| `mask` | file | No | Mask image with Alpha channel, same format and dimensions as source (< 50MB). When using multiple images, the mask applies to the first image. **Requires selecting the Direct group in the console.** |
+| `model` | string | Yes | `gpt-image-2` or `gpt-image-2-c` |
+| `prompt` | string | Yes | Edit instruction text |
+| `n` | integer | No | Number of images to return (1–10), default `1`. **Requires selecting the Direct group in the console.** |
+| `size` | string | No | `{width}x{height}`, default `1024x1024` |
+| `output_format` | string | No | `png`, `jpeg`, default `png` |
+| `output_compression` | integer | No | Compression level for jpeg format (0–100) |
+| `response_format` | string | No | `url`. **Only supported by `gpt-image-2-c`.** Default `url` |
+
+> `image` and `image[]` are mutually exclusive and cannot be used together.
+
+### Mask Editing
+
+Provide a mask image with an Alpha channel to control which regions of the source image are edited. Pixels where Alpha is white (opaque) are preserved; pixels where Alpha is black (transparent) will be edited.
+
+Requirements:
+
+* Mask must contain an **Alpha channel**
+* Must match the source image in **format and dimensions exactly**
+* File size limit: < 50MB
+
+> Mask editing and the `n` parameter **both require selecting the Direct group in the console.**
+
+```bash cURL
+curl https://ai.alad.com/v1/images/edits \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F image=@/path/to/source.jpeg \
+  -F mask=@/path/to/mask.png \
+  -F model="gpt-image-2" \
+  -F prompt="Replace the background with a futuristic cityscape" \
+  -F n=1 \
+  -F size="2048x2048"
+```
+
+If the mask is a black-and-white image without an Alpha channel, convert it first:
+
+```python Python
+from PIL import Image
+import numpy as np
+
+img = Image.open("bw_mask.png").convert("L")
+alpha = np.array(img)
+rgba = np.zeros((*alpha.shape, 4), dtype=np.uint8)
+rgba[alpha > 0] = [255, 255, 255, 255]
+Image.fromarray(rgba).save("mask.png")
+```
+
+<CardGroup cols={2}>
+  <Card title="Generation API Reference" icon="code" href="/en/api-reference/model-api/openai/gpt-image-2">
+    Interactive Playground for `POST /v1/images/generations`.
+  </Card>
+
+  <Card title="Edit API Reference" icon="pen-to-square" href="/en/api-reference/model-api/openai/gpt-image-2-edit">
+    Interactive Playground for `POST /v1/images/edits`.
+  </Card>
+</CardGroup>

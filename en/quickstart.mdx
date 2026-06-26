@@ -1,0 +1,87 @@
+---
+title: "Quick Start"
+description: "Make your first Starrise AI API call in minutes."
+---
+
+Starrise AI provides a unified API for calling AI models from multiple providers, including chat, image generation, and video generation. This guide helps you quickly make your first API call.
+
+## Three Steps to Get Started
+
+### Step 1: Create an Account
+
+Visit [ai.alad.com](https://ai.alad.com) to register your account.
+
+### Step 2: Get Your API Key
+
+Go to the [Console](https://ai.alad.com/console/token) to generate your API key. Keep it safe — you'll need it to authenticate every request.
+
+### Step 3: Make Your First API Call
+
+Use your API key to call a chat model. The example below calls Claude 3.5 Sonnet via the OpenAI-compatible interface:
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/chat/completions \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "claude-3-5-sonnet",
+      "messages": [
+        {
+          "role": "user",
+          "content": "Hello!"
+        }
+      ]
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="claude-3-5-sonnet",
+      messages=[
+          {"role": "user", "content": "Hello!"}
+      ]
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```javascript Node.js
+  import OpenAI from "openai";
+
+  const client = new OpenAI({
+    apiKey: "YOUR_API_KEY",
+    baseURL: "https://ai.alad.com/v1",
+  });
+
+  const response = await client.chat.completions.create({
+    model: "claude-3-5-sonnet",
+    messages: [{ role: "user", content: "Hello!" }],
+  });
+
+  console.log(response.choices[0].message.content);
+  ```
+</CodeGroup>
+
+<Warning>
+  **Configure your channel first.** Different models correspond to different channels. You must enable the corresponding channel in the console before you can successfully call that model. Go to the [Console](https://ai.alad.com/console) to confirm channels are enabled.
+</Warning>
+
+## Next Steps
+
+<Columns cols={2}>
+  <Card title="API Reference" icon="code" href="/en/api-reference/introduction">
+    Authentication, Base URL, and error codes.
+  </Card>
+
+  <Card title="Model API" icon="microchip-ai" href="/en/api-reference/introduction">
+    Browse all available models by provider.
+  </Card>
+</Columns>

@@ -1,0 +1,85 @@
+---
+title: "GPT-5 Nano"
+description: "OpenAI GPT-5 Nano — ultra-lightweight, low-cost version of GPT-5."
+---
+
+GPT-5 Nano is available through Starrise AI via OpenAI-compatible interface.
+
+## Key Capabilities
+
+* **OpenAI-compatible** — Drop-in replacement for the OpenAI SDK, no other code changes needed
+* **Streaming** — Real-time token streaming via SSE
+* **Tool calling** — Supports function calling and tool use
+* **Flexible output** — Supports JSON mode and structured outputs
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/chat/completions \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "gpt-5-nano",
+      "messages": [
+        { "role": "user", "content": "Explain quantum entanglement in simple terms." }
+      ]
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="gpt-5-nano",
+      messages=[
+          {"role": "user", "content": "Explain quantum entanglement in simple terms."}
+      ]
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```python Streaming
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  stream = client.chat.completions.create(
+      model="gpt-5-nano",
+      messages=[
+          {"role": "user", "content": "Write a short poem about the ocean."}
+      ],
+      stream=True
+  )
+
+  for chunk in stream:
+      print(chunk.choices[0].delta.content or "", end="")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ----------------- | -------------- | -- | ------------------------ |
+| `model` | string | Yes | Fixed value: `gpt-5-nano` |
+| `messages` | array | Yes | Array of `{ role, content }` objects |
+| `max_tokens` | integer | No | Maximum number of tokens to generate |
+| `temperature` | float | No | `0`–`2`, controls randomness, default `1` |
+| `stream` | boolean | No | Enable SSE streaming, default `false` |
+| `top_p` | float | No | Nucleus sampling threshold, default `1` |
+| `stop` | string / array | No | Sequences where generation stops |
+| `tools` | array | No | List of tools the model can call |
+| `response_format` | object | No | Specify output format (e.g., JSON mode) |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/openai/gpt-5-nano">
+  View the interactive API Playground for GPT-5 Nano.
+</Card>

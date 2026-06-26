@@ -1,0 +1,34 @@
+---
+title: "FAQ"
+description: "Frequently asked questions about Starrise AI."
+---
+
+<AccordionGroup>
+  <Accordion title="What is Starrise AI?">
+    Starrise AI is a unified AI API platform that gives developers access to models from multiple providers — including chat, image generation, and video generation — through a single API key and consistent interface.
+  </Accordion>
+
+  <Accordion title="How do I get an API key?">
+    Register at [ai.alad.com](https://ai.alad.com), then go to the [Console](https://ai.alad.com/console/token) to create your API key.
+  </Accordion>
+
+  <Accordion title="Is Starrise AI compatible with the OpenAI SDK?">
+    Yes. Chat models fully conform to the OpenAI API specification. Just change `base_url` to `https://ai.alad.com/v1` — no other code changes are needed.
+  </Accordion>
+
+  <Accordion title="How does billing work?">
+    Starrise AI uses a prepaid credit system. Credits are deducted in real time when API calls are made. Chat models are billed per token; image and video generation models are billed per generation. Go to the [Top Up page](https://ai.alad.com/console/topup) to add credits.
+  </Accordion>
+
+  <Accordion title="What happens when I run out of credits?">
+    API calls will return a `402 Payment Required` error. Top up at the [Console](https://ai.alad.com/console/topup) to resume usage.
+  </Accordion>
+
+  <Accordion title="Which models are supported?">
+    Starrise AI supports models from multiple providers including Anthropic, ByteDance, and more. Browse the full list in the [Model API](/en/guides/model-api/bytedance/seedance-2-0) section.
+  </Accordion>
+
+  <Accordion title="How do I generate a video with Seedance 2.0?">
+    Video generation is an asynchronous process. Submit a request to `POST /v1/video/generations`, then poll `GET /v1/video/generations/{task_id}` until the status becomes `succeeded`. See the [Seedance 2.0 guide](/en/guides/model-api/bytedance/seedance-2-0) for a complete example.
+  </Accordion>
+</AccordionGroup>

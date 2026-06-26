@@ -1,0 +1,93 @@
+---
+title: "Using with DB-GPT"
+description: "Integrate Starrise AI models with DB-GPT — an open-source AI-native data application development framework."
+---
+
+## 1. About DB-GPT
+
+[DB-GPT](https://github.com/eosphoros-ai/DB-GPT) is an open-source AI-native data application development framework that provides capabilities including multi-model management, Text2SQL optimization, a RAG framework, and Multi-Agent collaboration.
+
+## 2. Get Your API Key
+
+Open the [Starrise AI Console](https://ai.alad.com/) and register an account (or log in if you already have one). After registering, go to **API Keys**, create a new API key, and copy it for later use.
+
+## 3. Deploy DB-GPT
+
+### 3.1 Clone the DB-GPT Repository
+
+```bash
+git clone https://github.com/eosphoros-ai/DB-GPT.git
+cd DB-GPT
+```
+
+### 3.2 Create a Virtual Environment and Install Dependencies
+
+```bash
+conda create -n dbgpt_env python=3.10
+conda activate dbgpt_env
+pip install -e ".[proxy]"
+```
+
+### 3.3 Configure Environment Variables
+
+```bash
+cp .env.template .env
+```
+
+Edit the `.env` file to configure the Starrise AI model:
+
+```ini
+# Use Starrise AI as the proxy model
+LLM_MODEL=proxy_openai
+PROXY_OPENAI_API_BASE=https://ai.alad.com/v1
+PROXY_OPENAI_API_KEY={your-starrise-api-key}
+PROXY_OPENAI_BACKEND=gpt-4o
+
+# Embedding model configuration
+EMBEDDING_MODEL=proxy_http_openapi
+PROXY_HTTP_OPENAPI_PROXY_SERVER_URL=https://ai.alad.com/v1/embeddings
+PROXY_HTTP_OPENAPI_PROXY_API_KEY={your-starrise-api-key}
+PROXY_HTTP_OPENAPI_PROXY_BACKEND=text-embedding-3-small
+```
+
+### 3.4 Start the DB-GPT Service
+
+```bash
+dbgpt start webserver --port 5670
+```
+
+Open [http://127.0.0.1:5670/](http://127.0.0.1:5670/) in your browser to access the interface.
+
+## 4. Using Starrise AI Models via the DB-GPT Python SDK
+
+### 4.1 Installation
+
+```bash
+pip install "dbgpt>=0.6.3rc2" openai
+```
+
+### 4.2 Using Starrise AI LLMs
+
+```python
+from openai import OpenAI
+
+client = OpenAI(
+    api_key="{your-starrise-api-key}",
+    base_url="https://ai.alad.com/v1"
+)
+
+response = client.chat.completions.create(
+    model="gpt-4o",
+    messages=[
+        {"role": "system", "content": "You are a helpful AI assistant."},
+        {"role": "user", "content": "Hello"}
+    ]
+)
+print(response.choices[0].message.content)
+```
+
+## 5. Getting Started Guide
+
+1. **Add a Data Source** — Choose a database type (e.g. MySQL, PostgreSQL) and connect.
+2. **Select ChatData Conversation Type** — Use natural language to interact with your data.
+3. **Start Data Conversation** — Select a Starrise AI model and the corresponding database to begin your data dialogue.

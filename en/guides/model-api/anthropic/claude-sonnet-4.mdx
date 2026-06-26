@@ -1,0 +1,85 @@
+---
+title: "Claude Sonnet 4"
+description: "Call Anthropic's Claude Sonnet 4 via OpenAI-compatible interface — the optimal balance of intelligence and speed, ideal for everyday coding and complex tasks."
+---
+
+Claude Sonnet 4 is Anthropic's best coding model, available through Starrise AI via OpenAI-compatible interface. It achieves the ideal balance of intelligence, speed, and cost, excelling at software engineering, complex reasoning, and everyday development tasks.
+
+## Key Capabilities
+
+* **OpenAI-compatible** — Drop-in replacement for the OpenAI SDK, no other code changes needed
+* **Best coding model** — Top-performing for code generation, debugging, and refactoring
+* **Fast and efficient** — Lower latency and cost compared to Opus models
+* **Powerful reasoning** — Expert at multi-step problem solving and analysis
+* **Long context** — Supports large document processing and multi-turn conversations
+* **Streaming** — Real-time token streaming via SSE
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/messages \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "claude-sonnet-4-20250514",
+      "messages": [
+        { "role": "user", "content": "Write a Python function to merge two sorted arrays." }
+      ]
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="claude-sonnet-4-20250514",
+      messages=[
+          {"role": "user", "content": "Write a Python function to merge two sorted arrays."}
+      ]
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```python Streaming
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  stream = client.chat.completions.create(
+      model="claude-sonnet-4-20250514",
+      messages=[
+          {"role": "user", "content": "Explain the difference between asynchronous and synchronous programming."}
+      ],
+      stream=True
+  )
+
+  for chunk in stream:
+      print(chunk.choices[0].delta.content or "", end="")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ------------- | -------------- | -- | ------------------------------ |
+| `model` | string | Yes | Fixed value: `claude-sonnet-4-20250514` |
+| `messages` | array | Yes | Array of `{ role, content }` objects |
+| `max_tokens` | integer | No | Maximum number of tokens to generate |
+| `temperature` | float | No | `0`–`2`, controls randomness, default `1` |
+| `stream` | boolean | No | Enable SSE streaming, default `false` |
+| `top_p` | float | No | Nucleus sampling threshold, default `1` |
+| `stop` | string / array | No | Sequences where generation stops |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/introduction">
+  View the interactive API Playground for Claude Sonnet 4.
+</Card>

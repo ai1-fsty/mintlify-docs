@@ -1,0 +1,76 @@
+---
+title: "GPT Image 1.5"
+description: "OpenAI GPT Image 1.5 image generation model. Generate and edit images with faster speed and higher precision."
+---
+
+GPT Image 1.5 is OpenAI's latest image generation model based on the GPT-5 architecture, available through the Starrise AI API. It's 4× faster and 20% cheaper than GPT Image 1, with significantly improved text rendering and editing precision.
+
+## Key Capabilities
+
+* **Text-to-image** — Generate images from natural language descriptions
+* **Image editing** — Precisely edit existing images
+* **Enhanced text** — Dense text, small fonts, infographics, and UI mockups
+* **World knowledge** — Context-aware with built-in reasoning capabilities
+* **Transparent background** — Supports generating images with transparent backgrounds
+* **Batch generation** — Generate up to 4 images per request
+
+## Output Specs
+
+| Property | Values |
+| -- | ---------------------------------- |
+| Size | 1024x1024, 1536x1024, 1024x1536, auto |
+| Quality | low, medium, high |
+| Format | png, webp, jpeg |
+| Background | transparent, opaque |
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/images/generations \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "gpt-image-1.5",
+      "prompt": "A cute cat floating in the Milky Way wearing a spacesuit",
+      "size": "1024x1024",
+      "quality": "high"
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.images.generate(
+      model="gpt-image-1.5",
+      prompt="A cute cat floating in the Milky Way wearing a spacesuit",
+      size="1024x1024",
+      quality="high"
+  )
+
+  print(response.data[0].b64_json[:100])
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| -------------------- | ------- | -- | ---------------------------------------------------- |
+| `model` | string | Yes | Must be `gpt-image-1.5` |
+| `prompt` | string | Yes | Image description text |
+| `n` | integer | No | Number of images to generate (1–4), default `1` |
+| `size` | string | No | `1024x1024`, `1536x1024`, `1024x1536`, `auto`, default `auto` |
+| `quality` | string | No | `low`, `medium`, `high`, default `medium` |
+| `output_format` | string | No | `png`, `webp`, `jpeg`, default `png` |
+| `background` | string | No | `transparent` or `opaque`, default `opaque` |
+| `moderation` | string | No | `auto` or `low`, default `auto` |
+| `output_compression` | integer | No | Compression level for jpeg/webp format (0–100) |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/openai/gpt-image-1-5">
+  View the interactive API Playground for GPT Image 1.5.
+</Card>

@@ -1,0 +1,98 @@
+---
+title: "HappyHorse 1.0 Video Edit"
+description: "Alibaba DashScope HappyHorse 1.0 video editing model. Edit input videos using reference images."
+---
+
+HappyHorse 1.0 Video Edit edits an input video based on reference images and text prompts. Uses an **asynchronous task interface** — submit a task and poll until completion.
+
+> ⚠️ **Native format required.** Because video-edit requires both "video + reference image" simultaneously, the unified fields cannot express this, so you **must** use the DashScope native-style request body (`input.media[]` array).
+
+## Key Capabilities
+
+* **Video editing** — Modify objects, clothing, or scenes in existing videos
+* **Resolution** — 720P / 1080P
+* **Watermark control** — Optionally disable the bottom-right watermark
+
+> ⚠️ The output video duration is determined by the **input video length**. The `duration` parameter may not take effect for video-edit.
+
+## Workflow
+
+```
+1. POST /v1/video/generations  →  task_id   (must use input.media[] format)
+2. GET  /v1/video/generations/{task_id}  →  Poll until SUCCESS / FAILURE
+3. Read data.result_url  (valid for 24 hours)
+```
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/video/generations \
+    -H 'Authorization: Bearer YOUR_API_KEY' \
+    -H 'Content-Type: application/json' \
+    -d '{
+      "model": "happyhorse-1.0-video-edit",
+      "input": {
+        "prompt": "Make the character in the video wear the striped sweater shown in the image",
+        "media": [
+          {"type": "video", "url": "https://example.com/source.mp4"},
+          {"type": "reference_image", "url": "https://example.com/cloth.webp"}
+        ]
+      },
+      "parameters": {
+        "resolution": "720P",
+        "watermark": false
+      }
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  headers = {"Authorization": "Bearer YOUR_API_KEY"}
+
+  resp = requests.post(
+      "https://ai.alad.com/v1/video/generations",
+      headers=headers,
+      json={
+          "model": "happyhorse-1.0-video-edit",
+          "input": {
+              "prompt": "Make the character in the video wear the striped sweater shown in the image",
+              "media": [
+                  {"type": "video", "url": "https://example.com/source.mp4"},
+                  {"type": "reference_image", "url": "https://example.com/cloth.webp"},
+              ],
+          },
+          "parameters": {"resolution": "720P", "watermark": False}
+      }
+  )
+  task_id = resp.json()["task_id"]
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter               | Type    | Required | Description                                                          |
+| ----------------------- | ------- | -------- | -------------------------------------------------------------------- |
+| `model`                 | string  | Yes      | Must be `happyhorse-1.0-video-edit`                                  |
+| `input.prompt`          | string  | Yes      | Editing description text                                             |
+| `input.media`           | array   | Yes      | Exactly 2 elements: 1 `video` + 1 `reference_image`                 |
+| `input.media[].type`    | string  | Yes      | `video` or `reference_image`                                         |
+| `input.media[].url`     | string  | Yes      | Public URL of the video or reference image                           |
+| `parameters.resolution` | string  | No       | `720P` / `1080P`, default `1080P`                                    |
+| `parameters.watermark`  | boolean | No       | Default `true`, set to `false` to disable watermark                  |
+| `parameters.seed`       | integer | No       | Random seed `[0, 2147483647]`                                        |
+
+## Billing
+
+Billed by **resolution tier × billing duration**. When `duration` is not specified, defaults to 5 seconds. Failed tasks are automatically refunded.
+
+<CardGroup cols={2}>
+  <Card title="API Reference" icon="code" href="/en/api-reference/model-api/alibaba/happyhorse-1.0-video-edit">
+    HappyHorse 1.0 Video Edit interactive Playground.
+  </Card>
+
+  <Card title="Task Query" icon="magnifying-glass" href="/en/guides/model-api/alibaba/happyhorse-task-query">
+    Poll task status and retrieve the final video URL.
+  </Card>
+</CardGroup>

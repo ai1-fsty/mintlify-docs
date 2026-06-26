@@ -1,0 +1,74 @@
+---
+title: "FLUX.2 [flex]"
+description: "Call the Black Forest Labs FLUX.2 [flex] text-to-image model via the Starrise AI API."
+---
+
+FLUX.2 \[flex] is a highly configurable text-to-image model from Black Forest Labs, available through Starrise AI. It offers fine-grained control over sampling steps and guidance scale, ideal for design professionals. The API uses **synchronous calls** — it directly returns Base64-encoded image data.
+
+## Key Capabilities
+
+* **Text-to-image** — Generate images from text descriptions
+* **Step control** — Adjust sampling steps (1–50) to flexibly balance speed and quality
+* **Guidance scale** — Fine-tune prompt adherence (1.5–10)
+* **High resolution** — supports up to 4MP output resolution
+* **Reproducible** — Use `seed` for deterministic generation
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/images/generations \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "flux-2-flex",
+      "prompt": "A cute baby polar bear",
+      "size": "1024x1024",
+      "inference_steps": 30,
+      "guidance_scale": 7.5
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  response = requests.post(
+      "https://ai.alad.com/v1/images/generations",
+      headers={"Authorization": "Bearer YOUR_API_KEY"},
+      json={
+          "model": "flux-2-flex",
+          "prompt": "A cute baby polar bear",
+          "size": "1024x1024",
+          "inference_steps": 30,
+          "guidance_scale": 7.5
+      }
+  )
+
+  result = response.json()
+  # result["data"][0]["b64_json"] contains the Base64-encoded image
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter         | Type    | Required | Description                                                                          |
+| ----------------- | ------- | -------- | ------------------------------------------------------------------------------------ |
+| `model`           | string  | Yes      | Fixed value: `flux-2-flex`                                                           |
+| `prompt`          | string  | Yes      | Text description for the image                                                       |
+| `n`               | integer | No       | Number of images to generate (1–4), default `1`                                     |
+| `size`            | string  | No       | Output resolution, e.g. `1024x1024`, supports up to 4MP                             |
+| `inference_steps` | integer | No       | Sampling steps (1–50). Low steps (6–20) for rapid prototyping, high (40–50) for max fidelity |
+| `guidance_scale`  | number  | No       | Guidance scale (1.5–10). Higher values produce closer adherence to the prompt        |
+| `output_format`   | string  | No       | `jpeg` or `png`                                                                     |
+| `seed`            | integer | No       | Random seed for reproducibility                                                      |
+
+## Response Fields
+
+| Field             | Description                     |
+| ----------------- | ------------------------------- |
+| `data[].b64_json` | Base64-encoded image data       |
+| `created`         | Creation timestamp              |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/blackforestlabs/flux-2-flex">
+  View the interactive API Playground for FLUX.2 \[flex].
+</Card>

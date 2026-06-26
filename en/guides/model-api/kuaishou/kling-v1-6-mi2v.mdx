@@ -1,0 +1,78 @@
+---
+title: "Kling 1.6 Multi-Image-to-Video"
+description: "Kuaishou Kling 1.6 multi-image-to-video model. Generate videos from up to 4 reference images."
+---
+
+Kling 1.6 Multi-Image-to-Video is a multi-image-to-video model in Kuaishou's Kling series, available through the Starrise AI API. Upload up to 4 reference images and combine them with a text prompt to generate a coherent video featuring all referenced subjects.
+
+## Key Capabilities
+
+* **Multi-image input** — Use up to 4 reference images as character/scene sources
+* **Text guidance** — Combine images and text prompts to control video narrative
+* **Flexible duration** — Generate 5-second or 10-second videos
+* **Aspect ratio** — Supports 16:9, 9:16, and 1:1 output formats
+* **Standard & Pro modes** — Choose standard mode or high-quality pro mode
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/kling/v1/videos/multi-image2video \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model_name": "kling-v1-6",
+      "image_list": [
+        {"image": "https://example.com/person1.jpg"},
+        {"image": "https://example.com/person2.jpg"}
+      ],
+      "prompt": "Two people shake hands and smile at each other",
+      "duration": "5",
+      "mode": "std",
+      "aspect_ratio": "16:9"
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  response = requests.post(
+      "https://ai.alad.com/kling/v1/videos/multi-image2video",
+      headers={
+          "Authorization": "Bearer YOUR_API_KEY",
+          "Content-Type": "application/json"
+      },
+      json={
+          "model_name": "kling-v1-6",
+          "image_list": [
+              {"image": "https://example.com/person1.jpg"},
+              {"image": "https://example.com/person2.jpg"}
+          ],
+          "prompt": "Two people shake hands and smile at each other",
+          "duration": "5",
+          "mode": "std",
+          "aspect_ratio": "16:9"
+      }
+  )
+
+  task = response.json()
+  print(f"Task ID: {task['task_id']}")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter         | Type   | Required | Description                                                              |
+| ----------------- | ------ | -------- | ------------------------------------------------------------------------ |
+| `model_name`      | string | No       | Must be `kling-v1-6`                                                     |
+| `image_list`      | array  | Yes      | Reference images (1–4), each item format: `{"image": "url_or_base64"}`  |
+| `prompt`          | string | Yes      | Text prompt (up to 2500 characters)                                      |
+| `negative_prompt` | string | No       | Negative prompt (up to 2500 characters)                                  |
+| `mode`            | string | No       | `std` or `pro`, default `std`                                            |
+| `duration`        | string | No       | `5` or `10` seconds, default `5`                                         |
+| `aspect_ratio`    | string | No       | `16:9`, `9:16`, or `1:1`, default `16:9`                                 |
+| `callback_url`    | string | No       | Task status callback URL                                                 |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/kuaishou/kling-v1-6-mi2v">
+  View the interactive API Playground for Kling 1.6 Multi-Image-to-Video.
+</Card>

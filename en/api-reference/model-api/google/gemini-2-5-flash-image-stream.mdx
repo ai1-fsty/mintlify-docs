@@ -1,0 +1,5 @@
+---
+title: "Gemini 2.5 Flash Image (Stream)"
+description: "通过 SSE 流式模式使用 Gemini 2.5 Flash Image 生成图片。 端点返回换行分隔的 Server-Sent Events。思考 chunk（thought=true）最先推送， 随后是包含 inlineData 的图片 chunk，最后是用量统计 chunk。"
+openapi: "/en/api-reference/model-api/google/openapi/gemini-2-5-flash-image-stream/openapi.yaml POST /v1beta/models/gemini-2.5-flash-image:streamGenerateContent"
+---

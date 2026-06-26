@@ -1,0 +1,101 @@
+---
+title: "Kling Create Custom Element"
+description: "Create custom elements (characters, scenes, props, clothing, etc.) for use in Kling video generation."
+---
+
+Custom elements allow you to bind reference images to a reusable element ID for referencing in Kling video generation. Creation is an asynchronous task — after submitting, poll the query endpoint until `task_status` is `succeed`.
+
+## Key Capabilities
+
+* **Character and scene elements** — Upload front + side images to build reusable characters or backgrounds
+* **Multiple categories** — Supports character, animal, prop, clothing, scene, special effect, and more
+* **Asynchronous processing** — Creation runs in the background; use `task_id` to poll status
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/kling/v1/general/advanced-custom-elements \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "element_name": "my-character",
+      "element_description": "Main character in the video series",
+      "reference_type": "image_refer",
+      "element_image_list": {
+        "frontal_image": "https://example.com/frontal.jpg",
+        "refer_images": [
+          {"image_url": "https://example.com/side.jpg"}
+        ]
+      },
+      "tag_list": [{"tag_id": "o_102"}]
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  response = requests.post(
+      "https://ai.alad.com/kling/v1/general/advanced-custom-elements",
+      headers={
+          "Authorization": "Bearer YOUR_API_KEY",
+          "Content-Type": "application/json"
+      },
+      json={
+          "element_name": "my-character",
+          "element_description": "Main character in the video series",
+          "reference_type": "image_refer",
+          "element_image_list": {
+              "frontal_image": "https://example.com/frontal.jpg",
+              "refer_images": [
+                  {"image_url": "https://example.com/side.jpg"}
+              ]
+          },
+          "tag_list": [{"tag_id": "o_102"}]
+      }
+  )
+
+  task = response.json()
+  print(f"Task ID: {task['task_id']}")
+  ```
+</CodeGroup>
+
+## Request Parameters
+
+| Parameter                            | Type   | Required | Description                                      |
+| ------------------------------------ | ------ | -------- | ------------------------------------------------ |
+| `element_name`                       | string | ✅       | Element name                                     |
+| `element_description`                | string | ✅       | Element description                              |
+| `reference_type`                     | string | ✅       | Fixed value `image_refer`                        |
+| `element_image_list.frontal_image`   | string | ✅       | Front-facing reference image URL                 |
+| `element_image_list.refer_images`    | array  | ✅       | Array of additional reference images, each with `image_url` |
+| `tag_list`                           | array  | ✅       | Tag list, each item contains `tag_id`            |
+
+### Available tag\_id Values
+
+| tag\_id | Tag Name              |
+| ------- | --------------------- |
+| `o_101` | Trending               |
+| `o_102` | Character             |
+| `o_103` | Animal                |
+| `o_104` | Prop                  |
+| `o_105` | Clothing              |
+| `o_106` | Scene                 |
+| `o_107` | Special Effect        |
+| `o_108` | Other                 |
+
+## Response
+
+The endpoint immediately returns a `task_id`. Use [query custom element](/en/guides/model-api/kuaishou/kling-element-query) to poll until `task_status` is `succeed`.
+
+| Field            | Description                |
+| ---------------- | -------------------------- |
+| `id` / `task_id` | Task ID                    |
+| `object`         | Fixed `video`              |
+| `model`          | Fixed `kling-element`      |
+| `status`         | Initially empty            |
+| `progress`       | Progress 0–100             |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/kuaishou/kling-element-create">
+  View the interactive API documentation for Kling Create Custom Element.
+</Card>

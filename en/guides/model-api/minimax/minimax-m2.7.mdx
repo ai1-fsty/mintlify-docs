@@ -1,0 +1,86 @@
+---
+title: "MiniMax-M2.7"
+description: "Call the MiniMax-M2.7 flagship text model via the Starrise AI OpenAI-compatible API. Advanced reasoning with recursive self-improvement."
+---
+
+MiniMax-M2.7 is MiniMax's flagship text model, available through Starrise AI via an OpenAI-compatible interface. It features a 204K context window with interleaved thinking support, ideal for complex reasoning tasks.
+
+## Key Capabilities
+
+* **OpenAI-compatible** — Drop-in replacement for the OpenAI SDK, no other code changes needed
+* **204K context** — supports large document processing and multi-turn conversations
+* **Reasoning** — supports interleaved thinking for complex reasoning tasks
+* **Tool calling** — supports function/tool calls for agentic workflows
+* **Text only** — focused on text and tool calls (no image/video input)
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/chat/completions \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "MiniMax-M2.7",
+      "messages": [
+        { "role": "user", "content": "Explain quantum entanglement in simple terms." }
+      ]
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="MiniMax-M2.7",
+      messages=[
+          {"role": "user", "content": "Explain quantum entanglement in simple terms."}
+      ]
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```python Streaming
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  stream = client.chat.completions.create(
+      model="MiniMax-M2.7",
+      messages=[
+          {"role": "user", "content": "Write a short poem about the ocean."}
+      ],
+      stream=True
+  )
+
+  for chunk in stream:
+      print(chunk.choices[0].delta.content or "", end="")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter     | Type            | Required | Description                                                        |
+| ------------- | --------------- | -------- | ------------------------------------------------------------------ |
+| `model`       | string          | Yes      | Fixed value: `MiniMax-M2.7`                                        |
+| `messages`    | array           | Yes      | Array of objects `{ role, content }`. Text and tool calls only     |
+| `max_tokens`  | integer         | No       | Maximum number of tokens to generate                               |
+| `temperature` | float           | No       | `0`–`2`, controls randomness, default `1`                          |
+| `stream`      | boolean         | No       | Enable SSE streaming, default `false`                              |
+| `top_p`       | float           | No       | Nucleus sampling threshold, default `0.9`                          |
+| `stop`        | string / array  | No       | Sequences that trigger stop generation                             |
+| `tools`       | array           | No       | Tool/function definitions for agentic workflows                    |
+| `tool_choice` | string / object | No       | Tool selection strategy                                            |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/minimax/minimax-m2.7">
+  View the interactive API Playground for MiniMax-M2.7.
+</Card>

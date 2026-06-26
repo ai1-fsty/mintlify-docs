@@ -1,0 +1,107 @@
+openapi: 3.1.0
+info:
+  title: FLUX.1 Kontext [pro] — 图片编辑
+  description: 通过 Starrise AI API 调用 Black Forest Labs FLUX.1 Kontext [pro] 图片编辑模型
+  version: 1.0.0
+servers:
+  - url: https://ai.alad.com
+security:
+  - bearerAuth: []
+paths:
+  /v1/images/edits:
+    post:
+      summary: 图片编辑
+      description: >-
+        使用 FLUX.1 Kontext [pro] 编辑已有图片。使用 multipart 表单上传。接口为同步调用，直接返回 Base64
+        编码的图片数据。
+      operationId: editFlux1KontextPro
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - model
+                - image
+                - prompt
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - flux-1-kontext-pro
+                  description: 模型 ID
+                image:
+                  type: string
+                  format: binary
+                  description: 需要编辑的图片文件。
+                prompt:
+                  type: string
+                  description: 编辑指令。必须为英文。
+                  example: Change the background to a sunset beach
+                'n':
+                  type: integer
+                  minimum: 1
+                  maximum: 1
+                  default: 1
+                  description: 生成图片数量。仅支持 1。
+                size:
+                  type: string
+                  description: 输出图片尺寸，如 `1024x1024`。
+      responses:
+        '200':
+          description: 图片编辑成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ImageGenerationResponse'
+        '400':
+          description: 请求无效
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '429':
+          description: 超出速率限制
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+components:
+  schemas:
+    ImageGenerationResponse:
+      type: object
+      properties:
+        created:
+          type: integer
+          description: Unix 时间戳
+          example: 1774002799
+        data:
+          type: array
+          items:
+            type: object
+            properties:
+              b64_json:
+                type: string
+                description: Base64 编码的图片数据。
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+

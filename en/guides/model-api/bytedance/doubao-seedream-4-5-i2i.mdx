@@ -1,0 +1,78 @@
+---
+title: "Seedream 4.5 Image-to-Image"
+description: "ByteDance Seedream 4.5 image-to-image model — generate images using reference images and text prompts."
+---
+
+Seedream 4.5 Image-to-Image is an image-to-image model from ByteDance's Seedream series, available through the Starrise AI API.
+
+## Key Capabilities
+
+* **Image-to-image** — Generate images using reference images and text prompts
+* **Sequential generation** — Generate multiple images in a single request
+* **Custom size** — Flexible output dimensions
+* **Watermark control** — Optional watermark and logo configuration
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/images/generations \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "doubao-seedream-4-5-251128",
+      "prompt": "Generate images of a girl and a cow plush toy happily riding a roller coaster, covering morning, noon, and night",
+      "image": ["https://example.com/ref1.png", "https://example.com/ref2.png"],
+      "sequential_image_generation": "auto",
+      "sequential_image_generation_options": {
+        "max_images": 3
+      },
+      "size": "2K",
+      "watermark": false
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  response = requests.post(
+      "https://ai.alad.com/v1/images/generations",
+      headers={
+          "Authorization": "Bearer YOUR_API_KEY",
+          "Content-Type": "application/json"
+      },
+      json={
+          "model": "doubao-seedream-4-5-251128",
+          "prompt": "Generate images of a girl and a cow plush toy happily riding a roller coaster, covering morning, noon, and night",
+          "image": ["https://example.com/ref1.png", "https://example.com/ref2.png"],
+          "sequential_image_generation": "auto",
+          "sequential_image_generation_options": {
+              "max_images": 3
+          },
+          "size": "2K",
+          "watermark": False
+      }
+  )
+
+  task = response.json()
+  print(f"Task ID: {task['id']}")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter                             | Type    | Required | Description                                              |
+| ------------------------------------- | ------- | -------- | -------------------------------------------------------- |
+| `model`                               | string  | Yes      | Must be `doubao-seedream-4-5-251128`                     |
+| `prompt`                              | string  | Yes      | Image generation prompt                                  |
+| `image`                               | array   | Yes      | Array of reference image URLs                            |
+| `sequential_image_generation`         | string  | No       | Set to `auto` to enable batch generation                 |
+| `sequential_image_generation_options` | object  | No       | Options: `max_images` (int)                              |
+| `size`                                | string  | No       | Output image size, e.g. `1024x1024`, `2K`               |
+| `watermark`                           | boolean | No       | Default `false`                                          |
+| `seed`                                | integer | No       | Random seed                                              |
+| `logo_info`                           | object  | No       | Logo config: `add_logo`, `position`, `language`, `opacity` |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/bytedance/doubao-seedream-4-5-251128-i2i">
+  View the interactive API Playground for Seedream 4.5 Image-to-Image.
+</Card>

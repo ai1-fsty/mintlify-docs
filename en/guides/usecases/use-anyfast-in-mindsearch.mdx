@@ -1,0 +1,59 @@
+---
+title: "Using with MindSearch"
+description: "Integrate Starrise AI models with MindSearch — an open-source AI search engine."
+---
+
+## 1. Get Your API Key
+
+Open the [Starrise AI Console](https://ai.alad.com/) and register an account (or log in if you already have one). After registering, go to **API Keys**, create a new API key, click to copy it, and save it for later use.
+
+## 2. Deploy MindSearch
+
+After cloning MindSearch locally and installing the required dependencies (see the [MindSearch README](https://github.com/InternLM/MindSearch/blob/main/README.md)), edit `/path/to/MindSearch/mindsearch/models.py` and add the configuration for calling the Starrise AI API:
+
+```python
+starrise_config = dict(
+    type=GPTAPI,
+    model_type='gpt-4o',
+    key=os.environ.get('ANYFAST_API_KEY', 'YOUR ANYFAST API KEY'),
+    openai_api_base='https://ai.alad.com/v1/chat/completions',
+    meta_template=[
+        dict(role='system', api_role='system'),
+        dict(role='user', api_role='user'),
+        dict(role='assistant', api_role='assistant'),
+        dict(role='environment', api_role='system')
+    ],
+    top_p=0.8,
+    top_k=1,
+    temperature=0,
+    max_new_tokens=8192,
+    repetition_penalty=1.02,
+    stop_words=['<|im_end|>']
+)
+```
+
+After adding this configuration, you can run the relevant commands to start MindSearch.
+
+Start the backend:
+
+```bash
+# Specify the Starrise AI API key
+export ANYFAST_API_KEY=<the key you copied above>
+
+# Start
+python -m mindsearch.app --lang en --model_format starrise_config --search_engine DuckDuckGoSearch
+```
+
+Start the frontend (using Gradio as an example):
+
+```bash
+python frontend/mindsearch_gradio.py
+```
+
+## 3. Deploy to HuggingFace Space
+
+You can also choose to deploy to HuggingFace Space:
+
+* Create a new Space at [huggingface.co/new-space](https://huggingface.co/new-space) with the following settings: Gradio Template: Blank, Hardware: CPU basic.
+* After creation, go to **Settings** to set the API key.
+* Upload the MindSearch directory, `requirements.txt`, and `app.py`.

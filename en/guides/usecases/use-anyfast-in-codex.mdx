@@ -1,0 +1,41 @@
+---
+title: "Using with Codex"
+description: "Integrate Starrise AI models with Codex — an AI coding agent for the terminal."
+---
+
+## 1. Install Codex
+
+Install Codex from [Codex CLI GitHub](https://github.com/openai/codex).
+
+## 2. Configure Starrise AI
+
+In your shell profile (`.bashrc`, `.zshrc`, or `.profile`):
+
+```bash
+export OPENAI_API_KEY="sk-your-api-key-here"
+export OPENAI_BASE_URL="https://ai.alad.com/v1"
+```
+
+## 3. Apply Configuration
+
+```bash
+# For bash users
+source ~/.bashrc
+
+# For zsh users
+source ~/.zshrc
+```
+
+## 4. Start Codex
+
+```bash
+codex
+```
+
+Specify a model via the CLI:
+
+```bash
+codex --model gpt-4o
+```
+
+Once done, you're ready to use Starrise AI in Codex.

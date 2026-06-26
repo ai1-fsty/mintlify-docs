@@ -1,0 +1,64 @@
+---
+title: "Seedream 4.5 Text-to-Image"
+description: "ByteDance Seedream 4.5 text-to-image model — generate images from text prompts."
+---
+
+Seedream 4.5 Text-to-Image is a text-to-image model from ByteDance's Seedream series, available through the Starrise AI API.
+
+## Key Capabilities
+
+* **Text-to-image** — Generate images from text prompts
+* **Custom size** — Flexible output dimensions
+* **Watermark control** — Optional watermark and logo configuration
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/images/generations \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "doubao-seedream-4-5-251128",
+      "prompt": "A serene mountain landscape at sunrise, mist filling the valley",
+      "size": "1024x1024",
+      "watermark": false
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  response = requests.post(
+      "https://ai.alad.com/v1/images/generations",
+      headers={
+          "Authorization": "Bearer YOUR_API_KEY",
+          "Content-Type": "application/json"
+      },
+      json={
+          "model": "doubao-seedream-4-5-251128",
+          "prompt": "A serene mountain landscape at sunrise, mist filling the valley",
+          "size": "1024x1024",
+          "watermark": False
+      }
+  )
+
+  task = response.json()
+  print(f"Task ID: {task['id']}")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter   | Type    | Required | Description                                              |
+| ----------- | ------- | -------- | -------------------------------------------------------- |
+| `model`     | string  | Yes      | Must be `doubao-seedream-4-5-251128`                     |
+| `prompt`    | string  | Yes      | Image generation prompt                                  |
+| `size`      | string  | No       | Output image size, e.g. `1024x1024`, `2K`               |
+| `watermark` | boolean | No       | Default `false`                                          |
+| `seed`      | integer | No       | Random seed                                              |
+| `logo_info` | object  | No       | Logo config: `add_logo`, `position`, `language`, `opacity` |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/bytedance/doubao-seedream-4-5-251128-t2i">
+  View the interactive API Playground for Seedream 4.5 Text-to-Image.
+</Card>

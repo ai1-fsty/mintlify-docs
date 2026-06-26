@@ -1,0 +1,80 @@
+---
+title: "Gemini 2.0 Flash"
+description: "Call Google Gemini 2.0 Flash via Gemini API for AI image editing."
+---
+
+Gemini 2.0 Flash is Google's multimodal model with image editing capabilities, available through Starrise AI via the native Gemini API. It can edit existing images based on text instructions.
+
+## Key Capabilities
+
+* **Image editing** — Modify existing images using natural language instructions
+* **Multimodal input** — Accepts both text instructions and source images
+* **Text generation** — Also supports standard text generation tasks
+* **Efficient and flexible** — Suitable for a variety of multimodal tasks
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl "https://ai.alad.com/v1beta/models/gemini-2.0-flash:generateContent?key=YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "contents": [
+        {
+          "role": "user",
+          "parts": [
+            { "text": "Replace the background with a beach scene" },
+            { "inline_data": { "mime_type": "image/png", "data": "BASE64_DATA" } }
+          ]
+        }
+      ],
+      "generationConfig": {
+        "responseModalities": ["IMAGE"]
+      }
+    }'
+  ```
+
+  ```python Python
+  import requests
+  import base64
+
+  url = "https://ai.alad.com/v1beta/models/gemini-2.0-flash:generateContent"
+  params = {"key": "YOUR_API_KEY"}
+
+  with open("input.png", "rb") as f:
+      image_b64 = base64.b64encode(f.read()).decode()
+
+  data = {
+      "contents": [
+          {
+              "role": "user",
+              "parts": [
+                  {"text": "Replace the background with a beach scene"},
+                  {"inline_data": {"mime_type": "image/png", "data": image_b64}}
+              ]
+          }
+      ],
+      "generationConfig": {
+          "responseModalities": ["IMAGE"]
+      }
+  }
+
+  response = requests.post(url, params=params, json=data)
+  result = response.json()
+  output = result["candidates"][0]["content"]["parts"][0]["inline_data"]["data"]
+  with open("output.png", "wb") as f:
+      f.write(base64.b64decode(output))
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ------------------------------------- | ------ | -- | --------------------------------------------- |
+| `key` | string | Yes | API key (query parameter) |
+| `contents` | array | Yes | Array of `{ role, parts }` with text and inline\_data |
+| `generationConfig.responseModalities` | array | Yes | Must include `IMAGE` |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/google/gemini-2-0-flash">
+  View the interactive API Playground for Gemini 2.0 Flash.
+</Card>

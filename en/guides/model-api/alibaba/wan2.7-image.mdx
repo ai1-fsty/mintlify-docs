@@ -1,0 +1,105 @@
+---
+title: "Wan2.7 Image"
+description: "Call Alibaba's Wanxiang Image Generation & Editing 2.7 model via the Starrise AI API."
+---
+
+Wanxiang Image Generation & Editing 2.7 (Wan2.7 Image) is Alibaba's latest multimodal image model, available through Starrise AI. Supports text-to-image, image editing, interactive region editing, and multi-image generation with up to 4K output resolution.
+
+## Model List
+
+| Model ID             | Description                                        |
+| -------------------- | -------------------------------------------------- |
+| `wan2.7-image-pro`   | Professional version, text-to-image supports 4K HD output |
+| `wan2.7-image`       | Standard version, faster generation speed          |
+
+## Key Capabilities
+
+* **Text-to-image** — Generate images from text descriptions
+* **Image editing** — Edit existing images with text prompts (supports 0–9 input images)
+* **Interactive editing** — Specify a bounding box region via `bbox_list` for localized editing
+* **Multi-image generation** — Generate multiple related images in a single request (`enable_sequential`)
+* **Thinking mode** — Enhanced reasoning to improve text-to-image quality
+
+## Quick Example
+
+<CodeGroup>
+  ```bash Text-to-Image
+  curl https://ai.alad.com/v1/images/generations \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "wan2.7-image-pro",
+      "prompt": "A flower shop with elegant windows, beautiful wooden doors, and flowers on display",
+      "size": "2K",
+      "thinking_mode": true
+    }'
+  ```
+
+  ```bash Image Editing
+  curl https://ai.alad.com/v1/images/generations \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "wan2.7-image-pro",
+      "prompt": "Replace the vase with a bouquet of red roses",
+      "image": "https://example.com/room.jpg",
+      "size": "2K"
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  response = requests.post(
+      "https://ai.alad.com/v1/images/generations",
+      headers={"Authorization": "Bearer YOUR_API_KEY"},
+      json={
+          "model": "wan2.7-image-pro",
+          "prompt": "A flower shop with elegant windows, beautiful wooden doors, and flowers on display",
+          "size": "2K",
+          "thinking_mode": True
+      }
+  )
+
+  result = response.json()
+  print(result["data"][0]["url"])
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter           | Type    | Required | Description                                                                                        |
+| ------------------- | ------- | -------- | -------------------------------------------------------------------------------------------------- |
+| `model`             | string  | Yes      | `wan2.7-image-pro` or `wan2.7-image`                                                               |
+| `prompt`            | string  | Yes      | Image description text, up to 5000 characters                                                     |
+| `image`             | string  | No       | Input image URL or Base64 data URI for editing. Supports JPEG, JPG, PNG, BMP, WEBP, max 20 MB, up to 9 images |
+| `n`                 | integer | No       | Number of images to generate. Sequential mode off: `1–4`, default `1`; sequential mode on: `1–12`, default `12` |
+| `size`              | string  | No       | `1K`, `2K` (default), or `4K` (wan2.7-image-pro text-to-image only). Also supports custom `{width}x{height}` pixel values |
+| `enable_sequential` | boolean | No       | Enable multi-image output mode, default `false`                                                    |
+| `thinking_mode`     | boolean | No       | Enable thinking mode to improve quality, default `true`. Only effective when there are no image inputs and sequential mode is off |
+| `watermark`         | boolean | No       | Whether to add a watermark, default `false`                                                        |
+| `seed`              | integer | No       | Random seed `[0, 2147483647]`, same seed produces similar results                                 |
+| `response_format`   | string  | No       | `url` (default) or `b64_json`                                                                      |
+
+### Resolution Reference
+
+| Spec | Pixels                                      |
+| ---- | ------------------------------------------- |
+| 1K   | 1024×1024                                   |
+| 2K   | 2048×2048                                   |
+| 4K   | 4096×4096 (wan2.7-image-pro text-to-image only) |
+
+When image input is provided, the output aspect ratio matches the input image and is scaled to the selected resolution.
+
+## Response Fields
+
+| Field                   | Description                                                          |
+| ----------------------- | -------------------------------------------------------------------- |
+| `data[].url`            | Generated image URL (PNG, valid 24 hours)                            |
+| `data[].b64_json`       | Base64-encoded image (only returned when `response_format=b64_json`) |
+| `data[].revised_prompt` | Actual prompt after AI expansion                                     |
+| `created`               | Creation timestamp                                                   |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/alibaba/wan2.7-image">
+  View the interactive API Playground for Wan2.7 Image.
+</Card>

@@ -1,0 +1,73 @@
+---
+title: "Kling 1.0 Image-to-Video"
+description: "Kuaishou Kling 1.0 image-to-video model. Generate videos from reference images with custom camera control, motion brush, and multi-shot scenes."
+---
+
+Kling 1.0 Image-to-Video is an image-to-video model in Kuaishou's Kling series, available through the Starrise AI API. Transform static images into dynamic videos with custom camera control, motion brush, and multi-shot scenes.
+
+## Key Capabilities
+
+* **Image-to-video** — Generate video from first-frame and/or last-frame reference images
+* **Camera control** — Preset and custom camera movements (pan, tilt, zoom, roll)
+* **Motion brush** — Static and dynamic brush masks for precise motion control
+* **Multi-shot scenes** — Create up to 6 shots with custom prompts and durations
+* **Standard & Pro modes** — Choose standard mode or high-quality pro mode
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/kling/v1/videos/image2video \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model_name": "kling-v1",
+      "image": "https://example.com/photo.jpg",
+      "prompt": "The person smiles and waves at the camera",
+      "duration": "5",
+      "mode": "std"
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  response = requests.post(
+      "https://ai.alad.com/kling/v1/videos/image2video",
+      headers={
+          "Authorization": "Bearer YOUR_API_KEY",
+          "Content-Type": "application/json"
+      },
+      json={
+          "model_name": "kling-v1",
+          "image": "https://example.com/photo.jpg",
+          "prompt": "The person smiles and waves at the camera",
+          "duration": "5",
+          "mode": "std"
+      }
+  )
+
+  task = response.json()
+  print(f"Task ID: {task['task_id']}")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter         | Type   | Required          | Description                                         |
+| ----------------- | ------ | ----------------- | --------------------------------------------------- |
+| `model_name`      | string | No                | Must be `kling-v1`                              |
+| `image`           | string | Conditionally yes | First-frame reference image (Base64 or URL)         |
+| `image_tail`      | string | Conditionally yes | Last-frame reference image (Base64 or URL)          |
+| `prompt`          | string | Conditionally yes | Text prompt (up to 2500 characters)                 |
+| `negative_prompt` | string | No                | Negative prompt (up to 2500 characters)             |
+| `mode`            | string | No                | `std` or `pro`, default `std`                       |
+| `duration`        | string | No                | `3`–`15` seconds, default `5`                       |
+| `cfg_scale`       | float  | No                | Prompt adherence `0`–`1`, default `0.5`             |
+| `camera_control`  | object | No                | Camera movement control                             |
+| `sound`           | string | No                | `on` or `off`, default `off` (V2.6+ only)           |
+| `callback_url`    | string | No                | Task status callback URL                            |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/kuaishou/kling-v1-i2v">
+  View the interactive API Playground for Kling 1.0 Image-to-Video.
+</Card>

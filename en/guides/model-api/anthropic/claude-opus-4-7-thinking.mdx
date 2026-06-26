@@ -1,0 +1,84 @@
+---
+title: "Claude Opus 4.7 Thinking"
+description: "Anthropic's Claude Opus 4.7 with Extended Thinking — the latest and most powerful reasoning model."
+---
+
+Claude Opus 4.7 Thinking is the Extended Thinking version of Claude Opus 4.7, available through Starrise AI via OpenAI-compatible interface. With step-by-step internal reasoning enabled by default, it delivers the highest accuracy on the most demanding tasks — including advanced mathematics, scientific research, complex coding, and architectural decisions.
+
+## Key Capabilities
+
+* **OpenAI-compatible** — Drop-in replacement for the OpenAI SDK, no other code changes needed
+* **Extended Thinking** — Step-by-step internal reasoning enabled by default
+* **Maximum intelligence** — The latest and most powerful reasoning model
+* **Deep analysis** — Expert at advanced mathematics, science, and complex problem solving
+* **Long context** — Supports large document processing and multi-turn conversations
+* **Streaming** — Real-time token streaming via SSE
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/messages \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "claude-opus-4-7-thinking",
+      "messages": [
+        { "role": "user", "content": "Solve step by step: A train travels 120 km in 2 hours, then slows down and travels 80 km in 3 hours. What is the average speed for the entire journey?" }
+      ]
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="claude-opus-4-7-thinking",
+      messages=[
+          {"role": "user", "content": "Solve step by step: A train travels 120 km in 2 hours, then slows down and travels 80 km in 3 hours. What is the average speed for the entire journey?"}
+      ]
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```python Streaming
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  stream = client.chat.completions.create(
+      model="claude-opus-4-7-thinking",
+      messages=[
+          {"role": "user", "content": "Prove that there are infinitely many prime numbers."}
+      ],
+      stream=True
+  )
+
+  for chunk in stream:
+      print(chunk.choices[0].delta.content or "", end="")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ------------- | -------------- | -- | ------------------------------ |
+| `model` | string | Yes | Fixed value: `claude-opus-4-7-thinking` |
+| `messages` | array | Yes | Array of `{ role, content }` objects |
+| `max_tokens` | integer | No | Maximum number of tokens to generate |
+| `temperature` | float | No | `0`–`2`, controls randomness, default `1` |
+| `stream` | boolean | No | Enable SSE streaming, default `false` |
+| `stop` | string / array | No | Sequences where generation stops |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/anthropic/claude-opus-4-7">
+  View the interactive API Playground for Claude Opus 4.7 Thinking.
+</Card>

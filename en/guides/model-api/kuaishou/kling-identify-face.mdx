@@ -1,0 +1,79 @@
+---
+title: "Kling Face Identification"
+description: "Detect faces in a source video and establish a session for lip sync generation."
+---
+
+Face identification is the **first step** in the Kling lip sync workflow. It analyzes faces in a video and returns a `session_id` that must be used in the subsequent [lip sync generation](/en/guides/model-api/kuaishou/kling-lip-sync) request.
+
+## Workflow Overview
+
+```
+identify-face  →  session_id  →  advanced-lip-sync  →  task_id  →  Poll for result
+```
+
+The `session_id` binds the video to the face analysis result. Without it, lip sync generation cannot proceed.
+
+## Video Requirements
+
+* The video must contain **at least one clearly visible, front-facing face**
+* Faces that are well-lit and without heavy obstruction produce better results
+* The video must be accessible via a public URL, or use a previously generated Kling video ID (`video_id`)
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/kling/v1/videos/identify-face \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "video_url": "https://example.com/person-speaking.mp4"
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  response = requests.post(
+      "https://ai.alad.com/kling/v1/videos/identify-face",
+      headers={
+          "Authorization": "Bearer YOUR_API_KEY",
+          "Content-Type": "application/json"
+      },
+      json={"video_url": "https://example.com/person-speaking.mp4"}
+  )
+
+  data = response.json()
+  session_id = data["data"]["session_id"]
+  face_count = len(data["data"]["face_list"])
+  print(f"Session ID: {session_id} ({face_count} face(s) detected)")
+  ```
+</CodeGroup>
+
+## Request Parameters
+
+| Parameter   | Type   | Required       | Description                                 |
+| ----------- | ------ | -------------- | ------------------------------------------- |
+| `video_url` | string | One of the two | Public URL of the source video              |
+| `video_id`  | string | One of the two | ID of a previously generated Kling video    |
+
+## Response
+
+This endpoint is **synchronous** — results are returned immediately with no polling needed.
+
+| Field                   | Description                                    |
+| ----------------------- | ---------------------------------------------- |
+| `data.session_id`       | Session ID to pass to the lip sync endpoint    |
+| `data.face_list[]`      | All faces detected in the video                |
+| `face_list[].face_id`   | Unique identifier for each face                |
+| `face_list[].face_rect` | Face bounding box `{x, y, width, height}` (pixels) |
+
+When multiple people are in the video, `face_list` will contain multiple entries.
+
+<Card title="Next Step: Lip Sync Generation" icon="waveform" href="/en/guides/model-api/kuaishou/kling-lip-sync">
+  Use the session\_id to generate a lip sync video.
+</Card>
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/kuaishou/kling-identify-face">
+  View the interactive API documentation for Kling Face Identification.
+</Card>

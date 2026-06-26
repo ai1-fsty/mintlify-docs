@@ -1,0 +1,88 @@
+---
+title: "Claude Opus 4.8"
+description: "Call Anthropic's Claude Opus 4.8 via OpenAI-compatible interface — the most capable general-purpose model, with adaptive thinking and fast mode."
+---
+
+Claude Opus 4.8 is Anthropic's most capable general-purpose model, available through Starrise AI via OpenAI-compatible interface. Built on Claude Opus 4.7, it features improvements in long-horizon agentic coding, tool-trigger reliability, and compression handling.
+
+## Key Capabilities
+
+* **OpenAI-compatible** — Drop-in replacement for the OpenAI SDK, no other code changes needed
+* **1M context window** — 128K max output tokens
+* **Adaptive thinking** — Triggers reasoning only when the task requires it, reducing unnecessary thinking tokens
+* **Fast mode** — Up to 2.5× output speed (research preview, premium pricing)
+* **In-conversation system messages** — Append updated instructions without resending the full system prompt
+* **Lower cache threshold** — Minimum cacheable prompt length reduced to 1,024 tokens
+* **Streaming** — Real-time token streaming via SSE
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/messages \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "claude-opus-4-8",
+      "messages": [
+        { "role": "user", "content": "Explain quantum entanglement in simple terms." }
+      ]
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="claude-opus-4-8",
+      messages=[
+          {"role": "user", "content": "Explain quantum entanglement in simple terms."}
+      ]
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```python Streaming
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  stream = client.chat.completions.create(
+      model="claude-opus-4-8",
+      messages=[
+          {"role": "user", "content": "Write a short poem about the ocean."}
+      ],
+      stream=True
+  )
+
+  for chunk in stream:
+      print(chunk.choices[0].delta.content or "", end="")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ------------ | -------------- | -- | ------------------------ |
+| `model` | string | Yes | Fixed value: `claude-opus-4-8` |
+| `messages` | array | Yes | Array of `{ role, content }` objects |
+| `max_tokens` | integer | No | Maximum number of tokens to generate |
+| `stream` | boolean | No | Enable SSE streaming, default `false` |
+| `stop` | string / array | No | Sequences where generation stops |
+
+<Note>
+  Claude Opus 4.8 does not support `temperature`, `top_p`, and `top_k` parameters. Setting non-default values returns a 400 error — guide model behavior through prompts instead.
+</Note>
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/anthropic/claude-opus-4-8">
+  View the interactive API Playground for Claude Opus 4.8.
+</Card>

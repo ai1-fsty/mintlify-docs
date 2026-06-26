@@ -1,0 +1,47 @@
+---
+title: "Kling List Custom Elements"
+description: "Paginate through all custom elements created by the current user."
+---
+
+Retrieve a paginated list of all custom elements you have created. Each entry in the returned array has the same structure as a single element query response.
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl "https://ai.alad.com/kling/v1/general/advanced-custom-elements?pageNum=1&pageSize=10" \
+    -H "Authorization: Bearer YOUR_API_KEY"
+  ```
+
+  ```python Python
+  import requests
+
+  response = requests.get(
+      "https://ai.alad.com/kling/v1/general/advanced-custom-elements",
+      headers={"Authorization": "Bearer YOUR_API_KEY"},
+      params={"pageNum": 1, "pageSize": 10}
+  )
+
+  data = response.json()
+  for item in data["data"]:
+      task_status = item["task_status"]
+      elements = item.get("task_result", {}).get("elements", [])
+      for el in elements:
+          print(f"{el['element_name']} ({task_status}) — ID: {el['element_id']}")
+  ```
+</CodeGroup>
+
+## Request Parameters
+
+| Parameter  | Type    | Description             |
+| ---------- | ------- | ----------------------- |
+| `pageNum`  | integer | Page number, starting from 1 |
+| `pageSize` | integer | Number of items per page |
+
+## Response
+
+`data` is an array where each entry has the same structure as a single query response. Entries with `task_status` of `submitted` may not yet have `task_result` populated.
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/kuaishou/kling-element-list">
+  View the interactive API documentation for Kling List Custom Elements.
+</Card>

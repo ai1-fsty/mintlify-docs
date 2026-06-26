@@ -1,0 +1,248 @@
+---
+title: "Seedance 2.0 Fast"
+description: "Call ByteDance's Seedance Fast video generation model via Starrise AI API — supports multimodal references, video editing, extension, audio generation, and web search enhancement."
+---
+
+Seedance 2.0 Fast is ByteDance's latest video generation model, available through the Starrise AI API. It supports text-to-video, image-to-video, multimodal reference input, video editing, video extension, and synchronized audio generation.
+
+## Key Capabilities
+
+| Feature | Description |
+| ------- | ----------- |
+| Text-to-video | Generate video from a text description |
+| Image-to-video (first frame) | Use one image as the first frame |
+| Image-to-video (first and last frame) | Use two images as the first and last frames respectively |
+| Multimodal reference | Combine images, video, and audio as references (1–9 images, up to 3 videos, up to 3 audio clips) |
+| Video editing | Modify elements in an existing video using a reference image |
+| Video extension | Extend and concatenate reference videos |
+| Audio generation | Automatically generate synchronized voice, sound effects, and background music |
+| Web search enhancement | Enhance generation with real-time internet content (text-to-video only) |
+| Return last frame | Retrieve the last frame of the generated video |
+
+## Output Specifications
+
+| Property | Value |
+| -------- | ----- |
+| Resolution | 480p, 720p, 1080p |
+| Aspect ratio | 16:9, 4:3, 1:1, 3:4, 9:16, 21:9, adaptive |
+| Duration | 4–15 seconds |
+| Format | mp4 |
+| Frame rate | 24 fps |
+
+## Workflow
+
+```
+1. POST /v1/video/generations  →  task_id
+2. Poll GET /v1/video/generations/{task_id}  →  status
+3. When status = "succeeded"  →  download video URL (valid for 24 hours)
+```
+
+## Examples
+
+### Text-to-Video
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/video/generations \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "seedance-fast",
+      "content": [
+        {
+          "type": "text",
+          "text": "A cat playing piano in a sunlit room, cinematic lighting"
+        }
+      ],
+      "generate_audio": true,
+      "ratio": "16:9",
+      "duration": 8
+    }'
+  ```
+
+  ```python Python
+  import requests
+  import time
+
+  headers = {"Authorization": "Bearer YOUR_API_KEY", "Content-Type": "application/json"}
+
+  # Step 1: Create task
+  resp = requests.post(
+      "https://ai.alad.com/v1/video/generations",
+      headers=headers,
+      json={
+          "model": "seedance-fast",
+          "content": [
+              {"type": "text", "text": "A cat playing piano in a sunlit room, cinematic lighting"}
+          ],
+          "generate_audio": True,
+          "ratio": "16:9",
+          "duration": 8
+      }
+  )
+  task_id = resp.json()["task_id"]
+
+  # Step 2: Poll for results
+  while True:
+      result = requests.get(
+          f"https://ai.alad.com/v1/video/generations/{task_id}",
+          headers=headers
+      ).json()
+      status = result["data"]["status"]
+      if status == "SUCCESS":
+          print("Video URL:", result["data"]["data"]["content"]["video_url"])
+          break
+      elif status == "FAILED":
+          print("Failed:", result["data"].get("fail_reason"))
+          break
+      time.sleep(5)
+  ```
+</CodeGroup>
+
+### Multimodal Reference (Image + Video + Audio)
+
+In the prompt you can reference `content` array items using `@image1`, `@video1`, `@audio1`, numbered by media type starting from 1.
+
+> **Important:** Assets must be passed in strict order: text, image\_url, video\_url, audio\_url. Do not reorder them, as this may cause errors; when including multiple assets, also ensure no other asset types are mixed in.
+
+```bash cURL
+curl https://ai.alad.com/v1/video/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "seedance-fast",
+    "content": [
+      {
+        "type": "text",
+        "text": "The character from @image1 dances in the scene from @video1, with @audio1 as background music, festive New Year atmosphere"
+      },
+      {
+        "type": "image_url",
+        "image_url": {"url": "https://example.com/character.jpg"},
+        "role": "reference_image"
+      },
+      {
+        "type": "video_url",
+        "video_url": {"url": "https://example.com/clip.mp4"},
+        "role": "reference_video"
+      },
+      {
+        "type": "audio_url",
+        "audio_url": {"url": "https://example.com/bgm.mp3"},
+        "role": "reference_audio"
+      }
+    ],
+    "generate_audio": true,
+    "ratio": "16:9",
+    "duration": 11
+  }'
+```
+
+### Video Editing
+
+```bash cURL
+curl https://ai.alad.com/v1/video/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "seedance-fast",
+    "content": [
+      {
+        "type": "text",
+        "text": "Replace the water in @video1 with the perfume from @image1, keep the same camera motion"
+      },
+      {
+        "type": "image_url",
+        "image_url": {"url": "https://example.com/perfume.jpg"},
+        "role": "reference_image"
+      },
+      {
+        "type": "video_url",
+        "video_url": {"url": "https://example.com/original.mp4"},
+        "role": "reference_video"
+      }
+    ],
+    "generate_audio": true,
+    "ratio": "16:9",
+    "duration": 5
+  }'
+```
+
+### Web Search Enhancement (Text-to-Video Only)
+
+```bash cURL
+curl https://ai.alad.com/v1/video/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "seedance-fast",
+    "content": [
+      {
+        "type": "text",
+        "text": "Macro shot of vivid flower petals on a tree, gradually zooming in"
+      }
+    ],
+    "generate_audio": true,
+    "ratio": "16:9",
+    "duration": 11,
+    "tools": [{"type": "web_search"}]
+  }'
+```
+
+## Request Parameters
+
+| Parameter                 | Type    | Required        | Description                                                                                    |
+| ------------------------- | ------- | --------------- | ---------------------------------------------------------------------------------------------- |
+| `model`                   | string  | Yes             | `seedance-fast`                                                                                |
+| `content`                 | array   | Yes             | Input content array (text, image\_url, video\_url, audio\_url)                                  |
+| `content[].type`          | string  | Yes             | `text`, `image_url`, `video_url`, or `audio_url`                                               |
+| `content[].text`          | string  | For text type   | Text prompt (recommended ≤500 Chinese chars or ≤1000 English words)                           |
+| `content[].image_url.url` | string  | For image type  | Image URL, Base64, or `asset://<ID>`                                                           |
+| `content[].video_url.url` | string  | For video type  | Video URL or `asset://<ID>` (mp4/mov, ≤50 MB, 2–15 seconds)                                   |
+| `content[].audio_url.url` | string  | For audio type  | Audio URL, Base64, or `asset://<ID>` (wav/mp3, ≤15 MB)                                        |
+| `content[].role`          | string  | Conditionally   | `first_frame`, `last_frame`, `reference_image`, `reference_video`, `reference_audio`           |
+| `generate_audio`          | boolean | No              | Generate synchronized audio, default `true`                                                    |
+| `resolution`              | string  | No              | `480p`, `720p`, or `1080p`, default `720p`                                                     |
+| `ratio`                   | string  | No              | `16:9`, `4:3`, `1:1`, `3:4`, `9:16`, `21:9`, `adaptive`, default `adaptive`                   |
+| `duration`                | integer | No              | 4–15 seconds, default `5`                                                                      |
+| `tools`                   | array   | No              | `[{"type": "web_search"}]` enables web search (text-to-video only)                             |
+| `watermark`               | boolean | No              | Whether to add a watermark, default `false`                                                    |
+
+### Input Modes
+
+| Mode | Content items | `role` values |
+| ---- | ------------- | ------------- |
+| Text-to-video | 1× text | — |
+| Image-to-video (first frame) | text (optional) + 1× image\_url | `first_frame` or omitted |
+| Image-to-video (first and last frame) | text (optional) + 2× image\_url | `first_frame` + `last_frame` |
+| Multimodal reference | text (optional) + images/videos/audio | `reference_image`, `reference_video`, `reference_audio` |
+| Video editing | text + image\_url + video\_url | `reference_image` + `reference_video` |
+| Video extension | text + video\_url(s) | `reference_video` |
+
+> **Note:** First frame, first-and-last-frame, and multimodal reference are three mutually exclusive modes that cannot be combined.
+
+### Referencing Assets in Prompts
+
+In the text prompt you can use `@<type><N>` placeholders to reference media items in the `content` array, **numbered in order of appearance within each media type**:
+
+| Placeholder | Referenced item |
+| ----------- | --------------- |
+| `@image1`, `@image2`, … | 1st, 2nd, … `image_url` item |
+| `@video1`, `@video2`, … | 1st, 2nd, … `video_url` item |
+| `@audio1`, `@audio2`, … | 1st, 2nd, … `audio_url` item |
+
+Example: `"The character from @image1 walks through the scene in @video1, with @audio1 as background music"`.
+
+> **Note:** Assets must be passed in strict order: text, image\_url, video\_url, audio\_url. Do not reorder them, as this may cause errors; when including multiple assets, also ensure no other asset types are mixed in.
+
+### Resolution and Pixel Values by Aspect Ratio
+
+| Resolution | 16:9      | 4:3       | 1:1       | 3:4       | 9:16      | 21:9     |
+| ---------- | --------- | --------- | --------- | --------- | --------- | -------- |
+| 480p  | 864x496   | 752x560   | 640x640   | 560x752   | 496x864   | 992x432  |
+| 720p  | 1280x720  | 1112x834  | 960x960   | 834x1112  | 720x1280  | 1470x630 |
+| 1080p | 1920x1080 | 1664x1248 | 1440x1440 | 1248x1664 | 1080x1920 | 2208x944 |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/bytedance/seedance-2-0-fast">
+  View the interactive API documentation for Seedance 2.0 Fast.
+</Card>

@@ -1,0 +1,136 @@
+openapi: 3.1.0
+info:
+  title: Seedance 素材 — 创建视频素材
+  description: 通过 Starrise AI API 上传视频素材到素材组
+  version: 1.0.0
+servers:
+  - url: https://ai.alad.com
+security:
+  - bearerAuth: []
+paths:
+  /volc/asset/CreateAsset:
+    post:
+      summary: 创建视频素材
+      description: >-
+        上传视频到已有素材组，返回的素材 ID 可在 Seedance 2.0 请求中以 `asset://<ID>`
+        格式引用，用于视频参考、延长等场景。支持 mp4/mov 格式，≤50 MB，时长 2–15 秒。
+      operationId: createVideoAssetZh
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - GroupId
+                - AssetType
+                - URL
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - volc-asset-video
+                  description: 计费模型，视频固定传 `volc-asset-video`。
+                  example: volc-asset-video
+                GroupId:
+                  type: string
+                  description: 素材组 ID。
+                  example: group-20260319072926-rrnmg
+                Name:
+                  type: string
+                  description: 素材名称。
+                  example: scene-clip
+                AssetType:
+                  type: string
+                  enum:
+                    - Video
+                  description: 素材类型，视频固定传 `Video`。
+                  example: Video
+                URL:
+                  type: string
+                  description: 视频 URL（mp4/mov，≤50 MB，2–15 秒）。
+                  example: https://example.com/video.mp4
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - file
+                - GroupId
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - volc-asset-video
+                  description: 计费模型，视频固定传 `volc-asset-video`。
+                file:
+                  type: string
+                  format: binary
+                  description: 要上传的视频文件（mp4/mov，≤50 MB，2–15 秒）。
+                GroupId:
+                  type: string
+                  description: 素材组 ID。
+                Name:
+                  type: string
+                  description: 素材名称，默认使用文件名（去掉扩展名）。
+                AssetType:
+                  type: string
+                  enum:
+                    - Video
+                  default: Video
+                  description: 素材类型，固定 `Video`。
+      responses:
+        '200':
+          description: 视频素材创建成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Id:
+                    type: string
+                    description: 素材 ID，在 Seedance 2.0 请求中以 `asset://<ID>` 格式引用。
+                    example: asset-20260320120147-pqwhc
+        '400':
+          description: 请求参数有误
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '401':
+          description: 未授权
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+      x-codeSamples:
+        - lang: bash
+          label: cURL
+          source: |
+            curl https://ai.alad.com/volc/asset/CreateAsset \
+              -H "Authorization: Bearer YOUR_API_KEY" \
+              -H "Content-Type: application/json" \
+              -d '{
+              "model": "volc-asset-video",
+              "GroupId": "group-20260319072926-rrnmg",
+              "Name": "scene-clip",
+              "AssetType": "Video",
+              "URL": "https://example.com/video.mp4"
+            }'
+components:
+  schemas:
+    Error:
+      type: object
+      properties:
+        error:
+          type: object
+          properties:
+            code:
+              type: string
+            message:
+              type: string
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      description: 请求头鉴权，格式为 `Bearer <token>`，其中 `<token>` 为您的 API Key。
+

@@ -1,0 +1,85 @@
+---
+title: "Claude Sonnet 4.6 Thinking"
+description: "Anthropic's Claude Sonnet 4.6 with Extended Thinking — enhanced reasoning at the speed and capability of the latest Sonnet."
+---
+
+Claude Sonnet 4.6 Thinking is the Extended Thinking version of Claude Sonnet 4.6, available through Starrise AI via OpenAI-compatible interface. Combining Sonnet 4.6's excellent balance of speed and capability with step-by-step internal reasoning enabled by default, it significantly improves accuracy on complex tasks while maintaining fast response times.
+
+## Key Capabilities
+
+* **OpenAI-compatible** — Drop-in replacement for the OpenAI SDK, no other code changes needed
+* **Extended Thinking** — Step-by-step internal reasoning enabled by default
+* **Latest Sonnet** — Built on the latest Sonnet architecture for peak performance
+* **Enhanced reasoning** — Significantly improved accuracy on complex multi-step tasks
+* **Long context** — Supports large document processing and multi-turn conversations
+* **Streaming** — Real-time token streaming via SSE
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/messages \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "claude-sonnet-4-6-thinking",
+      "messages": [
+        { "role": "user", "content": "Solve step by step: A train travels 120 km in 2 hours, then slows down and travels 80 km in 3 hours. What is the average speed for the entire journey?" }
+      ]
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="claude-sonnet-4-6-thinking",
+      messages=[
+          {"role": "user", "content": "Solve step by step: A train travels 120 km in 2 hours, then slows down and travels 80 km in 3 hours. What is the average speed for the entire journey?"}
+      ]
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```python Streaming
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  stream = client.chat.completions.create(
+      model="claude-sonnet-4-6-thinking",
+      messages=[
+          {"role": "user", "content": "Prove that there are infinitely many prime numbers."}
+      ],
+      stream=True
+  )
+
+  for chunk in stream:
+      print(chunk.choices[0].delta.content or "", end="")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ------------- | -------------- | -- | -------------------------------- |
+| `model` | string | Yes | Fixed value: `claude-sonnet-4-6-thinking` |
+| `messages` | array | Yes | Array of `{ role, content }` objects |
+| `max_tokens` | integer | No | Maximum number of tokens to generate |
+| `temperature` | float | No | `0`–`2`, controls randomness, default `1` |
+| `stream` | boolean | No | Enable SSE streaming, default `false` |
+| `top_p` | float | No | Nucleus sampling threshold, default `1` |
+| `stop` | string / array | No | Sequences where generation stops |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/anthropic/claude-sonnet-4-6-thinking">
+  View the interactive API Playground for Claude Sonnet 4.6 Thinking.
+</Card>

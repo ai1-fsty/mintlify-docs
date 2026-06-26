@@ -1,0 +1,114 @@
+---
+title: "HappyHorse 1.0 T2V"
+description: "Alibaba DashScope HappyHorse 1.0 text-to-video model. Generate videos from text via an asynchronous task interface (submit + poll)."
+---
+
+HappyHorse 1.0 T2V is the text-to-video model in Alibaba's HappyHorse video generation series. Uses an **asynchronous task interface** — submit a task and poll until completion.
+
+## Key Capabilities
+
+* **Text-to-video** — Generate video from text description alone
+* **Resolution** — 720P / 1080P
+* **Aspect ratio** — 16:9, 9:16, 1:1, 4:3, 3:4
+* **Duration** — 3–15 seconds
+* **Watermark control** — Optionally disable the "Happy Horse" watermark in the bottom-right corner
+
+## Workflow
+
+```
+1. POST /v1/video/generations  →  task_id
+2. GET  /v1/video/generations/{task_id}  →  Poll until SUCCESS / FAILURE
+3. Read data.result_url  (valid for 24 hours)
+```
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  # Step 1 — Create task
+  curl https://ai.alad.com/v1/video/generations \
+    -H 'Authorization: Bearer YOUR_API_KEY' \
+    -H 'Content-Type: application/json' \
+    -d '{
+      "model": "happyhorse-1.0-t2v",
+      "prompt": "A cat running on a meadow",
+      "parameters": {
+        "resolution": "720P",
+        "ratio": "16:9",
+        "duration": 5,
+        "watermark": false
+      }
+    }'
+
+  # Step 2 — Poll until complete
+  curl https://ai.alad.com/v1/video/generations/asyntask_xxx \
+    -H 'Authorization: Bearer YOUR_API_KEY'
+  ```
+
+  ```python Python
+  import requests, time
+
+  headers = {"Authorization": "Bearer YOUR_API_KEY"}
+
+  resp = requests.post(
+      "https://ai.alad.com/v1/video/generations",
+      headers=headers,
+      json={
+          "model": "happyhorse-1.0-t2v",
+          "prompt": "A cat running on a meadow",
+          "parameters": {
+              "resolution": "720P",
+              "ratio": "16:9",
+              "duration": 5,
+              "watermark": False,
+          }
+      }
+  )
+  task_id = resp.json()["task_id"]
+
+  while True:
+      r = requests.get(
+          f"https://ai.alad.com/v1/video/generations/{task_id}",
+          headers=headers,
+      ).json()
+      status = r["data"]["status"]
+      if status == "SUCCESS":
+          print("Video URL:", r["data"]["result_url"])
+          break
+      if status == "FAILURE":
+          print("Failed:", r["data"]["fail_reason"])
+          break
+      time.sleep(15)
+  ```
+</CodeGroup>
+
+## Parameters
+
+Optional parameters can be placed at the request top level or inside the `parameters` object — both are equivalent.
+
+| Parameter    | Type    | Required | Description                                              |
+| ------------ | ------- | -------- | -------------------------------------------------------- |
+| `model`      | string  | Yes      | Must be `happyhorse-1.0-t2v`                             |
+| `prompt`     | string  | Yes      | Video description text                                   |
+| `resolution` | string  | No       | `720P` / `1080P`, default `1080P`                        |
+| `ratio`      | string  | No       | `16:9`, `9:16`, `1:1`, `4:3`, `3:4`, default `16:9`     |
+| `duration`   | integer | No       | Video duration 3–15 seconds, default `5`                 |
+| `watermark`  | boolean | No       | Default `true`, set to `false` to disable watermark      |
+| `seed`       | integer | No       | Random seed `[0, 2147483647]`                            |
+
+## Billing
+
+Billed by **resolution tier × user-requested duration**. The pre-charged amount is the final amount:
+
+* `duration: 5` → charged for 5 seconds (even if the upstream actually generates 6 seconds, billed at 5)
+* Failed tasks are automatically refunded
+
+<CardGroup cols={2}>
+  <Card title="API Reference" icon="code" href="/en/api-reference/model-api/alibaba/happyhorse-1.0-t2v">
+    HappyHorse 1.0 T2V interactive Playground.
+  </Card>
+
+  <Card title="Task Query" icon="magnifying-glass" href="/en/guides/model-api/alibaba/happyhorse-task-query">
+    Poll task status and retrieve the final video URL.
+  </Card>
+</CardGroup>

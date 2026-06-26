@@ -1,0 +1,151 @@
+---
+title: "HappyHorse Task Query"
+description: "Query the status and result of HappyHorse 1.0 video generation tasks."
+---
+
+After creating a HappyHorse 1.0 video generation task (any of `t2v` / `i2v` / `r2v` / `video-edit`), use this endpoint to poll the status and retrieve the result.
+
+## Endpoint
+
+```
+GET /v1/video/generations/{task_id}
+```
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/video/generations/asyntask_jwgfhsG0m2aDjLmiiELRf74eoWmss6ya \
+    -H 'Authorization: Bearer YOUR_API_KEY'
+  ```
+
+  ```python Python
+  import requests, time
+
+  task_id = "asyntask_jwgfhsG0m2aDjLmiiELRf74eoWmss6ya"
+  while True:
+      r = requests.get(
+          f"https://ai.alad.com/v1/video/generations/{task_id}",
+          headers={"Authorization": "Bearer YOUR_API_KEY"}
+      ).json()
+      status = r["data"]["status"]
+      if status == "SUCCESS":
+          print("Video URL:", r["data"]["result_url"])
+          break
+      if status == "FAILURE":
+          print("Failed:", r["data"]["fail_reason"])
+          break
+      time.sleep(15)
+  ```
+</CodeGroup>
+
+## Task Status
+
+| `data.status` | Meaning                                            | Next Action                                      |
+| ------------- | -------------------------------------------------- | ------------------------------------------------ |
+| `NOT_START`   | Task received, not yet started                     | Continue polling                                 |
+| `QUEUED`      | Queued                                             | Continue polling                                 |
+| `IN_PROGRESS` | Processing (`progress` increments from 50%)        | Continue polling, recommended 15s interval       |
+| `SUCCESS`     | Complete                                           | Read `data.result_url`                           |
+| `FAILURE`     | Failed                                             | Read `data.fail_reason`; platform auto-refunds   |
+
+Video generation takes approximately 1–5 minutes. `result_url` is valid for **24 hours** — download or transfer immediately.
+
+## Top-Level Response Fields
+
+| Field              | Type   | Description                                                                                      |
+| ------------------ | ------ | ------------------------------------------------------------------------------------------------ |
+| `data.task_id`     | string | Platform task ID (format: `asyntask_xxx`)                                                        |
+| `data.action`      | string | Task subtype: `generate` / `firstTailGenerate` / `referenceGenerate` / `omniGenerate`            |
+| `data.status`      | string | Task status (see table above)                                                                    |
+| `data.result_url`  | string | Pre-signed download URL, **valid for 24 hours**. Omitted for failed tasks                        |
+| `data.fail_reason` | string | Copies `result_url` on success (for backward compatibility); contains error message on failure   |
+| `data.submit_time` | int64  | Submission timestamp (Unix seconds)                                                              |
+| `data.start_time`  | int64  | Upstream start timestamp; `0` if not started                                                     |
+| `data.finish_time` | int64  | Completion timestamp                                                                             |
+| `data.progress`    | string | Progress percentage text, e.g. `"50%"`, `"100%"`                                                |
+| `data.request_id`  | string | Request tracing ID                                                                               |
+| `data.data`        | object | Raw upstream DashScope output + usage (see below)                                                |
+
+## `data.data` — Upstream DashScope Output
+
+| Field                                                | Description                                                                                  |
+| ---------------------------------------------------- | -------------------------------------------------------------------------------------------- |
+| `output.task_id`                                     | Upstream DashScope task ID (different from the outer `task_id`)                              |
+| `output.task_status`                                 | Upstream status: `PENDING` / `RUNNING` / `SUCCEEDED` / `FAILED` / `CANCELED` / `UNKNOWN`    |
+| `output.video_url`                                   | Video URL delivered by upstream (same as outer `result_url`)                                 |
+| `output.orig_prompt`                                 | Original prompt echoed back                                                                  |
+| `output.submit_time` / `scheduled_time` / `end_time` | Upstream timestamps for each phase (string date format)                                      |
+| `usage.SR`                                           | Actual resolution tier generated (number `720` / `1080`)                                     |
+| `usage.duration`                                     | Total billed duration                                                                        |
+| `usage.input_video_duration`                         | Input video duration (0 for t2v / i2v / r2v; only present for video-edit)                   |
+| `usage.output_video_duration`                        | Actual generated video duration                                                              |
+| `usage.ratio`                                        | Actual aspect ratio (only returned for t2v / r2v; not for i2v / video-edit)                 |
+| `usage.video_count`                                  | Number of videos (always `1`)                                                                |
+
+## Success Response
+
+```json
+{
+  "code": "success",
+  "message": "",
+  "data": {
+    "task_id": "asyntask_jwgfhsG0m2aDjLmiiELRf74eoWmss6ya",
+    "action": "generate",
+    "status": "SUCCESS",
+    "fail_reason": "https://dashscope-a717.oss-accelerate.aliyuncs.com/.../xxx_refiner.mp4?Expires=...",
+    "result_url": "https://dashscope-a717.oss-accelerate.aliyuncs.com/.../xxx_refiner.mp4?Expires=...",
+    "submit_time": 1777343862,
+    "start_time": 1777343866,
+    "finish_time": 1777343961,
+    "progress": "100%",
+    "request_id": "20260428023742441081000FMrSbjcs",
+    "data": {
+      "output": {
+        "task_id": "e45a6a1b-6f05-43e5-ab06-ddfdc97587a7",
+        "task_status": "SUCCEEDED",
+        "submit_time": "2026-04-28 10:37:42.625",
+        "scheduled_time": "2026-04-28 10:37:42.652",
+        "end_time": "2026-04-28 10:39:04.185",
+        "orig_prompt": "A cat running on a meadow",
+        "video_url": "https://dashscope-a717.oss-accelerate.aliyuncs.com/.../xxx_refiner.mp4?Expires=..."
+      },
+      "request_id": "53121cad-c008-9b96-af1d-4289a4fc714b",
+      "usage": {
+        "SR": 720,
+        "duration": 5,
+        "input_video_duration": 0,
+        "output_video_duration": 5,
+        "ratio": "16:9",
+        "video_count": 1
+      }
+    }
+  }
+}
+```
+
+## Failure Response
+
+```json
+{
+  "code": "success",
+  "message": "",
+  "data": {
+    "task_id": "asyntask_xxx",
+    "action": "generate",
+    "status": "FAILURE",
+    "fail_reason": "task failed, code: InvalidParameter, message: Field required: input.prompt",
+    "submit_time": 1777291928,
+    "start_time": 0,
+    "finish_time": 1777291932,
+    "progress": "100%",
+    "request_id": "20260427121207756348000PWNdDIZK"
+  }
+}
+```
+
+The platform **automatically refunds** the pre-charged quota — no action required from the caller.
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/alibaba/happyhorse-task-query">
+  HappyHorse Task Query interactive Playground.
+</Card>

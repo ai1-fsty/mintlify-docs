@@ -1,0 +1,76 @@
+---
+title: "Seedance 1.0 Pro Image-to-Video"
+description: "ByteDance Seedance 1.0 Pro image-to-video model — uses a reference image as the first frame (and optionally the last frame) to generate video."
+---
+
+Seedance 1.0 Pro Image-to-Video is an image-to-video model from ByteDance's Seedance series, available through the Starrise AI API. It uses a reference image as the first frame (and optionally the last frame) to generate video.
+
+## Key Capabilities
+
+* **Image-to-video** — Use a reference image as the first frame
+* **First and last frame control** — Specify both the start and end frame images
+* **Flexible duration** — 2–12 seconds
+* **Multiple aspect ratios** — 16:9, 4:3, 1:1, 3:4, 9:16, 21:9, adaptive
+* **Multiple resolutions** — 480p, 720p, 1080p
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/video/generations \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "doubao-seedance-1-0-pro-250528",
+      "content": [
+        {"type": "text", "text": "The girl opens her eyes and looks gently into the camera"},
+        {"type": "image_url", "image_url": {"url": "https://example.com/photo.jpg"}, "role": "first_frame"}
+      ],
+      "ratio": "adaptive",
+      "duration": 5,
+      "resolution": "720p"
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  response = requests.post(
+      "https://ai.alad.com/v1/video/generations",
+      headers={
+          "Authorization": "Bearer YOUR_API_KEY",
+          "Content-Type": "application/json"
+      },
+      json={
+          "model": "doubao-seedance-1-0-pro-250528",
+          "content": [
+              {"type": "text", "text": "The girl opens her eyes and looks gently into the camera"},
+              {"type": "image_url", "image_url": {"url": "https://example.com/photo.jpg"}, "role": "first_frame"}
+          ],
+          "ratio": "adaptive",
+          "duration": 5,
+          "resolution": "720p"
+      }
+  )
+
+  task = response.json()
+  print(f"Task ID: {task['id']}")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter      | Type    | Required | Description                                     |
+| -------------- | ------- | -------- | ----------------------------------------------- |
+| `model`        | string  | Yes      | Must be `doubao-seedance-1-0-pro-250528`        |
+| `content`      | array   | Yes      | text item + image\_url item with `role`         |
+| `ratio`        | string  | No       | Supports `adaptive`, default `16:9`             |
+| `resolution`   | string  | No       | `480p`, `720p`, `1080p`, default `720p`         |
+| `duration`     | integer | No       | 2–12 seconds, default `5`                       |
+| `watermark`    | boolean | No       | Default `false`                                 |
+| `seed`         | integer | No       | Random seed                                     |
+| `camera_fixed` | boolean | No       | Default `false`                                 |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/bytedance/doubao-seedance-1-0-pro-250528-i2v">
+  View the interactive API Playground for Seedance 1.0 Pro Image-to-Video.
+</Card>

@@ -1,0 +1,61 @@
+---
+title: "Grok 3 Mini"
+description: "Call xAI Grok 3 Mini via Starrise AI API. Fast and lightweight."
+---
+
+Grok 3 Mini is xAI's language model, available through Starrise AI. Fast and lightweight.
+
+## Key Capabilities
+
+* **OpenAI-compatible** — Use directly with the OpenAI SDK
+* **Streaming** — Supports real-time SSE streaming
+* **Strong reasoning** — Suitable for complex, multi-step tasks
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/chat/completions \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "grok-3-mini",
+      "messages": [
+        { "role": "user", "content": "Explain quantum entanglement in simple terms." }
+      ]
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="grok-3-mini",
+      messages=[
+          {"role": "user", "content": "Explain quantum entanglement in simple terms."}
+      ]
+  )
+
+  print(response.choices[0].message.content)
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ------------- | ------- | -- | ------------------------ |
+| `model` | string | Yes | Fixed value: `grok-3-mini` |
+| `messages` | array | Yes | List of `{ role, content }` objects |
+| `max_tokens` | integer | No | Maximum number of tokens to generate |
+| `temperature` | float | No | `0`–`2`, controls randomness, default `1` |
+| `stream` | boolean | No | Enable SSE streaming, default `false` |
+| `top_p` | float | No | Nucleus sampling threshold |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/xai/grok-3-mini">
+  View the interactive API Playground for Grok 3 Mini.
+</Card>

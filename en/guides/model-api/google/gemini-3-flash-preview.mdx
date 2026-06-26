@@ -1,0 +1,71 @@
+---
+title: "Gemini 3 Flash Preview"
+description: "Call Google Gemini 3 Flash Preview via Gemini API. Fast and capable text generation."
+---
+
+Gemini 3 Flash Preview is Google's fast language model, available through Starrise AI via the native Gemini API. Designed for applications requiring quick responses and high throughput, with strong language understanding capabilities.
+
+## Key Capabilities
+
+* **Native Gemini API** — Uses Google's native API format for full feature access
+* **Fast inference** — Optimized for low-latency responses
+* **Multi-turn conversation** — Complex conversations with system instructions
+* **Balanced performance** — Powerful capabilities at higher speed
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl "https://ai.alad.com/v1beta/models/gemini-3-flash-preview:generateContent?key=YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "contents": [
+        {
+          "role": "user",
+          "parts": [{ "text": "Explain quantum computing in simple terms." }]
+        }
+      ],
+      "generationConfig": {
+        "temperature": 1,
+        "topP": 1
+      }
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  url = "https://ai.alad.com/v1beta/models/gemini-3-flash-preview:generateContent"
+  params = {"key": "YOUR_API_KEY"}
+  data = {
+      "contents": [
+          {
+              "role": "user",
+              "parts": [{"text": "Explain quantum computing in simple terms."}]
+          }
+      ],
+      "generationConfig": {
+          "temperature": 1,
+          "topP": 1
+      }
+  }
+
+  response = requests.post(url, params=params, json=data)
+  result = response.json()
+  print(result["candidates"][0]["content"]["parts"][0]["text"])
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ------------------------------ | ------ | -- | ---------------------- |
+| `key` | string | Yes | API key (query parameter) |
+| `contents` | array | Yes | Array of `{ role, parts }` objects |
+| `systemInstruction` | object | No | System instruction with `parts` array |
+| `generationConfig.temperature` | float | No | `0`–`2`, controls randomness, default `1` |
+| `generationConfig.topP` | float | No | Nucleus sampling threshold, default `1` |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/google/gemini-3-flash-preview">
+  View the interactive API Playground for Gemini 3 Flash Preview.
+</Card>

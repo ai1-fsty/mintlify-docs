@@ -1,0 +1,195 @@
+---
+title: "Qwen3.6-Flash"
+description: "Call Alibaba's Qwen3.6-Flash vision language model via Starrise AI OpenAI-compatible API — fast, agent-friendly multimodal model."
+---
+
+Qwen3.6-Flash is Alibaba's native vision language Flash model, available through Starrise AI via an OpenAI-compatible API. Compared to Qwen3.5-Flash, it delivers significant improvements in agentic coding, math/code reasoning, and spatial intelligence.
+
+## Key Capabilities
+
+* **OpenAI compatible** — Drop-in replacement for the OpenAI SDK with no code changes required
+* **1M token context** — Supports large-scale documents and multi-turn conversations, up to 66K output tokens
+* **Multimodal input** — Supports text, image, and video input
+* **Agentic coding** — Significant improvement on coding agent benchmarks
+* **Reasoning mode** — Enable built-in chain-of-thought via the `enable_thinking` parameter
+* **Built-in tools** — Supports web search, code interpreter, webpage scraping, and image search via the Responses API
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/chat/completions \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "qwen3.6-flash",
+      "messages": [
+        { "role": "user", "content": "Explain quantum entanglement in simple terms." }
+      ]
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="qwen3.6-flash",
+      messages=[
+          {"role": "user", "content": "Explain quantum entanglement in simple terms."}
+      ]
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```python Streaming
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  stream = client.chat.completions.create(
+      model="qwen3.6-flash",
+      messages=[
+          {"role": "user", "content": "Write a short poem about the ocean."}
+      ],
+      stream=True
+  )
+
+  for chunk in stream:
+      print(chunk.choices[0].delta.content or "", end="")
+  ```
+
+  ```python Reasoning Mode
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  completion = client.chat.completions.create(
+      model="qwen3.6-flash",
+      messages=[
+          {"role": "user", "content": "Solve this math problem: x² + 5x + 6 = 0, find x."}
+      ],
+      extra_body={"enable_thinking": True},
+      stream=True
+  )
+
+  for chunk in completion:
+      if chunk.choices and chunk.choices[0].delta:
+          delta = chunk.choices[0].delta
+          if hasattr(delta, "reasoning_content") and delta.reasoning_content:
+              print(delta.reasoning_content, end="", flush=True)
+          if delta.content:
+              print(delta.content, end="", flush=True)
+  ```
+
+  ```python Image Input
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="qwen3.6-flash",
+      messages=[
+          {
+              "role": "user",
+              "content": [
+                  {"type": "text", "text": "Please describe this image."},
+                  {
+                      "type": "image_url",
+                      "image_url": {
+                          "url": "https://example.com/photo.jpg"
+                          # Or base64: "url": "data:image/png;base64,iVBORw0KGgo..."
+                      }
+                  }
+              ]
+          }
+      ],
+      max_completion_tokens=300
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```python Video Input
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="qwen3.6-flash",
+      messages=[
+          {
+              "role": "user",
+              "content": [
+                  {"type": "text", "text": "Please summarize the content of this video."},
+                  {
+                      "type": "video_url",
+                      "video_url": {
+                          "url": "https://example.com/sample.mp4"
+                          # Or base64: "url": "data:video/mp4;base64,AAAAIGZ0eXBpc29t..."
+                      }
+                  }
+              ]
+          }
+      ],
+      max_completion_tokens=300
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```bash cURL (Image)
+  curl https://ai.alad.com/v1/chat/completions \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "qwen3.6-flash",
+      "messages": [
+        {
+          "role": "user",
+          "content": [
+            {"type": "text", "text": "Please describe this image."},
+            {"type": "image_url", "image_url": {"url": "data:image/png;base64,iVBORw0KGgo..."}}
+          ]
+        }
+      ],
+      "max_completion_tokens": 300
+    }'
+  ```
+</CodeGroup>
+
+> **Note:** Both `image_url` and `video_url` support remote URLs (`https://...`) and base64 data URIs (`data:image/png;base64,...` / `data:video/mp4;base64,...`). Image tokens and video tokens are reflected in `usage.prompt_tokens_details`.
+
+## Parameters
+
+| Parameter               | Type    | Required | Description                                                               |
+| ----------------------- | ------- | -------- | ------------------------------------------------------------------------- |
+| `model`                 | string  | Yes      | Must be `qwen3.6-flash`                                                   |
+| `messages`              | array   | Yes      | Array of `{ role, content }` objects. Supports `image_url` and `video_url` multimodal input |
+| `max_completion_tokens` | integer | No       | Maximum number of tokens to generate                                      |
+| `temperature`           | float   | No       | `0`–`2`, controls randomness, default `1`                                 |
+| `stream`                | boolean | No       | Enable SSE streaming, default `false`                                     |
+| `top_p`                 | float   | No       | Nucleus sampling threshold, default `1`                                   |
+| `stop`                  | array   | No       | Stop sequences. Must be array format, default `null`                      |
+| `enable_thinking`       | boolean | No       | Enable reasoning mode via `extra_body`, default `false`                   |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/alibaba/qwen3.6-flash">
+  View the interactive API Playground for Qwen3.6-Flash.
+</Card>

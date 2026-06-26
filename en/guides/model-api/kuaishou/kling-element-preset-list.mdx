@@ -1,0 +1,49 @@
+---
+title: "Kling List Official Preset Elements"
+description: "Query Kling's officially provided preset elements, available for direct use by all users."
+---
+
+Kling provides a set of official preset elements (scenes, characters, etc.) that can be used in video generation without creating your own. These elements have `owned_by` fixed as `"kling"`.
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl "https://ai.alad.com/kling/v1/general/advanced-presets-elements?pageNum=1&pageSize=10" \
+    -H "Authorization: Bearer YOUR_API_KEY"
+  ```
+
+  ```python Python
+  import requests
+
+  response = requests.get(
+      "https://ai.alad.com/kling/v1/general/advanced-presets-elements",
+      headers={"Authorization": "Bearer YOUR_API_KEY"},
+      params={"pageNum": 1, "pageSize": 10}
+  )
+
+  data = response.json()
+  for item in data["data"]:
+      for el in item.get("task_result", {}).get("elements", []):
+          print(f"{el['element_id']}: {el['element_name']} — {el['tag_list'][0]['name']}")
+  ```
+</CodeGroup>
+
+## Request Parameters
+
+| Parameter  | Type    | Description              |
+| ---------- | ------- | ------------------------ |
+| `pageNum`  | integer | Page number, starting from 1 |
+| `pageSize` | integer | Number of items per page |
+
+## Difference from Custom Elements
+
+| Field      | Custom Elements | Preset Elements |
+| ---------- | --------------- | --------------- |
+| `owned_by` | Your user ID    | `"kling"`       |
+| Deletable  | Yes             | No              |
+| Editable   | Yes             | No              |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/kuaishou/kling-element-preset-list">
+  View the interactive API documentation for Kling List Official Preset Elements.
+</Card>

@@ -1,0 +1,45 @@
+---
+title: "Deep Research Web UI"
+description: "Integrate Starrise AI models with Deep Research Web UI — an AI-powered research assistant."
+---
+
+## 1. Introduction
+
+Deep Research Web UI is an AI-powered research assistant that combines search engines, web scraping, and large language models to let the AI autonomously search for information, continuously dig deeper, and ultimately produce a research report.
+
+Key features of this project:
+
+* **Low Cost** — Achieve "deep research" results similar to ChatGPT, Perplexity, and similar products at a very low cost
+* **Privacy & Security** — All configuration and API requests are handled client-side in the browser, and it can be self-hosted
+* **Real-time Feedback** — Streams AI responses and displays them in the UI in real time
+* **Search Visualization** — Displays the research process using a tree structure
+* **PDF Export** — Export the final research report in Markdown and PDF formats
+* **Multi-model Support** — Compatible with more LLM providers
+
+Project open-source repository: [GitHub](https://github.com)
+
+## 2. How to Use
+
+Open [Deep Research Web UI](https://deep-research-web-ui.vercel.app/) and click the "⚙️" button in the top-right corner to open the settings dialog.
+
+### 2.1 Configure Starrise AI LLM Service
+
+* Register or log in at the [Starrise AI Console](https://ai.alad.com/).
+* Go to **API Keys**, generate a new API key, and copy it.
+* Back on the Deep Research page, in the **AI Service** section of settings, select **OpenAI Compatible**.
+* Set the **Base URL** to `https://ai.alad.com/v1`.
+* Paste the API key you just generated in the **API Key** field.
+* In the **Model Name** field, select the model you want to use (e.g. `gpt-4o`, `claude-opus-4-7`).
+* (Optional) Set the context length: if you plan to do large-scale research, it is recommended to set this no higher than the maximum context length of the selected model.
+
+### 2.2 Configure the Web Search Model
+
+Currently supports Tavily and Firecrawl. Tavily is recommended as it provides 1,000 free searches per month:
+
+* Register an account at [Tavily](https://tavily.com/), create a new API key in the dashboard, and copy it.
+* Back on the Deep Research page, in the "Web Search Service" section of settings, select **Tavily** and paste the API key.
+* (Optional) Set the language to use for searches.
+
+## 3. Start Using
+
+Once configuration is complete, you're ready to go! Enter a research topic, and the AI will automatically search and dig deeper, ultimately generating a research report. Use it to find primary sources, learn about topics of interest, look up news and summarize it, and more.

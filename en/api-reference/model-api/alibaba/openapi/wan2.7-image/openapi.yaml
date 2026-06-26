@@ -1,0 +1,139 @@
+openapi: 3.1.0
+info:
+  title: Wan2.7 Image
+  description: 通过 Starrise AI API 调用阿里巴巴万相-图像生成与编辑 2.7 模型
+  version: 1.0.0
+servers:
+  - url: https://ai.alad.com
+security:
+  - bearerAuth: []
+paths:
+  /v1/images/generations:
+    post:
+      summary: 图像生成 / 编辑
+      description: |
+        使用 Wan2.7 Image 生成或编辑图像。支持多种模式：
+        - **文生图**：仅提供 `prompt`
+        - **图像编辑**：提供 `prompt` + `image`
+        - **组图生成**：设置 `enable_sequential: true`
+
+        接口同步返回最终图片 URL。
+      operationId: createWan27Image
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - model
+                - prompt
+              properties:
+                model:
+                  type: string
+                  enum:
+                    - wan2.7-image-pro
+                    - wan2.7-image
+                  description: 模型 ID。`wan2.7-image-pro` 文生图支持 4K 输出；`wan2.7-image` 生成速度更快。
+                  example: wan2.7-image-pro
+                prompt:
+                  type: string
+                  description: 图片描述文字，支持中英文，最多 5000 个字符。
+                  example: 一间有着精致窗户的花店，漂亮的木质门，摆放着花朵
+                image:
+                  type: string
+                  description: >
+                    编辑用输入图片 — URL（HTTP/HTTPS）或 Base64 数据
+                    URI（`data:{MIME};base64,{data}`）。
+
+                    支持格式：JPEG、JPG、PNG（不支持透明通道）、BMP、WEBP。最大 20 MB，宽高 240–8000
+                    px，宽高比 1:8–8:1。最多 9 张图片。
+                  example: https://example.com/input.jpg
+                'n':
+                  type: integer
+                  minimum: 1
+                  maximum: 12
+                  default: 1
+                  description: >
+                    生成图片张数。
+
+                    - 关闭组图模式（`enable_sequential: false`）：`1–4`，默认 `1`。
+
+                    - 开启组图模式（`enable_sequential: true`）：`1–12`，默认
+                    `12`，实际张数由模型决定。
+                  example: 1
+                size:
+                  type: string
+                  description: >
+                    输出分辨率，支持两种方式（不可混用）：
+
+                    - 预设规格：`1K`（1024×1024）、`2K`（2048×2048，默认）、`4K`（4096×4096，仅
+                    wan2.7-image-pro 文生图）。
+
+                    - 自定义像素：`{宽}x{高}` — 文生图总像素 768×768–4096×4096，其他场景最高
+                    2048×2048，宽高比 1:8–8:1。
+                  example: 2K
+                enable_sequential:
+                  type: boolean
+                  default: false
+                  description: 启用组图输出模式。为 `true` 时，`n` 表示最大生成张数，实际数量由模型决定。
+                thinking_mode:
+                  type: boolean
+                  default: true
+                  description: 开启思考模式以增强推理能力、提升出图质量。仅在无图片输入且关闭组图模式时生效。
+                watermark:
+                  type: boolean
+                  default: false
+                  description: 是否在生成图片右下角添加水印。
+                seed:
+                  type: integer
+                  minimum: 0
+                  maximum: 2147483647
+                  description: 随机数种子，范围 [0, 2147483647]。相同种子可获得相近结果，但不保证完全一致。
+                response_format:
+                  type: string
+                  enum:
+                    - url
+                    - b64_json
+                  default: url
+                  description: 返回图片 URL 或 Base64 编码。
+                  example: url
+      responses:
+        '200':
+          description: 图像生成成功
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  created:
+                    type: integer
+                    description: 创建时间戳
+                    example: 1773803391
+                  data:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        url:
+                          type: string
+                          description: 图片下载链接（PNG 格式，有效期 24 小时）。
+                          example: https://example.com/generated.png
+                        b64_json:
+                          type: string
+                          description: Base64 编码图片（仅 response_format=b64_json 时返回）。
+                        revised_prompt:
+                          type: string
+                          description: AI 扩展后的实际提示词。
+        '400':
+          description: 请求参数有误
+        '401':
+          description: 未授权
+        '429':
+          description: 请求频率超限
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+

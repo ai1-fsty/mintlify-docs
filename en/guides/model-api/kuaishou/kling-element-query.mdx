@@ -1,0 +1,62 @@
+---
+title: "Kling Query Custom Element"
+description: "Query the status and result of a custom element creation task by task_id."
+---
+
+After creating a custom element, use this endpoint to poll the task status until it becomes `succeed` or `failed`. On success, the response includes the element details including the `element_id`.
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/kling/v1/general/advanced-custom-elements/863121016086724692 \
+    -H "Authorization: Bearer YOUR_API_KEY"
+  ```
+
+  ```python Python
+  import requests
+  import time
+
+  task_id = "863121016086724692"
+
+  while True:
+      response = requests.get(
+          f"https://ai.alad.com/kling/v1/general/advanced-custom-elements/{task_id}",
+          headers={"Authorization": "Bearer YOUR_API_KEY"}
+      )
+      result = response.json()
+      status = result["data"]["task_status"]
+      print(f"Status: {status}")
+
+      if status == "succeed":
+          elements = result["data"]["task_result"]["elements"]
+          print(f"Element ID: {elements[0]['element_id']}")
+          break
+      elif status == "failed":
+          print("Element creation failed")
+          break
+
+      time.sleep(3)
+  ```
+</CodeGroup>
+
+## Response Fields
+
+| Field                              | Description                                   |
+| ---------------------------------- | --------------------------------------------- |
+| `data.task_id`                     | Task ID                                       |
+| `data.task_status`                 | `submitted` / `succeed` / `failed`            |
+| `data.task_result.elements[]`      | List of created elements                      |
+| `elements[].element_id`            | Element ID (used for delete operations)       |
+| `elements[].element_name`          | Element name                                  |
+| `elements[].element_description`   | Element description                           |
+| `elements[].element_type`          | Fixed `image_refer`                           |
+| `elements[].element_image_list`    | CDN URLs of uploaded images                   |
+| `elements[].status`                | `succeed` / `failed`                          |
+| `elements[].tag_list`              | Tag list with id and name                     |
+| `data.created_at`                  | Creation time (millisecond timestamp)         |
+| `data.updated_at`                  | Update time (millisecond timestamp)           |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/kuaishou/kling-element-query">
+  View the interactive API documentation for Kling Query Custom Element.
+</Card>

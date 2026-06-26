@@ -1,0 +1,83 @@
+---
+title: "GLM-5"
+description: "Call the Zhipu GLM-5 chat model via the OpenAI-compatible API — a powerful next-generation GLM model."
+---
+
+GLM-5 is Zhipu AI's next-generation model, available through Starrise AI via an OpenAI-compatible interface. It excels at reasoning, coding, and conversational tasks.
+
+## Key Capabilities
+
+* **OpenAI-compatible** — Drop-in replacement for the OpenAI SDK, no other code changes needed
+* **Strong reasoning** — Suitable for complex multi-step tasks
+* **Long context** — supports large document processing and multi-turn conversations
+* **Streaming output** — Real-time token streaming via SSE
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/chat/completions \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "glm-5",
+      "messages": [
+        { "role": "user", "content": "Explain quantum entanglement in simple terms." }
+      ]
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="glm-5",
+      messages=[
+          {"role": "user", "content": "Explain quantum entanglement in simple terms."}
+      ]
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```python Streaming
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  stream = client.chat.completions.create(
+      model="glm-5",
+      messages=[
+          {"role": "user", "content": "Write a short poem about the ocean."}
+      ],
+      stream=True
+  )
+
+  for chunk in stream:
+      print(chunk.choices[0].delta.content or "", end="")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter     | Type           | Required | Description                                      |
+| ------------- | -------------- | -------- | ------------------------------------------------ |
+| `model`       | string         | Yes      | Fixed value: `glm-5`                             |
+| `messages`    | array          | Yes      | Array of objects `{ role, content }`             |
+| `max_tokens`  | integer        | No       | Maximum number of tokens to generate             |
+| `temperature` | float          | No       | `0`–`2`, controls randomness, default `1`        |
+| `stream`      | boolean        | No       | Enable SSE streaming, default `false`            |
+| `top_p`       | float          | No       | Nucleus sampling threshold, default `1`          |
+| `stop`        | string / array | No       | Sequences that trigger stop generation           |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/zhipu/glm-5">
+  View the interactive API Playground for GLM-5.
+</Card>

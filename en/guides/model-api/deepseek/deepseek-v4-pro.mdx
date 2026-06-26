@@ -1,0 +1,92 @@
+---
+title: "DeepSeek V4 Pro"
+description: "Call DeepSeek V4 Pro via Starrise AI OpenAI-compatible interface — fast, powerful, and easy to integrate."
+---
+
+DeepSeek V4 Pro is available through Starrise AI via the OpenAI-compatible interface. Supports thinking mode, function calling, and JSON mode.
+
+## Key Capabilities
+
+* **OpenAI-compatible** — Drop-in replacement for the OpenAI SDK, no other code changes needed
+* **Thinking mode** — Deep thinking with configurable reasoning intensity
+* **Function calling** — Native support for tools and function calls
+* **JSON mode** — Structured output via `response_format`
+* **Long context** — Supports large document processing and multi-turn conversations
+* **Streaming** — Real-time token streaming via SSE
+* **Prompt caching** — Automatic caching with hit/miss statistics returned
+
+## Quick Example
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/v1/chat/completions \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "deepseek-v4-pro",
+      "messages": [
+        { "role": "user", "content": "Explain quantum entanglement in simple terms." }
+      ]
+    }'
+  ```
+
+  ```python Python
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  response = client.chat.completions.create(
+      model="deepseek-v4-pro",
+      messages=[
+          {"role": "user", "content": "Explain quantum entanglement in simple terms."}
+      ]
+  )
+
+  print(response.choices[0].message.content)
+  ```
+
+  ```python Streaming
+  from openai import OpenAI
+
+  client = OpenAI(
+      api_key="YOUR_API_KEY",
+      base_url="https://ai.alad.com/v1"
+  )
+
+  stream = client.chat.completions.create(
+      model="deepseek-v4-pro",
+      messages=[
+          {"role": "user", "content": "Write a short poem about the ocean."}
+      ],
+      stream=True
+  )
+
+  for chunk in stream:
+      print(chunk.choices[0].delta.content or "", end="")
+  ```
+</CodeGroup>
+
+## Parameters
+
+| Parameter | Type | Required | Description |
+| ----------------- | --------------- | -- | -------------------------------------------------------------------------------------------------------- |
+| `model` | string | Yes | Fixed value: `deepseek-v4-pro` |
+| `messages` | array | Yes | Array of `{ role, content }` objects; supports `system`, `user`, `assistant`, `tool` roles |
+| `thinking` | object | No | Enable/disable thinking: `{"type": "enabled"}` or `{"type": "disabled"}`. Optional `reasoning_effort`: `high`, `max`, `low`, `medium` |
+| `max_tokens` | integer | No | Maximum number of tokens to generate |
+| `temperature` | float | No | `0`–`2`, controls randomness, default `1` |
+| `stream` | boolean | No | Enable SSE streaming, default `false` |
+| `stream_options` | object | No | `{"include_usage": true}` to return usage statistics at end of stream |
+| `top_p` | float | No | Nucleus sampling threshold, default `1` |
+| `stop` | string / array | No | Sequences where generation stops (up to 16) |
+| `response_format` | object | No | `{"type": "json_object"}` to enable JSON mode |
+| `tools` | array | No | List of function calling tools |
+| `tool_choice` | string / object | No | Tool selection control: `none`, `auto`, `required`, or specify a function |
+| `user_id` | string | No | Custom user ID for content safety and KVCache isolation |
+
+<Card title="API Reference" icon="code" href="/en/api-reference/model-api/deepseek/deepseek-v4-pro">
+  View the interactive API Playground for DeepSeek V4 Pro.
+</Card>

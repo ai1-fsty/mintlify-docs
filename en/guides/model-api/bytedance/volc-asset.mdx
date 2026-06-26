@@ -1,0 +1,324 @@
+---
+title: "Seedance 2.0 Asset Management"
+description: "Manage images, videos, and audio assets for Seedance 2.0 video generation via the Starrise AI API."
+---
+
+Seedance 2.0 Asset Management lets you upload and organize media assets (images, videos, audio) for use with Seedance 2.0 video generation. Once uploaded, reference assets in Seedance 2.0 requests using an asset ID (`asset://<ID>`) instead of public URLs.
+
+## Why Use Asset Management?
+
+* **Persistent storage** — Assets are stored on Volcengine and don't expire like temporary URLs
+* **Multi-format support** — Upload images, videos, and audio files
+* **Group management** — Organize related assets by project or campaign
+* **Data isolation** — Each API token can only access its own assets
+* **Direct integration** — Use `asset://<ID>` directly in Seedance 2.0's `image_url`, `video_url`, and `audio_url` fields
+
+## Supported Formats
+
+| Type | Formats | Limits |
+| ---- | ------- | ------ |
+| **Image** | JPG, PNG, GIF, WebP, BMP, TIFF, HEIC, HEIF | \< 30 MB, 300–6000 px, aspect ratio 0.4–2.5 |
+| **Video** | MP4, MOV | \< 50 MB, 2–15 seconds, 480p/720p, 24–60 FPS |
+| **Audio** | MP3, WAV | \< 15 MB, 2–15 seconds |
+
+## Billing Models
+
+| Model name | Asset type | Description |
+| ---------- | ---------- | ----------- |
+| `volc-asset` | Image | Default, no need to specify for image uploads |
+| `volc-asset-video` | Video | **Must** be specified when uploading video |
+| `volc-asset-audio` | Audio | **Must** be specified when uploading audio |
+
+## Workflow
+
+```
+1. Create asset group              →  Asset group ID
+2. Create asset in the group       →  Asset ID
+3. Generate video using the asset  →  Async task ID
+4. Poll for results                →  Pre-signed download URL
+```
+
+## Step 1: Create an Asset Group
+
+First, create an asset group to obtain a group ID.
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/volc/asset/CreateAssetGroup \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "volc-asset",
+      "Name": "your-custom-name"
+    }'
+  ```
+
+  ```python Python
+  import requests
+
+  response = requests.post(
+      "https://ai.alad.com/volc/asset/CreateAssetGroup",
+      headers={"Authorization": "Bearer YOUR_API_KEY"},
+      json={
+          "model": "volc-asset",
+          "Name": "your-custom-name"
+      }
+  )
+
+  group_id = response.json()["Id"]
+  print(f"Asset Group ID: {group_id}")
+  ```
+</CodeGroup>
+
+Expected response:
+
+```json
+{
+  "Id": "group-20260427160000-xxxxx"
+}
+```
+
+## Step 2: Create an Asset in the Group
+
+Using the asset group ID from Step 1, upload an asset (e.g. a character reference image).
+
+<CodeGroup>
+  ```bash cURL
+  curl https://ai.alad.com/volc/asset/CreateAsset \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -d '{
+      "model": "volc-asset",
+      "GroupId": "group-20260427160000-xxxxx",
+      "Name": "character-reference",
+      "AssetType": "Image",
+      "URL": "https://example.com/example.png"
+    }'
+  ```
+
+  ```python Python
+  response = requests.post(
+      "https://ai.alad.com/volc/asset/CreateAsset",
+      headers={"Authorization": "Bearer YOUR_API_KEY"},
+      json={
+          "model": "volc-asset",
+          "GroupId": "group-20260427160000-xxxxx",
+          "Name": "character-reference",
+          "AssetType": "Image",
+          "URL": "https://example.com/example.png"
+      }
+  )
+
+  asset_id = response.json()["Id"]
+  print(f"Asset ID: {asset_id}")
+  ```
+</CodeGroup>
+
+Expected response:
+
+```json
+{
+  "Id": "asset-20260427160000-xxxxx"
+}
+```
+
+> The `URL` field supports three formats:
+>
+> * Plain URL: `https://example.com/image.jpg`
+> * Data URI: `data:image/png;base64,iVBOR...`
+> * Raw Base64 string (auto-detected, treated as PNG by default)
+>
+> Base64 / Data URI is automatically uploaded to object storage and replaced with a real URL.
+
+### Upload Video
+
+> You **must** specify `"model": "volc-asset-video"` and `"AssetType": "Video"` when uploading video.
+
+```bash cURL
+curl https://ai.alad.com/volc/asset/CreateAsset \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "volc-asset-video",
+    "GroupId": "group-20260427160000-xxxxx",
+    "Name": "reference-clip",
+    "AssetType": "Video",
+    "URL": "https://example.com/clip.mp4"
+  }'
+```
+
+### Upload Audio
+
+> You **must** specify `"model": "volc-asset-audio"` and `"AssetType": "Audio"` when uploading audio.
+
+```bash cURL
+curl https://ai.alad.com/volc/asset/CreateAsset \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "volc-asset-audio",
+    "GroupId": "group-20260427160000-xxxxx",
+    "Name": "background-music",
+    "AssetType": "Audio",
+    "URL": "https://example.com/bgm.mp3"
+  }'
+```
+
+### File Upload (multipart)
+
+```bash Upload image
+curl https://ai.alad.com/volc/asset/CreateAsset \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F "file=@/path/to/image.jpg" \
+  -F "GroupId=group-20260427160000-xxxxx" \
+  -F "Name=character-reference"
+```
+
+```bash Upload video
+curl https://ai.alad.com/volc/asset/CreateAsset \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F "model=volc-asset-video" \
+  -F "file=@/path/to/video.mp4" \
+  -F "GroupId=group-20260427160000-xxxxx" \
+  -F "Name=reference-clip" \
+  -F "AssetType=Video"
+```
+
+```bash Upload audio
+curl https://ai.alad.com/volc/asset/CreateAsset \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -F "model=volc-asset-audio" \
+  -F "file=@/path/to/audio.mp3" \
+  -F "GroupId=group-20260427160000-xxxxx" \
+  -F "Name=background-music" \
+  -F "AssetType=Audio"
+```
+
+## Step 3: Generate Video Using the Asset
+
+Reference the asset ID from Step 2 to generate a video.
+
+> **Important:** Assets must be passed in strict order: text, image\_url, video\_url, audio\_url. Do not reorder them, as this may cause errors; when including multiple assets, also ensure no other asset types are mixed in.
+
+```bash cURL
+curl https://ai.alad.com/v1/video/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "seedance",
+    "content": [
+      {
+        "type": "text",
+        "text": "The person from @image1 walks through the scene from @video1, with @audio1 as background music"
+      },
+      {
+        "type": "image_url",
+        "image_url": {
+          "url": "asset://asset-20260427160000-xxxxx"
+        },
+        "role": "reference_image"
+      },
+      {
+        "type": "video_url",
+        "video_url": {
+          "url": "asset://asset-20260427160000-video1"
+        },
+        "role": "reference_video"
+      },
+      {
+        "type": "audio_url",
+        "audio_url": {
+          "url": "asset://asset-20260427160000-audio1"
+        },
+        "role": "reference_audio"
+      }
+    ],
+    "resolution": "720p",
+    "duration": 5
+  }'
+```
+
+The response returns an asynchronous task ID (prefixed with `asyn`).
+
+## Step 4: Poll for Results
+
+Use the task ID to check the generation status.
+
+```bash cURL
+curl https://ai.alad.com/v1/video/generations/asynxxxx \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+Once complete, the response will contain a pre-signed S3 download URL. Note that:
+
+* Download URLs **expire after 12 hours**.
+* If task progress reaches 100% but returns an error, the output was likely blocked by the provider's content moderation (e.g. celebrity likenesses or copyrighted IP). In this case, try modifying the prompt or replacing the reference image.
+
+## Query Assets
+
+### List Asset Groups
+
+```bash cURL
+curl https://ai.alad.com/volc/asset/ListAssetGroups \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "volc-asset",
+    "Filter": {"Name": "my-project"},
+    "PageNumber": 1,
+    "PageSize": 10
+  }'
+```
+
+### List Assets in a Group
+
+```bash cURL
+curl https://ai.alad.com/volc/asset/ListAssets \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "volc-asset",
+    "Filter": {
+      "Name": "character",
+      "GroupIds": ["group-20260427160000-xxxxx"],
+      "GroupType": "AIGC"
+    },
+    "PageNumber": 1,
+    "PageSize": 10
+  }'
+```
+
+## Billing
+
+| Operation | Billing model | Billed |
+| --------- | ------------- | ------ |
+| CreateAssetGroup | `volc-asset` | No |
+| CreateAsset (image) | `volc-asset` | No |
+| CreateAsset (video) | `volc-asset-video` | No |
+| CreateAsset (audio) | `volc-asset-audio` | No |
+| ListAssetGroups | — | No |
+| ListAssets | — | No |
+
+## Data Isolation
+
+When accessed with a token, the system automatically prefixes asset group names with `[u-{userID}]-[t-{tokenID}]` to enforce user- and token-level data isolation. Queries are automatically filtered to return only data accessible to the current token.
+
+## API Reference
+
+<CardGroup cols={2}>
+  <Card title="Create Asset Group" icon="folder-plus" href="/en/api-reference/model-api/bytedance/volc-asset-create-group">
+    Create a new asset group.
+  </Card>
+
+  <Card title="Create Asset" icon="upload" href="/en/api-reference/model-api/bytedance/volc-asset-create-group">
+    Upload an asset (image, video, audio) to an asset group.
+  </Card>
+
+  <Card title="List Asset Groups" icon="folders" href="/en/api-reference/model-api/bytedance/volc-asset-list-groups">
+    List asset groups.
+  </Card>
+
+  <Card title="List Assets" icon="images" href="/en/api-reference/model-api/bytedance/volc-asset-list-assets">
+    List assets within an asset group.
+  </Card>
+</CardGroup>
