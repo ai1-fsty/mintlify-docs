@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Seedance 1.5 Pro 图生视频
-  description: 通过 Starrise AI API 调用字节跳动 Seedance 1.5 Pro 图生视频模型
+  title: Seedance 1.5 Pro Image-to-Video
+  description: Call the ByteDance Seedance 1.5 Pro image-to-video model
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,8 +10,8 @@ security:
 paths:
   /v1/video/generations:
     post:
-      summary: 创建图生视频任务
-      description: 使用 doubao-seedance-1-5-pro-251215 模型从参考图片生成视频。
+      summary: Create an image-to-video task
+      description: Generate a video from a reference image using the doubao-seedance-1-5-pro-251215 model.
       operationId: createSeedance15ProI2v
       requestBody:
         required: true
@@ -27,16 +27,16 @@ paths:
                   type: string
                   enum:
                     - doubao-seedance-1-5-pro-251215
-                  description: 模型 ID
+                  description: model ID
                   example: doubao-seedance-1-5-pro-251215
                 content:
                   type: array
                   minItems: 2
-                  description: 多模态内容数组，包含文本提示词和参考图片。
+                  description: Multimodal content array containing the text prompt and reference images.
                   items:
                     oneOf:
                       - type: object
-                        description: 文本提示词
+                        description: Text prompt
                         required:
                           - type
                           - text
@@ -47,9 +47,9 @@ paths:
                               - text
                           text:
                             type: string
-                            description: 视频生成提示词。
+                            description: Video generation prompt.
                       - type: object
-                        description: 带角色的参考图片。
+                        description: Reference image with a role.
                         required:
                           - type
                           - image_url
@@ -65,13 +65,13 @@ paths:
                             properties:
                               url:
                                 type: string
-                                description: 图片 URL
+                                description: Image URL
                           role:
                             type: string
                             enum:
                               - first_frame
                               - last_frame
-                            description: 图片角色：first_frame（首帧）或 last_frame（尾帧）。
+                            description: "Image role: first_frame (first frame) or last_frame (last frame)."
                 ratio:
                   type: string
                   enum:
@@ -83,7 +83,7 @@ paths:
                     - '21:9'
                     - adaptive
                   default: '16:9'
-                  description: 画面比例。图生视频支持 adaptive。
+                  description: Aspect ratio. Image-to-video supports adaptive.
                   example: adaptive
                 resolution:
                   type: string
@@ -92,29 +92,29 @@ paths:
                     - 720p
                     - 1080p
                   default: 720p
-                  description: 输出分辨率。
+                  description: Output resolution.
                   example: 720p
                 duration:
                   type: integer
                   minimum: 4
                   maximum: 12
                   default: 5
-                  description: 视频时长（秒），4-12 秒。
+                  description: Video duration in seconds, 4-12.
                   example: 5
                 watermark:
                   type: boolean
                   default: false
-                  description: 是否添加水印。
+                  description: Whether to add a watermark.
                 seed:
                   type: integer
-                  description: 随机种子。
+                  description: Random seed.
                 camera_fixed:
                   type: boolean
                   default: false
-                  description: 是否固定摄像头。
+                  description: Whether to lock the camera.
       responses:
         '200':
-          description: 任务已创建
+          description: Task created
           content:
             application/json:
               schema:
@@ -133,9 +133,9 @@ paths:
                     type: integer
                     example: 1773130665
         '401':
-          description: 未授权
+          description: Unauthorized
         '429':
-          description: 请求频率超限
+          description: Rate limit exceeded
 components:
   securitySchemes:
     bearerAuth:

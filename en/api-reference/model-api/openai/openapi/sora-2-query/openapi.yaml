@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Sora 2 查询任务
-  description: 通过 Starrise AI API 查询 Sora 2 视频生成任务状态
+  title: Sora 2 query task
+  description: Query Sora 2 video generation task status
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,8 +10,8 @@ security:
 paths:
   /v1/videos/{id}:
     get:
-      summary: 查询视频任务状态
-      description: 查询 Sora 2 视频生成任务的状态和详细信息
+      summary: Query video task status
+      description: Query the status and details of a Sora 2 video generation task
       operationId: querySora2Task
       parameters:
         - name: id
@@ -19,11 +19,11 @@ paths:
           required: true
           schema:
             type: string
-          description: 创建端点返回的视频任务 ID
+          description: Video task ID returned by the create endpoint
           example: video_69b131ea03548190925a6a06febf993b
       responses:
         '200':
-          description: 任务状态
+          description: Task status
           content:
             application/json:
               schema:
@@ -51,7 +51,7 @@ paths:
                     example: 0
                   prompt:
                     type: string
-                    example: 一只猫穿过向日葵田
+                    example: A cat walking through a sunflower field
                   seconds:
                     type: string
                     example: '12'
@@ -78,9 +78,9 @@ paths:
                     nullable: true
                     example: null
         '401':
-          description: 未授权
+          description: Unauthorized
         '404':
-          description: 任务未找到
+          description: Task not found
 components:
   securitySchemes:
     bearerAuth:

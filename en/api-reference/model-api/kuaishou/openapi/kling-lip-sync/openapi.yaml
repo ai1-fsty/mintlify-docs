@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Kling 对口型生成
-  description: 驱动视频中人物的嘴型匹配文本（TTS）或音频文件中的语音
+  title: Kling lip-sync
+  description: Drive the character's mouth movement to match speech from text (TTS) or an audio file
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,22 +10,22 @@ security:
 paths:
   /kling/v1/videos/advanced-lip-sync:
     post:
-      summary: 创建对口型任务
+      summary: Create a lip-sync task
       description: >
-        创建对口型视频生成异步任务。视频中人物的嘴型将与提供的语音内容对齐。
+        Create an asynchronous lip-sync video task. The character's mouth movement is aligned with the provided speech.
 
 
-        **前置条件**：必须先调用 `identify-face` 接口获取 `session_id`。
+        **Prerequisite**: call the `identify-face` API first to get a `session_id`.
 
 
-        支持两种输入方式：
+        Two input modes are supported:
 
-        - **文本模式**：提供 `text`、`voice_id`、`voice_language`，平台内置 TTS 合成语音并驱动嘴型。
+        - **Text mode**: provide `text`, `voice_id`, and `voice_language`. The platform synthesizes speech with built-in TTS and drives lip movement.
 
-        - **音频模式**：提供 `audio_url`，直接用已有音频文件驱动嘴型。
+        - **Audio mode**: provide `audio_url` and drive lip movement from an existing audio file.
 
 
-        提交后轮询 `GET /kling/v1/videos/advanced-lip-sync/{task_id}` 直到 `status` 为
+        After submitting, poll `GET /kling/v1/videos/advanced-lip-sync/{task_id}` until `status` is
         `succeeded`。
       operationId: klingAdvancedLipSyncZh
       requestBody:
@@ -44,23 +44,23 @@ paths:
                   properties:
                     session_id:
                       type: string
-                      description: 人脸识别接口返回的会话 ID。
+                      description: Session ID returned by the face identification API.
                       example: abc123-session-id
                     face_image_url:
                       type: string
-                      description: 人脸参考图片 URL（可选，用于提升人物一致性）。
+                      description: Face reference image URL (optional, improves character consistency).
                     text:
                       type: string
                       description: |
-                        人物要说的文字内容（文本模式）。与 `audio_url` 二选一。
-                      example: 你好，欢迎来到我的频道
+                        Text the character should speak (text mode). Use either this or `audio_url`.
+                      example: Hello, welcome to my channel
                     voice_id:
                       type: string
-                      description: TTS 音色 ID（文本模式必填）。
+                      description: TTS voice ID (required in text mode).
                       example: girlfriend_1_cn
                     voice_language:
                       type: string
-                      description: 语言代码（文本模式必填）。
+                      description: Language code (required in text mode).
                       enum:
                         - zh
                         - en
@@ -68,11 +68,11 @@ paths:
                     audio_url:
                       type: string
                       description: |
-                        音频文件的公网 URL（音频模式）。与 `text` 二选一。
+                        Public URL of the audio file (audio mode). Use either this or `text`.
                       example: https://example.com/speech.mp3
       responses:
         '200':
-          description: 对口型任务已创建
+          description: Lip-sync task created
           content:
             application/json:
               schema:
@@ -80,11 +80,11 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: 任务 ID
+                    description: Task ID
                     example: task_abc123
                   task_id:
                     type: string
-                    description: 任务 ID（同 id）
+                    description: Task ID (same as id)
                     example: task_abc123
                   object:
                     type: string
@@ -94,24 +94,24 @@ paths:
                     example: kling-lip-sync
                   status:
                     type: string
-                    description: 初始为空，通过查询接口获取最新状态。
+                    description: Initially empty. Use the query API to get the latest status.
                     example: ''
                   progress:
                     type: integer
-                    description: 进度 0–100
+                    description: Progress 0–100
                     example: 0
                   created_at:
                     type: integer
-                    description: Unix 时间戳
+                    description: Unix timestamp
                     example: 1773812605
         '400':
-          description: 请求参数有误
+          description: Invalid request parameters
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:

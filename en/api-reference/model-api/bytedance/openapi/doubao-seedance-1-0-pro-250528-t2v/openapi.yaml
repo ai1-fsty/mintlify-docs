@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Seedance 1.0 Pro 文生视频
-  description: 通过 Starrise AI API 调用字节跳动 Seedance 1.0 Pro 文生视频模型
+  title: Seedance 1.0 Pro Text-to-Video
+  description: Call the ByteDance Seedance 1.0 Pro text-to-video model
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,8 +10,8 @@ security:
 paths:
   /v1/video/generations:
     post:
-      summary: 创建文生视频任务
-      description: 使用 doubao-seedance-1-0-pro-250528 模型从文本生成视频。
+      summary: Create a text-to-video task
+      description: Generate a video from text using the doubao-seedance-1-0-pro-250528 model.
       operationId: createSeedance10ProT2v
       requestBody:
         required: true
@@ -27,12 +27,12 @@ paths:
                   type: string
                   enum:
                     - doubao-seedance-1-0-pro-250528
-                  description: 模型 ID
+                  description: model ID
                   example: doubao-seedance-1-0-pro-250528
                 content:
                   type: array
                   minItems: 1
-                  description: 内容数组，包含文本提示词。
+                  description: Content array containing the text prompt.
                   items:
                     type: object
                     required:
@@ -45,7 +45,7 @@ paths:
                           - text
                       text:
                         type: string
-                        description: 视频生成提示词。
+                        description: Video generation prompt.
                 ratio:
                   type: string
                   enum:
@@ -56,7 +56,7 @@ paths:
                     - '9:16'
                     - '21:9'
                   default: '16:9'
-                  description: 画面比例。文生视频不支持 adaptive。
+                  description: Aspect ratio. Text-to-video does not support adaptive.
                   example: '16:9'
                 resolution:
                   type: string
@@ -65,29 +65,29 @@ paths:
                     - 720p
                     - 1080p
                   default: 720p
-                  description: 输出分辨率。
+                  description: Output resolution.
                   example: 720p
                 duration:
                   type: integer
                   minimum: 2
                   maximum: 12
                   default: 5
-                  description: 视频时长（秒），2-12 秒。
+                  description: Video duration in seconds, 2-12.
                   example: 5
                 watermark:
                   type: boolean
                   default: false
-                  description: 是否添加水印。
+                  description: Whether to add a watermark.
                 seed:
                   type: integer
-                  description: 随机种子。
+                  description: Random seed.
                 camera_fixed:
                   type: boolean
                   default: false
-                  description: 是否固定摄像头。
+                  description: Whether to lock the camera.
       responses:
         '200':
-          description: 任务已创建
+          description: Task created
           content:
             application/json:
               schema:
@@ -106,9 +106,9 @@ paths:
                     type: integer
                     example: 1773130665
         '401':
-          description: 未授权
+          description: Unauthorized
         '429':
-          description: 请求频率超限
+          description: Rate limit exceeded
 components:
   securitySchemes:
     bearerAuth:

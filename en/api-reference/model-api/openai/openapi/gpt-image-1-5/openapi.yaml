@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: GPT Image 1.5
-  description: 通过 Starrise AI API 使用 GPT Image 1.5 生成图像
+  description: Use GPT Image 1.5 Generate an image
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,8 +10,8 @@ security:
 paths:
   /v1/images/generations:
     post:
-      summary: 生成图像
-      description: 使用 GPT Image 1.5 模型从文本提示生成图像。
+      summary: Generate an image
+      description: Generate an image from a text prompt using the GPT Image 1.5 model.
       operationId: createGptImage15
       requestBody:
         required: true
@@ -27,18 +27,18 @@ paths:
                   type: string
                   enum:
                     - gpt-image-1.5
-                  description: 模型 ID
+                  description: model ID
                   example: gpt-image-1.5
                 prompt:
                   type: string
-                  description: 图像描述文本
-                  example: 一只穿着太空服漂浮在银河中的可爱猫咪
+                  description: Image description text
+                  example: An adorable cat in a spacesuit floating in the Milky Way
                 'n':
                   type: integer
                   minimum: 1
                   maximum: 4
                   default: 1
-                  description: 生成图片数量
+                  description: Number of images to generate
                   example: 1
                 size:
                   type: string
@@ -48,7 +48,7 @@ paths:
                     - 1024x1536
                     - auto
                   default: auto
-                  description: 输出图片尺寸
+                  description: Output image size
                   example: 1024x1024
                 quality:
                   type: string
@@ -57,7 +57,7 @@ paths:
                     - medium
                     - high
                   default: medium
-                  description: 图片质量
+                  description: Image quality
                   example: high
                 output_format:
                   type: string
@@ -66,7 +66,7 @@ paths:
                     - webp
                     - jpeg
                   default: png
-                  description: 输出图片格式
+                  description: Output image format
                   example: png
                 background:
                   type: string
@@ -74,7 +74,7 @@ paths:
                     - transparent
                     - opaque
                   default: opaque
-                  description: 背景设置，`transparent` 为透明背景，`opaque` 为不透明背景
+                  description: Background setting. `transparent` for a transparent background, `opaque` for an opaque background
                   example: opaque
                 moderation:
                   type: string
@@ -82,17 +82,17 @@ paths:
                     - auto
                     - low
                   default: auto
-                  description: 内容审核级别
+                  description: Content moderation level
                   example: auto
                 output_compression:
                   type: integer
                   minimum: 0
                   maximum: 100
-                  description: jpeg 和 webp 格式的压缩级别（0-100%）
+                  description: Compression level for jpeg and webp (0-100%)
                   example: 80
       responses:
         '200':
-          description: 图像生成成功。
+          description: Image generated successfully.
           content:
             application/json:
               schema:
@@ -100,20 +100,20 @@ paths:
                 properties:
                   data:
                     type: array
-                    description: 生成的图片数组
+                    description: Array of generated images
                     items:
                       type: object
                       properties:
                         b64_json:
                           type: string
-                          description: Base64 编码的图片数据
+                          description: Base64-encoded image data
                         revised_prompt:
                           type: string
-                          description: 模型修改后的提示词
+                          description: Prompt rewritten by the model
         '400':
-          description: 请求错误。参数无效。
+          description: Request error. Invalid parameters.
         '401':
-          description: 未授权。API 密钥无效或缺失。
+          description: Unauthorized. The API key is invalid or missing.
 components:
   securitySchemes:
     bearerAuth:

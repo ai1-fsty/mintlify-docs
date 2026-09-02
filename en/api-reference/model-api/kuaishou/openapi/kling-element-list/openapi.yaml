@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Kling 查询自定义主体列表
-  description: 分页查询当前用户创建的所有自定义主体
+  title: Kling list custom subjects
+  description: Paginated query of all custom subjects created by the current user
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,14 +10,14 @@ security:
 paths:
   /kling/v1/general/advanced-custom-elements:
     get:
-      summary: 查询自定义主体列表
-      description: 分页获取当前用户创建的所有自定义主体列表。
+      summary: List custom subjects
+      description: Paginated list of all custom subjects created by the current user.
       operationId: listKlingCustomElementsZh
       parameters:
         - name: pageNum
           in: query
           required: false
-          description: 页码，从 1 开始。
+          description: Page number, starting from 1.
           schema:
             type: integer
             default: 1
@@ -25,14 +25,14 @@ paths:
         - name: pageSize
           in: query
           required: false
-          description: 每页数量。
+          description: Page size.
           schema:
             type: integer
             default: 10
             example: 10
       responses:
         '200':
-          description: 查询成功
+          description: Query succeeded
           content:
             application/json:
               schema:
@@ -57,7 +57,7 @@ paths:
                             - submitted
                             - succeed
                             - failed
-                          description: 任务状态。
+                          description: Task status.
                         task_result:
                           type: object
                           properties:
@@ -74,11 +74,11 @@ paths:
                                     type: string
                         created_at:
                           type: integer
-                          description: 创建时间（毫秒时间戳）
+                          description: Creation time (millisecond timestamp)
                         updated_at:
                           type: integer
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:

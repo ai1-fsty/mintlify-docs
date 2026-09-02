@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: 豆包兼容接口 — Responses
-  description: 通过 Starrise AI 使用 Responses API 访问豆包模型
+  title: Doubao-compatible endpoint — Responses
+  description: Access Doubao models through Starrise AI using the Responses API
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,11 +10,11 @@ security:
 paths:
   /v1/responses:
     post:
-      summary: 创建响应
+      summary: Create a response
       description: |
-        使用豆包模型创建响应。`input` 支持纯文本字符串或消息对象数组（多模态）。
+        Create a response with a Doubao model. `input` supports a plain-text string or an array of message objects (multimodal).
 
-        多模态内容类型：`input_text`、`input_image`、`input_video`、`input_file`。
+        Multimodal content types: `input_text`, `input_image`, `input_video`, `input_file`.
       operationId: createDoubaoResponse
       requestBody:
         required: true
@@ -39,15 +39,15 @@ paths:
                     - doubao-seed-1-6-lite-251015
                     - doubao-seed-1-6-vision-250815
                     - glm-4.7
-                  description: 使用的模型。
+                  description: The model to use.
                   example: doubao-seed-1-6-251015
                 input:
                   type: array
                   description: >
-                    输入消息，每项包含 `role` 和 `content`。简单文本也可直接传字符串。
+                    Input messages. Each item includes `role` and `content`. Simple text can also be passed as a string.
 
 
-                    content 数组项类型：
+                    content array item types:
 
                     - `input_text`：`{"type": "input_text", "text": "..."}`
 
@@ -71,11 +71,11 @@ paths:
                           - user
                           - assistant
                           - system
-                        description: 消息角色。
+                        description: Message role.
                         example: user
                       content:
                         type: array
-                        description: 内容块数组。
+                        description: Array of content blocks.
                         items:
                           type: object
                           properties:
@@ -86,34 +86,34 @@ paths:
                                 - input_image
                                 - input_video
                                 - input_file
-                              description: 内容类型。
+                              description: Content type.
                               example: input_text
                             text:
                               type: string
-                              description: 文本内容（`input_text`）。
-                              example: 图片里有什么？
+                              description: Text content (`input_text`).
+                              example: What is in this image?
                             image_url:
                               type: string
-                              description: 图片 URL 或 Base64 Data URI（`input_image`）。
+                              description: Image URL or Base64 data URI (`input_image`).
                               example: https://example.com/photo.jpg
                             video_url:
                               type: string
-                              description: 视频 URL 或 Base64 Data URI（`input_video`）。
+                              description: Video URL or Base64 data URI (`input_video`).
                             fps:
                               type: number
                               minimum: 0.2
                               maximum: 5
                               default: 1
-                              description: 视频抽帧率（`input_video`），默认 `1`。
+                              description: Video frame sampling rate (`input_video`). Default `1`.
                             file_url:
                               type: string
-                              description: 文档 URL（`input_file`）。
+                              description: Document URL (`input_file`).
                             file_data:
                               type: string
-                              description: Base64 编码文档 Data URI（`input_file`）。
+                              description: Base64-encoded document data URI (`input_file`).
                             filename:
                               type: string
-                              description: 文件名，使用 `file_data` 时必填。
+                              description: File name. Required when using `file_data`.
                   example:
                     - role: user
                       content:
@@ -121,29 +121,29 @@ paths:
                           image_url: >-
                             https://ark-project.tos-cn-beijing.volces.com/doc_image/ark_demo_img_1.png
                         - type: input_text
-                          text: 图片里有什么？
+                          text: What is in this image?
                 stream:
                   type: boolean
                   default: false
-                  description: 是否通过 SSE 流式返回。
+                  description: Whether to stream the response via SSE.
                 temperature:
                   type: number
                   minimum: 0
                   maximum: 2
                   default: 1
-                  description: 采样温度。
+                  description: Sampling temperature.
                 top_p:
                   type: number
                   minimum: 0
                   maximum: 1
-                  description: 核采样参数。
+                  description: Nucleus sampling parameter.
                 max_output_tokens:
                   type: integer
                   minimum: 1
-                  description: 最大输出 token 数。
+                  description: Maximum number of output tokens.
                 reasoning:
                   type: object
-                  description: '推理配置。示例：`{"effort": "high"}`。'
+                  description: 'Reasoning configuration. Example: `{"effort": "high"}`.'
                   properties:
                     effort:
                       type: string
@@ -152,20 +152,20 @@ paths:
                         - low
                         - medium
                         - high
-                      description: 推理强度，默认 medium。
+                      description: Reasoning intensity. Defaults to medium.
       responses:
         '200':
-          description: 响应创建成功
+          description: Response created successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseObject'
         '400':
-          description: 请求参数有误
+          description: Invalid request parameters
         '401':
-          description: 未授权
+          description: Unauthorized
         '429':
-          description: 请求过多
+          description: Too many requests
 components:
   schemas:
     ResponseObject:
@@ -216,7 +216,7 @@ components:
                       example: output_text
                     text:
                       type: string
-                      example: 图片里有3个模型：Doubao-Seed-1.8、DeepSeek-V3.2、GLM-4.7。
+                      example: "There are 3 models in the image: Doubao-Seed-1.8, DeepSeek-V3.2, and GLM-4.7."
         usage:
           type: object
           properties:

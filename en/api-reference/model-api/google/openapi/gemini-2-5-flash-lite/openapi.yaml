@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Gemini 2.5 Flash Lite
-  description: 通过 Starrise AI 代理调用 Google Gemini 2.5 Flash Lite
+  description: Call Google Gemini 2.5 Flash Lite
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -9,13 +9,13 @@ security: []
 paths:
   /v1beta/models/gemini-2.5-flash-lite:generateContent:
     post:
-      summary: 文本生成
-      description: 根据对话内容生成模型响应。
+      summary: Text generation
+      description: Generate a model response from the conversation.
       operationId: Gemini25FlashLiteGenerateContent
       parameters:
         - name: key
           in: query
-          description: API 密钥
+          description: API key
           required: true
           schema:
             type: string
@@ -31,7 +31,7 @@ paths:
               properties:
                 contents:
                   type: array
-                  description: 对话内容数组，包含用户和模型消息。
+                  description: Array of conversation contents, including user and model messages.
                   items:
                     type: object
                     properties:
@@ -48,14 +48,14 @@ paths:
                           properties:
                             text:
                               type: string
-                              description: 文本内容
+                              description: Text content
                   example:
                     - role: user
                       parts:
-                        - text: 你好，请介绍一下你自己。
+                        - text: Hello, please introduce yourself.
                 systemInstruction:
                   type: object
-                  description: 系统指令
+                  description: System instruction
                   properties:
                     parts:
                       type: array
@@ -66,7 +66,7 @@ paths:
                             type: string
                   example:
                     parts:
-                      - text: 你是一个有用的助手。
+                      - text: You are a helpful assistant.
                 generationConfig:
                   type: object
                   properties:
@@ -75,29 +75,29 @@ paths:
                       minimum: 0
                       maximum: 2
                       default: 1
-                      description: 采样温度，值越高输出越随机。
+                      description: Sampling temperature. Higher values make the output more random.
                       example: 1
                     topP:
                       type: number
                       minimum: 0
                       maximum: 1
                       default: 1
-                      description: 核采样阈值。
+                      description: Nucleus sampling threshold.
       responses:
         '200':
-          description: 成功生成响应
+          description: Response generated successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/GenerateContentResponse'
         '400':
-          description: 请求参数有误
+          description: Invalid request parameters
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:
@@ -122,7 +122,7 @@ components:
                       properties:
                         text:
                           type: string
-                          example: 你好！我是 Gemini，很高兴认识你。
+                          example: Hello! I'm Gemini. Nice to meet you.
                   role:
                     type: string
                     example: model

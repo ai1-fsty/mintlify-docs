@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: GPT-5.5
-  description: 通过 Starrise AI OpenAI 兼容接口调用 OpenAI GPT-5.5（Responses 端点）
+  description: Call OpenAI GPT-5.5 (Responses endpoint)
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,8 +10,8 @@ security:
 paths:
   /v1/responses:
     post:
-      summary: 创建响应
-      description: 根据输入创建模型响应。部分 OpenAI 模型仅支持 Responses 格式。
+      summary: Create a response
+      description: Create a model response from the input. Some OpenAI models only support the Responses format.
       operationId: createResponseGPT55Zh
       requestBody:
         required: true
@@ -27,12 +27,12 @@ paths:
                   type: string
                   enum:
                     - gpt-5.5
-                  description: 模型 ID
+                  description: model ID
                   example: gpt-5.5
                 input:
                   type: array
                   minItems: 1
-                  description: 供模型生成响应的文本或图像内容。
+                  description: Text or image content used by the model to generate a response.
                   items:
                     type: object
                     required:
@@ -49,45 +49,45 @@ paths:
                         type: string
                   example:
                     - role: user
-                      content: 你好！
+                      content: Hello!
                 stream:
                   type: boolean
                   default: false
-                  description: 为 true 时通过 SSE 流式传输响应增量。
+                  description: When true, response deltas are streamed via SSE.
                 temperature:
                   type: number
                   minimum: 0
                   maximum: 2
                   default: 1
-                  description: 采样温度，值越高输出越随机。
+                  description: Sampling temperature. Higher values make the output more random.
                   example: 1
                 frequency_penalty:
                   type: number
                   minimum: -2
                   maximum: 2
                   default: 0
-                  description: 根据 Token 在文本中出现的频率对其进行惩罚。
+                  description: Penalize tokens based on how often they appear in the text.
                 presence_penalty:
                   type: number
                   minimum: -2
                   maximum: 2
                   default: 0
-                  description: 对已在文本中出现过的 Token 进行惩罚。
+                  description: Penalize tokens that have already appeared in the text.
                 max_output_tokens:
                   type: integer
                   minimum: 16
-                  description: 最大输出 Token 数。
+                  description: Maximum number of output tokens.
                 stop:
                   type: string
-                  description: 触发停止生成的序列。
+                  description: Sequences that stop generation.
                 'n':
                   type: integer
                   minimum: 1
                   default: 1
-                  description: 生成的响应候选数量。
+                  description: Number of response candidates to generate.
                 text:
                   type: object
-                  description: 模型文本响应的配置选项。
+                  description: Configuration options for the model's text response.
                   properties:
                     format:
                       type: object
@@ -97,17 +97,17 @@ paths:
                           enum:
                             - text
                             - json_object
-                          description: 响应格式类型。
+                          description: Response format type.
                     verbosity:
                       type: string
                       enum:
                         - low
                         - medium
                         - high
-                      description: 限制模型响应的详细程度，默认为 medium。
+                      description: Limits how detailed the model response is. Defaults to medium.
                 reasoning:
                   type: object
-                  description: 模型推理/思考的配置。
+                  description: Model reasoning/thinking configuration.
                   properties:
                     effort:
                       type: string
@@ -117,50 +117,50 @@ paths:
                         - medium
                         - high
                         - xhigh
-                      description: 推理工作量级别，默认为 medium。
+                      description: Reasoning effort level. Defaults to medium.
                     summary:
                       type: string
                       enum:
                         - auto
                         - concise
                         - detailed
-                      description: 模型推理过程的摘要形式。
+                      description: Summary form of the model's reasoning process.
                 tools:
                   type: array
                   items:
                     type: object
-                  description: 模型可调用的工具列表。
+                  description: A list of tools the model can call.
                 tool_choice:
                   type: string
-                  description: 控制模型调用哪个（如果有）工具。
+                  description: Controls which tool the model calls, if any.
                 store:
                   type: boolean
                   default: true
-                  description: 是否存储生成的响应以供后续通过 API 检索，默认为 true。
+                  description: Whether to store the generated response for later retrieval via API. Defaults to true.
                 user:
                   type: string
-                  description: 代表终端用户的唯一标识符。
+                  description: A unique identifier representing the end user.
       responses:
         '200':
-          description: 响应生成成功
+          description: Response generated successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ResponseObject'
         '400':
-          description: 请求无效
+          description: Invalid request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '429':
-          description: 超出速率限制
+          description: Rate limit exceeded
           content:
             application/json:
               schema:
@@ -186,11 +186,11 @@ components:
           example: response
         created_at:
           type: integer
-          description: 响应创建时的 Unix 时间戳。
+          description: Unix timestamp when the response was created.
           example: 1773132155
         completed_at:
           type: integer
-          description: 响应完成时的 Unix 时间戳。
+          description: Unix timestamp when the response was completed.
           example: 1773132156
         model:
           type: string
@@ -230,7 +230,7 @@ components:
                       example: output_text
                     text:
                       type: string
-                      example: 你好！有什么我可以帮您的？
+                      example: Hello! How can I help you?
                     annotations:
                       type: array
                       items:

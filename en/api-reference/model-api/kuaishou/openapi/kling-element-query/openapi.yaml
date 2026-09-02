@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Kling 查询自定义主体
-  description: 通过 task_id 查询自定义主体创建任务的状态和结果
+  title: Kling query custom subject
+  description: Query the status and result of a custom-subject creation task by task_id
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,20 +10,20 @@ security:
 paths:
   /kling/v1/general/advanced-custom-elements/{task_id}:
     get:
-      summary: 查询自定义主体
-      description: 查询自定义主体创建任务的状态和结果。轮询直到 `task_status` 为 `succeed` 或 `failed`。
+      summary: Query a custom subject
+      description: Query the status and result of a custom-subject creation task. Poll until `task_status` is `succeed` or `failed`.
       operationId: queryKlingCustomElementZh
       parameters:
         - name: task_id
           in: path
           required: true
-          description: 创建主体接口返回的任务 ID。
+          description: Task ID returned by the create-subject API.
           schema:
             type: string
             example: '863121016086724692'
       responses:
         '200':
-          description: 查询成功
+          description: Query succeeded
           content:
             application/json:
               schema:
@@ -48,7 +48,7 @@ paths:
                           - submitted
                           - succeed
                           - failed
-                        description: 任务状态。
+                        description: Task status.
                       task_result:
                         type: object
                         properties:
@@ -58,12 +58,12 @@ paths:
                               $ref: '#/components/schemas/Element'
                       created_at:
                         type: integer
-                        description: 创建时间（毫秒时间戳）
+                        description: Creation time (millisecond timestamp)
                       updated_at:
                         type: integer
-                        description: 更新时间（毫秒时间戳）
+                        description: Update time (millisecond timestamp)
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:
@@ -75,7 +75,7 @@ components:
       properties:
         element_id:
           type: integer
-          description: 主体 ID（用于删除操作）
+          description: Subject ID (used for deletion)
         element_name:
           type: string
         element_description:
@@ -88,7 +88,7 @@ components:
           properties:
             frontal_image:
               type: string
-              description: 正面图片 CDN 链接
+              description: Front image CDN URL
             refer_images:
               type: array
               items:
@@ -98,7 +98,7 @@ components:
                     type: string
         owned_by:
           type: string
-          description: 拥有者用户 ID（官方预设为 "kling"）
+          description: Owner user ID (official presets use "kling")
         status:
           type: string
           enum:

@@ -21,6 +21,18 @@
     "languages": [
       {
         "language": "en",
+        "navbar": {
+          "primary": {
+            "type": "button",
+            "label": "Console",
+            "href": "https://ai.alad.com/console/token?lang=en"
+          }
+        },
+        "footer": {
+          "socials": {
+            "website": "https://ai.alad.com/?lang=en"
+          }
+        },
         "tabs": [
           {
             "tab": "Guides",
@@ -656,6 +668,13 @@
       {
         "language": "zh",
         "default": true,
+        "navbar": {
+          "primary": {
+            "type": "button",
+            "label": "控制台",
+            "href": "https://ai.alad.com/console/token?lang=en"
+          }
+        },
         "tabs": [
           {
             "tab": "指南",
@@ -1293,7 +1312,7 @@
   "navbar": {
     "primary": {
       "type": "button",
-      "label": "控制台",
+      "label": "Console",
       "href": "https://ai.alad.com/console/token"
     }
   },

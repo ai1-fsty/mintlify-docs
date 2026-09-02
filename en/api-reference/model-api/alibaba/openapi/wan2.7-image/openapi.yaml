@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Wan2.7 Image
-  description: 通过 Starrise AI API 调用阿里巴巴万相-图像生成与编辑 2.7 模型
+  description: Call Alibaba Wan image generation and editing 2.7 model
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,14 +10,14 @@ security:
 paths:
   /v1/images/generations:
     post:
-      summary: 图像生成 / 编辑
+      summary: Image generation / editing
       description: |
-        使用 Wan2.7 Image 生成或编辑图像。支持多种模式：
-        - **文生图**：仅提供 `prompt`
-        - **图像编辑**：提供 `prompt` + `image`
-        - **组图生成**：设置 `enable_sequential: true`
+        Generate or edit images with Wan2.7 Image. Multiple modes are supported:
+        - **Text-to-image**: provide `prompt` only
+        - **Image editing**: provide `prompt` + `image`
+        - **Sequential images**: "set `enable_sequential: true`"
 
-        接口同步返回最终图片 URL。
+        The API returns the final image URL synchronously.
       operationId: createWan27Image
       requestBody:
         required: true
@@ -34,20 +34,20 @@ paths:
                   enum:
                     - wan2.7-image-pro
                     - wan2.7-image
-                  description: 模型 ID。`wan2.7-image-pro` 文生图支持 4K 输出；`wan2.7-image` 生成速度更快。
+                  description: Model ID. `wan2.7-image-pro` text-to-image supports 4K output; `wan2.7-image` generates faster.
                   example: wan2.7-image-pro
                 prompt:
                   type: string
-                  description: 图片描述文字，支持中英文，最多 5000 个字符。
-                  example: 一间有着精致窗户的花店，漂亮的木质门，摆放着花朵
+                  description: Image description. Chinese and English are supported. Maximum 5000 characters.
+                  example: A flower shop with delicate windows, a beautiful wooden door, and flowers on display
                 image:
                   type: string
                   description: >
-                    编辑用输入图片 — URL（HTTP/HTTPS）或 Base64 数据
+                    Input image for editing — URL (HTTP/HTTPS) or Base64 data
                     URI（`data:{MIME};base64,{data}`）。
 
-                    支持格式：JPEG、JPG、PNG（不支持透明通道）、BMP、WEBP。最大 20 MB，宽高 240–8000
-                    px，宽高比 1:8–8:1。最多 9 张图片。
+                    Supported formats: JPEG, JPG, PNG (no alpha channel), BMP, WEBP. Max 20 MB, width/height 240–8000
+                    px, aspect ratio 1:8–8:1. Up to 9 images.
                   example: https://example.com/input.jpg
                 'n':
                   type: integer
@@ -55,52 +55,52 @@ paths:
                   maximum: 12
                   default: 1
                   description: >
-                    生成图片张数。
+                    Number of images to generate.
 
-                    - 关闭组图模式（`enable_sequential: false`）：`1–4`，默认 `1`。
+                    - Sequential mode off (`enable_sequential: "false`): `1–4`, default `1`."
 
-                    - 开启组图模式（`enable_sequential: true`）：`1–12`，默认
-                    `12`，实际张数由模型决定。
+                    - Sequential mode on (`enable_sequential: "true`): `1–12`, default"
+                    `12`. The actual count is decided by the model.
                   example: 1
                 size:
                   type: string
                   description: >
-                    输出分辨率，支持两种方式（不可混用）：
+                    Output resolution. Two formats are supported (do not mix them):
 
-                    - 预设规格：`1K`（1024×1024）、`2K`（2048×2048，默认）、`4K`（4096×4096，仅
-                    wan2.7-image-pro 文生图）。
+                    - Presets: `1K` (1024×1024), `2K` (2048×2048, default), `4K` (4096×4096, only
+                    wan2.7-image-pro text-to-image).
 
-                    - 自定义像素：`{宽}x{高}` — 文生图总像素 768×768–4096×4096，其他场景最高
-                    2048×2048，宽高比 1:8–8:1。
+                    - Custom pixels: `{width}x{height}` — text-to-image total pixels 768×768–4096×4096; other modes up to
+                    2048×2048, aspect ratio 1:8–8:1.
                   example: 2K
                 enable_sequential:
                   type: boolean
                   default: false
-                  description: 启用组图输出模式。为 `true` 时，`n` 表示最大生成张数，实际数量由模型决定。
+                  description: Enable sequential image output. When `true`, `n` is the maximum count and the model decides the actual number.
                 thinking_mode:
                   type: boolean
                   default: true
-                  description: 开启思考模式以增强推理能力、提升出图质量。仅在无图片输入且关闭组图模式时生效。
+                  description: Enable thinking mode to improve reasoning and image quality. Only takes effect when there is no image input and sequential mode is off.
                 watermark:
                   type: boolean
                   default: false
-                  description: 是否在生成图片右下角添加水印。
+                  description: Whether to add a watermark to the bottom-right corner of the generated image.
                 seed:
                   type: integer
                   minimum: 0
                   maximum: 2147483647
-                  description: 随机数种子，范围 [0, 2147483647]。相同种子可获得相近结果，但不保证完全一致。
+                  description: Random seed, range [0, 2147483647]. The same seed yields similar results but does not guarantee an exact match.
                 response_format:
                   type: string
                   enum:
                     - url
                     - b64_json
                   default: url
-                  description: 返回图片 URL 或 Base64 编码。
+                  description: Return an image URL or Base64 encoding.
                   example: url
       responses:
         '200':
-          description: 图像生成成功
+          description: Image generated successfully
           content:
             application/json:
               schema:
@@ -108,7 +108,7 @@ paths:
                 properties:
                   created:
                     type: integer
-                    description: 创建时间戳
+                    description: Creation timestamp
                     example: 1773803391
                   data:
                     type: array
@@ -117,20 +117,20 @@ paths:
                       properties:
                         url:
                           type: string
-                          description: 图片下载链接（PNG 格式，有效期 24 小时）。
+                          description: Image download URL (PNG, valid for 24 hours).
                           example: https://example.com/generated.png
                         b64_json:
                           type: string
-                          description: Base64 编码图片（仅 response_format=b64_json 时返回）。
+                          description: Base64-encoded image (returned only when response_format=b64_json).
                         revised_prompt:
                           type: string
-                          description: AI 扩展后的实际提示词。
+                          description: The actual prompt after AI expansion.
         '400':
-          description: 请求参数有误
+          description: Invalid request parameters
         '401':
-          description: 未授权
+          description: Unauthorized
         '429':
-          description: 请求频率超限
+          description: Rate limit exceeded
 components:
   securitySchemes:
     bearerAuth:

@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Sora 2 下载视频
-  description: 通过 Starrise AI API 下载已完成的 Sora 2 视频
+  title: Sora 2 download video
+  description: Download the completed Sora 2 video
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,8 +10,8 @@ security:
 paths:
   /v1/videos/{id}/content:
     get:
-      summary: 下载视频内容
-      description: 在任务完成后下载生成的视频。如果任务仍在进行中，则返回错误。
+      summary: Download video content
+      description: Download the generated video after the task completes. Returns an error if the task is still in progress.
       operationId: downloadSora2Video
       parameters:
         - name: id
@@ -19,11 +19,11 @@ paths:
           required: true
           schema:
             type: string
-          description: 视频任务 ID
+          description: Video task ID
           example: video_69b131ea03548190925a6a06febf993b
       responses:
         '200':
-          description: 视频下载信息
+          description: Video download information
           content:
             application/json:
               schema:
@@ -46,11 +46,11 @@ paths:
                     example: 100
                   url:
                     type: string
-                    description: 视频下载 URL
+                    description: Video download URL
                     example: https://filesystem.site/cdn/20251019/example.mp4
                   video_url:
                     type: string
-                    description: 视频下载 URL（别名）
+                    description: Video download URL (alias)
                     example: https://filesystem.site/cdn/20251019/example.mp4
                   size:
                     type: string
@@ -62,7 +62,7 @@ paths:
                     type: integer
                     example: 1773220330
         '400':
-          description: 任务尚未完成
+          description: The task is not finished yet
           content:
             application/json:
               schema:
@@ -73,14 +73,14 @@ paths:
                     properties:
                       message:
                         type: string
-                        example: 任务尚未完成，当前状态：IN_PROGRESS
+                        example: "The task is not finished yet. Current status: IN_PROGRESS"
                       type:
                         type: string
                         example: invalid_request_error
         '401':
-          description: 未授权
+          description: Unauthorized
         '404':
-          description: 任务未找到
+          description: Task not found
 components:
   securitySchemes:
     bearerAuth:

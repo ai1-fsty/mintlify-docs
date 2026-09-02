@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Seedream 4.0 图生图
-  description: 通过 Starrise AI API 调用字节跳动 Seedream 4.0 图生图模型
+  title: Seedream 4.0 Image-to-Image
+  description: Call the ByteDance Seedream 4.0 image-to-image model
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,8 +10,8 @@ security:
 paths:
   /v1/images/generations:
     post:
-      summary: 创建图生图任务
-      description: 使用 doubao-seedream-4-0-250828 模型从文本和参考图片生成图片。
+      summary: Create an image-to-image task
+      description: Generate an image from text and a reference image using the doubao-seedream-4-0-250828 model.
       operationId: createSeedream40I2i
       requestBody:
         required: true
@@ -32,13 +32,13 @@ paths:
                   example: doubao-seedream-4-0-250828
                 prompt:
                   type: string
-                  description: 图片生成提示词。
-                  example: 生成女孩和奶牛玩偶在游乐园开心地坐过山车的图片
+                  description: Image generation prompt.
+                  example: Generate an image of a girl and a cow plush happily riding a roller coaster at an amusement park
                 image:
                   type: array
                   items:
                     type: string
-                  description: 参考图片 URL 列表，用于图生图。图生图时必填。
+                  description: List of reference image URLs for image-to-image. Required for image-to-image.
                   example:
                     - https://example.com/ref1.png
                     - https://example.com/ref2.png
@@ -46,14 +46,14 @@ paths:
                   type: string
                   enum:
                     - auto
-                  description: 连续图片生成模式。设为 'auto' 可批量生成多张图片。
+                  description: Sequential image generation mode. Set to 'auto' to generate multiple images in a batch.
                 sequential_image_generation_options:
                   type: object
-                  description: 连续图片生成选项。
+                  description: Sequential image generation options.
                   properties:
                     max_images:
                       type: integer
-                      description: 批量生成的最大图片数量。
+                      description: Maximum number of images to generate in a batch.
                       example: 3
                 size:
                   type: string
@@ -82,34 +82,34 @@ paths:
                     - 3328x4992
                     - 4992x3328
                     - 6240x2656
-                  description: 输出图片尺寸。
+                  description: Output image size.
                   example: 1024x1024
                 watermark:
                   type: boolean
                   default: false
-                  description: 是否添加水印。
+                  description: Whether to add a watermark.
                 seed:
                   type: integer
-                  description: 随机种子，用于复现结果。
+                  description: Random seed, used to reproduce results.
                 logo_info:
                   type: object
-                  description: 自定义 Logo 水印配置。
+                  description: Custom logo watermark configuration.
                   properties:
                     add_logo:
                       type: boolean
-                      description: 是否添加 Logo 水印。
+                      description: Whether to add a logo watermark.
                     position:
                       type: integer
-                      description: Logo 位置。
+                      description: Logo position.
                     language:
                       type: integer
-                      description: Logo 语言。
+                      description: Logo language.
                     opacity:
                       type: number
-                      description: Logo 透明度（0-1）。
+                      description: Logo opacity (0-1).
       responses:
         '200':
-          description: 图片生成成功
+          description: Image generated successfully
           content:
             application/json:
               schema:
@@ -117,47 +117,47 @@ paths:
                 properties:
                   model:
                     type: string
-                    description: 使用的模型。
+                    description: The model to use.
                     example: doubao-seedream-4-0-250828
                   created:
                     type: integer
-                    description: 创建时间戳（Unix 秒）。
+                    description: Creation timestamp (Unix seconds).
                     example: 1775029815
                   data:
                     type: array
-                    description: 生成的图片列表。
+                    description: List of generated images.
                     items:
                       type: object
                       properties:
                         url:
                           type: string
-                          description: 生成的图片 URL。
+                          description: URL of the generated image.
                           example: >-
                             https://ark-content-generation-v2-cn-beijing.example.com/image.png
                         size:
                           type: string
-                          description: 图片尺寸。
+                          description: Image size.
                           example: 2048x2048
                   usage:
                     type: object
-                    description: Token 用量。
+                    description: Token usage.
                     properties:
                       generated_images:
                         type: integer
-                        description: 生成的图片数量。
+                        description: Number of generated images.
                         example: 1
                       output_tokens:
                         type: integer
-                        description: 输出 Token 消耗。
+                        description: Output token consumption.
                         example: 16384
                       total_tokens:
                         type: integer
-                        description: 总 Token 消耗。
+                        description: Total token consumption.
                         example: 16384
         '401':
-          description: 未授权
+          description: Unauthorized
         '429':
-          description: 请求频率超限
+          description: Rate limit exceeded
 components:
   securitySchemes:
     bearerAuth:

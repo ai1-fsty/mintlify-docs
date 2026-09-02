@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: HappyHorse 1.0 Video Edit
-  description: 通过 Starrise AI API 使用阿里 DashScope HappyHorse 1.0 视频编辑模型
+  description: Use the Alibaba DashScope HappyHorse 1.0 video-editing model
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,10 +10,10 @@ security:
 paths:
   /v1/video/generations:
     post:
-      summary: 创建视频编辑任务
+      summary: Create a video editing task
       description: >
-        提交视频编辑任务（视频 + 参考图）。**必须使用** native 格式（`input.media[]` 数组），
-        不支持顶层简化写法。立即返回 `task_id`。
+        Submit a video editing task (video + reference image). You **must** use the native format (`input.media[]` array).
+        Top-level shorthand is not supported. Returns a `task_id` immediately.
       operationId: createHappyhorse10VideoEdit
       requestBody:
         required: true
@@ -29,7 +29,7 @@ paths:
                   type: string
                   enum:
                     - happyhorse-1.0-video-edit
-                  description: 模型 ID。
+                  description: model ID。
                   example: happyhorse-1.0-video-edit
                 input:
                   type: object
@@ -39,13 +39,13 @@ paths:
                   properties:
                     prompt:
                       type: string
-                      description: 编辑描述文本。
-                      example: 让视频中的角色穿上图片中的条纹毛衣
+                      description: Edit description text.
+                      example: Make the character in the video wear the striped sweater from the image
                     media:
                       type: array
                       minItems: 2
                       maxItems: 2
-                      description: 恰好 2 个元素：1 个视频 + 1 个参考图。
+                      description: "Exactly 2 items: 1 video + 1 reference image."
                       items:
                         type: object
                         required:
@@ -57,10 +57,10 @@ paths:
                             enum:
                               - video
                               - reference_image
-                            description: 媒体类型。
+                            description: Media type.
                           url:
                             type: string
-                            description: 视频或参考图的公开 URL。
+                            description: Public URL of the video or reference image.
                       example:
                         - type: video
                           url: https://example.com/source.mp4
@@ -68,7 +68,7 @@ paths:
                           url: https://example.com/cloth.webp
                 parameters:
                   type: object
-                  description: 生成参数（DashScope 原生风格）。
+                  description: Generation parameters (native DashScope style).
                   properties:
                     resolution:
                       type: string
@@ -87,7 +87,7 @@ paths:
                       maximum: 2147483647
       responses:
         '200':
-          description: 任务创建成功
+          description: Task created successfully
           content:
             application/json:
               schema:
@@ -115,11 +115,11 @@ paths:
                     type: integer
                     example: 1777343862
         '400':
-          description: 请求参数错误
+          description: Invalid request parameters
         '401':
-          description: 未授权
+          description: Unauthorized
         '429':
-          description: 频率限制
+          description: Rate limited
 components:
   securitySchemes:
     bearerAuth:

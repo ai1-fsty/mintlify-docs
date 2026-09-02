@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: HappyHorse 1.0 T2V
-  description: 通过 Starrise AI API 使用阿里 DashScope HappyHorse 1.0 文生视频模型
+  description: Use the Alibaba DashScope HappyHorse 1.0 text-to-video model
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,10 +10,10 @@ security:
 paths:
   /v1/video/generations:
     post:
-      summary: 创建文生视频任务
+      summary: Create a text-to-video task
       description: >
-        提交文生视频任务。立即返回 `task_id`，通过 `GET /v1/video/generations/{task_id}`
-        轮询状态并获取视频 URL。
+        Submit a text-to-video task. Returns a `task_id` immediately. Poll `GET /v1/video/generations/{task_id}`
+        for status and the video URL.
       operationId: createHappyhorse10T2v
       requestBody:
         required: true
@@ -29,19 +29,19 @@ paths:
                   type: string
                   enum:
                     - happyhorse-1.0-t2v
-                  description: 模型 ID。
+                  description: model ID。
                   example: happyhorse-1.0-t2v
                 prompt:
                   type: string
-                  description: 视频描述文本。
-                  example: 一只猫在草地上奔跑
+                  description: Video description text.
+                  example: A cat running on the grass
                 resolution:
                   type: string
                   enum:
                     - 720P
                     - 1080P
                   default: 1080P
-                  description: 视频分辨率。
+                  description: Video resolution.
                   example: 720P
                 ratio:
                   type: string
@@ -52,32 +52,32 @@ paths:
                     - '4:3'
                     - '3:4'
                   default: '16:9'
-                  description: 宽高比。
+                  description: Aspect ratio.
                   example: '16:9'
                 duration:
                   type: integer
                   minimum: 3
                   maximum: 15
                   default: 5
-                  description: 视频时长（秒）。
+                  description: Video duration in seconds.
                   example: 5
                 watermark:
                   type: boolean
                   default: true
-                  description: 是否保留右下角 "Happy Horse" 水印。设为 `false` 可关闭。
+                  description: Whether to keep the "Happy Horse" watermark in the bottom-right corner. Set to `false` to disable it.
                   example: false
                 seed:
                   type: integer
                   minimum: 0
                   maximum: 2147483647
-                  description: 随机种子，用于结果可复现。
+                  description: Random seed, used to make results reproducible.
                   example: 42
                 parameters:
                   type: object
-                  description: 可选：上述参数也可放在 `parameters` 对象中（DashScope 原生风格），效果一致。
+                  description: "Optional: the same parameters can also be placed in a `parameters` object (native DashScope style) with the same effect."
       responses:
         '200':
-          description: 任务创建成功
+          description: Task created successfully
           content:
             application/json:
               schema:
@@ -105,11 +105,11 @@ paths:
                     type: integer
                     example: 1777343862
         '400':
-          description: 请求参数错误
+          description: Invalid request parameters
         '401':
-          description: 未授权
+          description: Unauthorized
         '429':
-          description: 频率限制
+          description: Rate limited
 components:
   securitySchemes:
     bearerAuth:

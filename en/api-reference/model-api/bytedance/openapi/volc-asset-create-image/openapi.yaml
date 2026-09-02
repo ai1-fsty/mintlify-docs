@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Seedance 素材 — 创建图片素材
-  description: 通过 Starrise AI API 上传图片素材到素材组
+  title: Seedance assets — create image asset
+  description: Upload an image asset to an asset group
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,10 +10,10 @@ security:
 paths:
   /volc/asset/CreateAsset:
     post:
-      summary: 创建图片素材
+      summary: Create an image asset
       description: >-
-        上传图片到已有素材组，返回的素材 ID 可在 Seedance 2.0 请求中以 `asset://<ID>`
-        格式引用，用于角色参考、首帧等场景。
+        Upload an image to an existing asset group. The returned asset ID can be referenced in Seedance 2.0 requests as `asset://<ID>`
+        for character references, first frames, and similar use cases.
       operationId: createImageAssetZh
       requestBody:
         required: true
@@ -30,25 +30,25 @@ paths:
                   type: string
                   enum:
                     - volc-asset
-                  description: 计费模型，图片固定传 `volc-asset`。
+                  description: Billing model. Always pass `volc-asset` for images.
                   example: volc-asset
                 GroupId:
                   type: string
-                  description: 素材组 ID。
+                  description: Asset group ID.
                   example: group-20260319072926-rrnmg
                 Name:
                   type: string
-                  description: 素材名称。
+                  description: Asset name.
                   example: character-reference
                 AssetType:
                   type: string
                   enum:
                     - Image
-                  description: 素材类型，图片固定传 `Image`。
+                  description: Asset type. Always pass `Image` for images.
                   example: Image
                 URL:
                   type: string
-                  description: 图片 URL、Data URI 或纯 Base64 字符串。
+                  description: Image URL, data URI, or raw Base64 string.
                   example: https://example.com/image.jpg
           multipart/form-data:
             schema:
@@ -61,26 +61,26 @@ paths:
                   type: string
                   enum:
                     - volc-asset
-                  description: 计费模型，图片固定传 `volc-asset`。
+                  description: Billing model. Always pass `volc-asset` for images.
                 file:
                   type: string
                   format: binary
-                  description: 要上传的图片文件。
+                  description: Image file to upload.
                 GroupId:
                   type: string
-                  description: 素材组 ID。
+                  description: Asset group ID.
                 Name:
                   type: string
-                  description: 素材名称，默认使用文件名（去掉扩展名）。
+                  description: Asset name. Defaults to the file name without the extension.
                 AssetType:
                   type: string
                   enum:
                     - Image
                   default: Image
-                  description: 素材类型，固定 `Image`。
+                  description: Asset type. Always `Image`.
       responses:
         '200':
-          description: 图片素材创建成功
+          description: Image asset created successfully
           content:
             application/json:
               schema:
@@ -88,16 +88,16 @@ paths:
                 properties:
                   Id:
                     type: string
-                    description: 素材 ID，在 Seedance 2.0 请求中以 `asset://<ID>` 格式引用。
+                    description: Asset ID. Referenced in Seedance 2.0 requests as `asset://<ID>`.
                     example: asset-20260320120147-pqwhc
         '400':
-          description: 请求参数有误
+          description: Invalid request parameters
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:
@@ -132,5 +132,5 @@ components:
     bearerAuth:
       type: http
       scheme: bearer
-      description: 请求头鉴权，格式为 `Bearer <token>`，其中 `<token>` 为您的 API Key。
+      description: Header authentication in the format `Bearer <token>`, where `<token>` is your API key.
 

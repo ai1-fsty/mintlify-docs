@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Grok 3
-  description: 通过 Starrise AI API 调用 xAI Grok 3 模型
+  description: Call the xAI Grok 3 model
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,8 +10,8 @@ security:
 paths:
   /v1/chat/completions:
     post:
-      summary: 对话补全
-      description: 使用 Grok 3 模型创建对话补全。
+      summary: Chat completion
+      description: Create a chat completion using the Grok 3 model.
       operationId: creategrok/3
       requestBody:
         required: true
@@ -27,12 +27,12 @@ paths:
                   type: string
                   enum:
                     - grok-3
-                  description: 模型 ID
+                  description: model ID
                   example: grok-3
                 messages:
                   type: array
                   minItems: 1
-                  description: 对话消息列表。
+                  description: List of conversation messages.
                   items:
                     type: object
                     required:
@@ -49,29 +49,29 @@ paths:
                         type: string
                   example:
                     - role: user
-                      content: 你好！
+                      content: Hello!
                 max_tokens:
                   type: integer
                   minimum: 1
-                  description: 生成的最大 token 数。
+                  description: Maximum number of tokens to generate.
                 temperature:
                   type: number
                   minimum: 0
                   maximum: 2
                   default: 1
-                  description: 采样温度。
+                  description: Sampling temperature.
                 top_p:
                   type: number
                   minimum: 0
                   maximum: 1
-                  description: 核采样参数。
+                  description: Nucleus sampling parameter.
                 stream:
                   type: boolean
                   default: false
-                  description: 是否通过 SSE 流式返回。
+                  description: Whether to stream the response via SSE.
       responses:
         '200':
-          description: 对话补全创建成功
+          description: Chat completion created successfully
           content:
             application/json:
               schema:
@@ -117,9 +117,9 @@ paths:
                       total_tokens:
                         type: integer
         '400':
-          description: 请求参数有误
+          description: Invalid request parameters
         '401':
-          description: 未授权
+          description: Unauthorized
 components:
   securitySchemes:
     bearerAuth:

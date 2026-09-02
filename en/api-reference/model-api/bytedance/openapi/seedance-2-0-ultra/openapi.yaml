@@ -2,8 +2,7 @@ openapi: 3.1.0
 info:
   title: Seedance 2.0 Ultra
   description: >-
-    通过 Starrise AI API 调用字节跳动 Seedance 2.0 Ultra
-    视频生成模型，支持文生视频、图生视频、多模态参考、视频编辑、视频延长、联网搜索增强等能力
+    Call the ByteDance Seedance 2.0 Ultra video generation model. Supports text-to-video, image-to-video, multimodal references, video editing, video extension, and web-search enhancement
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -12,17 +11,17 @@ security:
 paths:
   /v1/video/generations:
     post:
-      summary: 创建视频生成任务
+      summary: Create a video generation task
       description: |
-        创建异步视频生成任务。支持多种输入方式：
-        - 文生视频
-        - 图生视频（首帧 / 首尾帧）
-        - 多模态参考（图片 + 视频 + 音频组合）
-        - 编辑视频
-        - 延长视频
-        - 联网搜索增强
+        Create an asynchronous video generation task. Multiple input modes are supported:
+        - Text-to-video
+        - Image-to-video (first frame / first and last frame)
+        - Multimodal reference (image + video + audio combinations)
+        - Edit video
+        - Extend video
+        - Web-search enhancement
 
-        提交后轮询 `GET /v1/video/generations/{id}` 直到 `status` 为 `succeeded`。
+        After submitting, poll `GET /v1/video/generations/{id}` until `status` is `succeeded`.
       operationId: createSeedanceUltraZh
       requestBody:
         required: true
@@ -38,19 +37,19 @@ paths:
                   type: string
                   enum:
                     - seedance-2.0-ultra
-                  description: 模型 ID
+                  description: model ID
                   example: seedance-2.0-ultra
                 content:
                   type: array
                   description: |
-                    输入内容数组，支持文本、图片、视频、音频的多种组合：
-                    - 文本
-                    - 文本（可选）+ 图片
-                    - 文本（可选）+ 视频
-                    - 文本（可选）+ 图片 + 音频
-                    - 文本（可选）+ 图片 + 视频
-                    - 文本（可选）+ 视频 + 音频
-                    - 文本（可选）+ 图片 + 视频 + 音频
+                    Input content array. Supports combinations of text, image, video, and audio:
+                    - Text
+                    - Text (optional) + image
+                    - Text (optional) + video
+                    - Text (optional) + image + audio
+                    - Text (optional) + image + video
+                    - Text (optional) + video + audio
+                    - Text (optional) + image + video + audio
                   items:
                     type: object
                     properties:
@@ -62,41 +61,41 @@ paths:
                           - video_url
                           - audio_url
                         description: |
-                          内容类型：
-                          - `text` — 文本提示词
-                          - `image_url` — 图片输入（首帧 / 尾帧 / 参考图）
-                          - `video_url` — 视频输入（参考视频）
-                          - `audio_url` — 音频输入（参考音频）
+                          Content types:
+                          - `text` — text prompt
+                          - `image_url` — image input (first frame / last frame / reference image)
+                          - `video_url` — video input (reference video)
+                          - `audio_url` — audio input (reference audio)
                       text:
                         type: string
-                        description: 文本提示词，描述期望生成的视频。建议中文不超过 500 字，英文不超过 1000 词。
+                        description: "Text prompt describing the desired video. Recommended: up to 500 Chinese characters or 1000 English words."
                       image_url:
                         type: object
-                        description: 图片对象。
+                        description: Image object.
                         properties:
                           url:
                             type: string
                             description: |
-                              图片 URL、Base64 编码或素材 ID（`asset://<ASSET_ID>`）。
-                              支持格式：jpeg、png、webp、bmp、tiff、gif。单张不超过 30 MB。
+                              Image URL, Base64 encoding, or asset ID (`asset://<ASSET_ID>`).
+                              Supported formats: jpeg, png, webp, bmp, tiff, gif. Each image ≤ 30 MB.
                       video_url:
                         type: object
-                        description: 视频对象。
+                        description: Video object.
                         properties:
                           url:
                             type: string
                             description: |
-                              视频 URL 或素材 ID（`asset://<ASSET_ID>`）。
-                              支持格式：mp4、mov。单个不超过 50 MB，时长 2–15 秒。
+                              Video URL or asset ID (`asset://<ASSET_ID>`).
+                              Supported formats: mp4, mov. Each file ≤ 50 MB, duration 2–15 seconds.
                       audio_url:
                         type: object
-                        description: 音频对象。不可单独输入，需至少包含 1 个参考视频或图片。
+                        description: Audio object. Cannot be used alone; at least one reference video or image is required.
                         properties:
                           url:
                             type: string
                             description: |
-                              音频 URL、Base64 编码或素材 ID（`asset://<ASSET_ID>`）。
-                              支持格式：wav、mp3。单个不超过 15 MB，时长 2–15 秒。
+                              Audio URL, Base64 encoding, or asset ID (`asset://<ASSET_ID>`).
+                              Supported formats: wav, mp3. Each file ≤ 15 MB, duration 2–15 seconds.
                       role:
                         type: string
                         enum:
@@ -106,15 +105,15 @@ paths:
                           - reference_video
                           - reference_audio
                         description: |
-                          内容项的角色：
-                          - `first_frame` — 首帧图片（图生视频）
-                          - `last_frame` — 尾帧图片（首尾帧模式）
-                          - `reference_image` — 参考图片（多模态参考，1–9 张）
-                          - `reference_video` — 参考视频（多模态参考，最多 3 个）
-                          - `reference_audio` — 参考音频（多模态参考，最多 3 段）
+                          Role of the content item:
+                          - `first_frame` — first-frame image (image-to-video)
+                          - `last_frame` — last-frame image (first-and-last-frame mode)
+                          - `reference_image` — reference image (multimodal reference, 1–9 images)
+                          - `reference_video` — reference video (multimodal reference, up to 3)
+                          - `reference_audio` — reference audio (multimodal reference, up to 3)
                   example:
                     - type: text
-                      text: 一只猫在阳光明媚的房间里弹钢琴
+                      text: A cat playing the piano in a sunlit room
                     - type: image_url
                       image_url:
                         url: https://example.com/reference.jpg
@@ -123,16 +122,16 @@ paths:
                   type: boolean
                   default: true
                   description: |
-                    控制生成视频是否包含同步音频。
-                    - `true` — 自动生成人声、音效和背景音乐
-                    - `false` — 无声视频
+                    Controls whether the generated video includes synchronized audio.
+                    - `true` — automatically generate speech, sound effects, and background music
+                    - `false` — silent video
                 resolution:
                   type: string
                   enum:
                     - 720p
                     - 1080p
                     - 2k
-                  description: 输出视频分辨率。**Ultra 必填。**
+                  description: Output video resolution. **Required for Ultra.**
                   example: 720p
                 ratio:
                   type: string
@@ -146,17 +145,17 @@ paths:
                     - adaptive
                   default: adaptive
                   description: |
-                    输出宽高比。`adaptive` 根据输入自动选择最合适的宽高比。
+                    Output aspect ratio. `adaptive` automatically chooses the best ratio from the input.
                 duration:
                   type: integer
                   minimum: 4
                   maximum: 15
                   default: 5
                   description: |
-                    视频时长（秒），整数，4–15。
+                    Video duration in seconds. Integer, 4–15.
                 tools:
                   type: array
-                  description: 模型调用的工具。当前支持联网搜索（仅文生视频）。
+                  description: Tools the model can call. Currently supports web search (text-to-video only).
                   items:
                     type: object
                     properties:
@@ -164,14 +163,14 @@ paths:
                         type: string
                         enum:
                           - web_search
-                        description: 工具类型。`web_search` 启用联网搜索。
+                        description: Tool type. `web_search` enables web search.
                 watermark:
                   type: boolean
                   default: false
-                  description: 是否添加水印。
+                  description: Whether to add a watermark.
       responses:
         '200':
-          description: 视频生成任务已创建
+          description: Video generation task created
           content:
             application/json:
               schema:
@@ -179,11 +178,11 @@ paths:
                 properties:
                   id:
                     type: string
-                    description: 任务 ID
+                    description: Task ID
                     example: cgt-20260312231129-7db6s
                   task_id:
                     type: string
-                    description: 任务 ID（同 id）
+                    description: Task ID (same as id)
                     example: cgt-20260312231129-7db6s
                   object:
                     type: string
@@ -193,23 +192,23 @@ paths:
                     example: seedance-2.0-ultra
                   status:
                     type: string
-                    description: 初始为空
+                    description: Initially empty
                     example: ''
                   progress:
                     type: integer
                     example: 0
                   created_at:
                     type: integer
-                    description: Unix 时间戳
+                    description: Unix timestamp
                     example: 1773328294
         '400':
-          description: 请求参数有误
+          description: Invalid request parameters
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:

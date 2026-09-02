@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Qwen Image Plus
-  description: 通过 Starrise AI API 调用阿里巴巴 Qwen Image Plus 文生图模型
+  description: Call the Alibaba Qwen Image Plus text-to-image model
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,8 +10,8 @@ security:
 paths:
   /v1/images/generations:
     post:
-      summary: 生成图片
-      description: 根据文本描述生成图片。接口为同步调用，直接返回最终图片 URL。
+      summary: Generate an image
+      description: Generate an image from a text description. This is a synchronous call and returns the final image URL directly.
       operationId: createQwenImagePlus
       requestBody:
         required: true
@@ -27,38 +27,38 @@ paths:
                   type: string
                   enum:
                     - qwen-image-plus
-                  description: 模型 ID
+                  description: model ID
                   example: qwen-image-plus
                 prompt:
                   type: string
-                  description: 图片描述文字。
-                  example: 吉卜力风格的可爱猫咪
+                  description: Image description text.
+                  example: A cute Ghibli-style cat
                 'n':
                   type: integer
                   minimum: 1
                   maximum: 4
                   default: 1
-                  description: 生成图片数量。
+                  description: Number of images to generate.
                 size:
                   type: string
-                  description: 输出图片尺寸，如 `1024x1024`、`768x1344`。
+                  description: Output image size, e.g. `1024x1024` or `768x1344`.
                   example: 1024x1024
                 quality:
                   type: string
                   enum:
                     - standard
                     - hd
-                  description: 图片质量，`standard` 或 `hd`。
+                  description: Image quality, `standard` or `hd`.
                 response_format:
                   type: string
                   enum:
                     - url
                     - b64_json
                   default: url
-                  description: 返回 URL 或 Base64 编码的 JSON。
+                  description: Return a URL or Base64-encoded JSON.
       responses:
         '200':
-          description: 图片生成成功
+          description: Image generated successfully
           content:
             application/json:
               schema:
@@ -66,7 +66,7 @@ paths:
                 properties:
                   created:
                     type: integer
-                    description: 创建时间戳
+                    description: Creation timestamp
                   data:
                     type: array
                     items:
@@ -74,21 +74,21 @@ paths:
                       properties:
                         url:
                           type: string
-                          description: 图片下载链接（有效期约 24 小时）。
+                          description: Image download URL (valid for about 24 hours).
                         b64_json:
                           type: string
-                          description: Base64 编码图片（仅 `response_format=b64_json` 时返回）。
+                          description: Base64-encoded image (returned only when `response_format=b64_json`).
                         revised_prompt:
                           type: string
-                          description: AI 扩展后的实际提示词。
+                          description: The actual prompt after AI expansion.
         '400':
-          description: 请求参数有误
+          description: Invalid request parameters
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:

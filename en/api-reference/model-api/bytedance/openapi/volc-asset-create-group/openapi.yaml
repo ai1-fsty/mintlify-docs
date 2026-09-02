@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Seedance 2.0 素材 — 创建素材组
-  description: 通过 Starrise AI API 创建素材组，用于管理 Seedance 使用的媒体资源
+  title: Seedance 2.0 assets — create asset group
+  description: Create an asset group to organize media used by Seedance
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,8 +10,8 @@ security:
 paths:
   /volc/asset/CreateAssetGroup:
     post:
-      summary: 创建素材组
-      description: 创建新的素材组，用于组织管理图片、视频、音频等媒体资源，供 Seedance 视频生成使用。
+      summary: Create an asset group
+      description: Create a new asset group to organize images, videos, and audio for Seedance video generation.
       operationId: createAssetGroup
       requestBody:
         required: true
@@ -25,15 +25,15 @@ paths:
                 model:
                   type: string
                   default: volc-asset
-                  description: 模型名称，用于计费。默认 `volc-asset`。
+                  description: Model name, used for billing. Defaults to `volc-asset`.
                   example: volc-asset
                 Name:
                   type: string
-                  description: 素材组名称。
+                  description: Asset group name.
                   example: my-project-assets
       responses:
         '200':
-          description: 素材组创建成功
+          description: Asset group created successfully
           content:
             application/json:
               schema:
@@ -41,16 +41,16 @@ paths:
                 properties:
                   Id:
                     type: string
-                    description: 素材组 ID。
+                    description: Asset group ID.
                     example: group-20260320120601-hsw4s
         '400':
-          description: 请求参数有误
+          description: Invalid request parameters
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:

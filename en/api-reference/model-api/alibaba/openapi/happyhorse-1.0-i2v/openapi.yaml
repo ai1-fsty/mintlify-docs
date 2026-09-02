@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: HappyHorse 1.0 I2V
-  description: 通过 Starrise AI API 使用阿里 DashScope HappyHorse 1.0 图生视频模型
+  description: Use the Alibaba DashScope HappyHorse 1.0 image-to-video model
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,10 +10,10 @@ security:
 paths:
   /v1/video/generations:
     post:
-      summary: 创建图生视频任务
+      summary: Create an image-to-video task
       description: >
-        提交图生视频任务（单张首帧图）。立即返回 `task_id`，通过 `GET /v1/video/generations/{task_id}`
-        轮询任务状态。
+        Submit an image-to-video task (single first-frame image). Returns a `task_id` immediately. Poll `GET /v1/video/generations/{task_id}`
+        for task status.
       operationId: createHappyhorse10I2v
       requestBody:
         required: true
@@ -30,15 +30,15 @@ paths:
                   type: string
                   enum:
                     - happyhorse-1.0-i2v
-                  description: 模型 ID。
+                  description: model ID。
                   example: happyhorse-1.0-i2v
                 prompt:
                   type: string
-                  description: 对运动效果的描述。
-                  example: 镜头缓缓拉近，画面动起来
+                  description: Description of the motion effect.
+                  example: The camera slowly zooms in and the scene comes to life
                 image:
                   type: string
-                  description: '首帧图 URL。也可使用 `images: [...]` 数组形式（仅取第一张）。'
+                  description: 'First-frame image URL. You can also use the `images: [...]` array form (only the first image is used).'
                   example: https://example.com/first-frame.png
                 resolution:
                   type: string
@@ -46,7 +46,7 @@ paths:
                     - 720P
                     - 1080P
                   default: 1080P
-                  description: 视频分辨率。
+                  description: Video resolution.
                   example: 720P
                 ratio:
                   type: string
@@ -57,31 +57,31 @@ paths:
                     - '4:3'
                     - '3:4'
                   default: '16:9'
-                  description: 宽高比。
+                  description: Aspect ratio.
                   example: '16:9'
                 duration:
                   type: integer
                   minimum: 3
                   maximum: 15
                   default: 5
-                  description: 视频时长（秒）。
+                  description: Video duration in seconds.
                   example: 5
                 watermark:
                   type: boolean
                   default: true
-                  description: 是否保留右下角 "Happy Horse" 水印。
+                  description: Whether to keep the "Happy Horse" watermark in the bottom-right corner.
                   example: false
                 seed:
                   type: integer
                   minimum: 0
                   maximum: 2147483647
-                  description: 随机种子。
+                  description: Random seed.
                 parameters:
                   type: object
-                  description: 可选：相同参数的另一种放置位置（DashScope 原生风格）。
+                  description: "Optional: an alternative placement for the same parameters (native DashScope style)."
       responses:
         '200':
-          description: 任务创建成功
+          description: Task created successfully
           content:
             application/json:
               schema:
@@ -109,11 +109,11 @@ paths:
                     type: integer
                     example: 1777343862
         '400':
-          description: 请求参数错误
+          description: Invalid request parameters
         '401':
-          description: 未授权
+          description: Unauthorized
         '429':
-          description: 频率限制
+          description: Rate limited
 components:
   securitySchemes:
     bearerAuth:

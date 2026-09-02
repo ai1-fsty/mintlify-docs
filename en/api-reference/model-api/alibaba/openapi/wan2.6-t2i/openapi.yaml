@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Wan2.6 T2I
-  description: 通过 Starrise AI API 调用阿里巴巴 Wan2.6 文生图模型
+  description: Call the Alibaba Wan2.6 text-to-image model
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,8 +10,8 @@ security:
 paths:
   /v1/images/generations:
     post:
-      summary: 文生图
-      description: 根据文本描述生成图片。接口为同步调用，直接返回最终图片 URL。
+      summary: Text-to-image
+      description: Generate an image from a text description. This is a synchronous call and returns the final image URL directly.
       operationId: createWan26T2i
       requestBody:
         required: true
@@ -27,32 +27,32 @@ paths:
                   type: string
                   enum:
                     - wan2.6-t2i
-                  description: 模型 ID
+                  description: model ID
                   example: wan2.6-t2i
                 prompt:
                   type: string
-                  description: 图片描述文字。
-                  example: 在竹林中奔跑的熊猫
+                  description: Image description text.
+                  example: A panda running through a bamboo forest
                 size:
                   type: string
-                  description: 输出图片尺寸，如 `1024x1024`。
+                  description: Output image size, e.g. `1024x1024`.
                   example: 1024x1024
                 'n':
                   type: integer
                   minimum: 1
                   maximum: 4
                   default: 1
-                  description: 生成图片数量。
+                  description: Number of images to generate.
                 response_format:
                   type: string
                   enum:
                     - url
                     - b64_json
                   default: url
-                  description: 返回 URL 或 Base64 编码的 JSON。
+                  description: Return a URL or Base64-encoded JSON.
       responses:
         '200':
-          description: 图片生成成功
+          description: Image generated successfully
           content:
             application/json:
               schema:
@@ -67,17 +67,17 @@ paths:
                       properties:
                         url:
                           type: string
-                          description: 图片下载链接（有效期约 24 小时）。
+                          description: Image download URL (valid for about 24 hours).
                         b64_json:
                           type: string
         '400':
-          description: 请求参数有误
+          description: Invalid request parameters
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:

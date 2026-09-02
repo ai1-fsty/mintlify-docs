@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Gemini Chat 兼容端点
-  description: 通过 Starrise AI 使用 OpenAI 兼容格式调用 Gemini 模型
+  title: Gemini Chat-compatible endpoint
+  description: Call Gemini model
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,8 +10,8 @@ security:
 paths:
   /v1/chat/completions:
     post:
-      summary: 对话补全
-      description: 使用 OpenAI 兼容格式调用 Gemini 模型生成回复。
+      summary: Chat completion
+      description: Generate a reply with a Gemini model using the OpenAI-compatible format.
       operationId: createChatCompletionGemini
       requestBody:
         required: true
@@ -36,12 +36,12 @@ paths:
                     - gemini-2.5-flash
                     - gemini-2.5-flash-lite
                     - gemini-2.0-flash
-                  description: 用于补全的 Gemini 模型 ID。
+                  description: The Gemini model ID used for completion.
                   example: gemini-2.5-pro
                 messages:
                   type: array
                   minItems: 1
-                  description: 组成当前对话的消息列表。
+                  description: The list of messages that make up the current conversation.
                   items:
                     type: object
                     required:
@@ -62,51 +62,51 @@ paths:
                               type: object
                   example:
                     - role: user
-                      content: 你好！
+                      content: Hello!
                 max_tokens:
                   type: integer
                   minimum: 1
-                  description: 对话补全中生成的最大 token 数。
+                  description: Maximum number of tokens to generate in the chat completion.
                 temperature:
                   type: number
                   minimum: 0
                   maximum: 2
                   default: 1
-                  description: 采样温度，范围 0 到 2。
+                  description: Sampling temperature, from 0 to 2.
                   example: 1
                 top_p:
                   type: number
                   minimum: 0
                   maximum: 1
-                  description: 核采样阈值。
+                  description: Nucleus sampling threshold.
                 frequency_penalty:
                   type: number
                   minimum: -2
                   maximum: 2
                   default: 0
-                  description: 根据新 token 在文本中的现有频率进行惩罚。
+                  description: Penalize new tokens based on how often they already appear in the text.
                 presence_penalty:
                   type: number
                   minimum: -2
                   maximum: 2
                   default: 0
-                  description: 根据新 token 是否已出现在文本中进行惩罚。
+                  description: Penalize new tokens if they have already appeared in the text.
                 stream:
                   type: boolean
                   default: false
-                  description: 如果为 true，将通过 SSE 流式发送部分消息。
+                  description: If true, partial messages are streamed via SSE.
                 stop:
                   oneOf:
                     - type: string
                     - type: array
                       items:
                         type: string
-                  description: API 将在生成这些序列时停止继续生成。
+                  description: The API stops generating further tokens when these sequences appear.
                 'n':
                   type: integer
                   minimum: 1
                   default: 1
-                  description: 为每条输入消息生成多少个补全选项。
+                  description: How many completion choices to generate for each input message.
                 response_format:
                   type: object
                   properties:
@@ -115,28 +115,28 @@ paths:
                       enum:
                         - text
                         - json_object
-                  description: '指定模型必须输出的格式。设置为 {"type": "json_object"} 可启用 JSON 模式。'
+                  description: 'Specify the format the model must output. Set {"type": "json_object"} to enable JSON mode.'
       responses:
         '200':
-          description: 补全生成成功
+          description: Completion generated successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChatCompletion'
         '400':
-          description: 请求无效
+          description: Invalid request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '429':
-          description: 超出速率限制
+          description: Rate limit exceeded
           content:
             application/json:
               schema:
@@ -160,7 +160,7 @@ components:
           example: chat.completion
         created:
           type: integer
-          description: 补全创建时的 Unix 时间戳。
+          description: Unix timestamp when the completion was created.
         model:
           type: string
           example: gemini-2.5-pro
@@ -179,7 +179,7 @@ components:
                     example: assistant
                   content:
                     type: string
-                    example: 你好！有什么我可以帮助你的吗？
+                    example: Hello! How can I help you?
               finish_reason:
                 type: string
                 enum:

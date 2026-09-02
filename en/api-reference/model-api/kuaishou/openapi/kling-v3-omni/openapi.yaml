@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Kling V3 Omni
-  description: 通过 Starrise AI API 调用快手可灵 V3 Omni 视频生成模型
+  description: Call the Kuaishou Kling V3 Omni video generation model
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,8 +10,8 @@ security:
 paths:
   /kling/v1/videos/omni-video:
     post:
-      summary: 创建视频任务
-      description: 创建 Omni 视频生成任务。Omni 模型可通过 Prompt 结合元素、图片、视频等内容实现多种能力。
+      summary: Create a video task
+      description: Create an Omni video generation task. The Omni model can combine a prompt with elements, images, videos, and more.
       operationId: createKlingV3OmniVideo
       requestBody:
         required: true
@@ -24,23 +24,23 @@ paths:
                   type: string
                   enum:
                     - kling-v3-omni
-                  description: 模型名称
+                  description: Model name
                   example: kling-v3-omni
                 prompt:
                   type: string
                   maxLength: 2500
                   description: >-
-                    文本提示词，支持正向和负向描述。使用
+                    Text prompt. Supports positive and negative descriptions. Use
                     <<<element_1>>>、<<<image_1>>>、<<<video_1>>>
-                    引用元素/图片/视频。multi_shot 为 false 时必填。
-                  example: 一只猫优雅地走过阳光洒满的花园
+                    to reference elements/images/videos. Required when multi_shot is false.
+                  example: A cat walking gracefully through a sunlit garden
                 mode:
                   type: string
                   enum:
                     - std
                     - pro
                   default: pro
-                  description: 视频生成模式。std：标准模式（性价比高）。pro：专业模式（画质更好）。
+                  description: "Video generation mode. std: standard mode (better value). pro: professional mode (higher quality)."
                   example: pro
                 aspect_ratio:
                   type: string
@@ -48,7 +48,7 @@ paths:
                     - '16:9'
                     - '9:16'
                     - '1:1'
-                  description: 生成视频的画面比例（宽:高）。未使用首帧参考或视频编辑时必填。
+                  description: Aspect ratio of the generated video (width:height). Required when no first-frame reference or video editing is used.
                   example: '16:9'
                 duration:
                   type: string
@@ -67,22 +67,22 @@ paths:
                     - '14'
                     - '15'
                   default: '5'
-                  description: 视频时长（秒），3–15 秒。
+                  description: Video duration in seconds, 3–15.
                   example: '5'
                 multi_shot:
                   type: boolean
                   default: false
-                  description: 是否生成多镜头视频。为 true 时 prompt 参数无效，需使用 multi_prompt。
+                  description: Whether to generate a multi-shot video. When true, the prompt parameter is ignored and multi_prompt must be used.
                 shot_type:
                   type: string
                   enum:
                     - customize
-                  description: 分镜方式。multi_shot 为 true 时必填。
+                  description: Storyboard mode. Required when multi_shot is true.
                 multi_prompt:
                   type: array
                   description: >-
-                    各分镜信息（1–6 个分镜）。multi_shot 为 true 且 shot_type 为 customize
-                    时必填。
+                    Storyboard shots (1–6). Required when multi_shot is true and shot_type is customize
+                    .
                   items:
                     type: object
                     required:
@@ -92,18 +92,18 @@ paths:
                     properties:
                       index:
                         type: integer
-                        description: 分镜序号
+                        description: Shot index
                       prompt:
                         type: string
                         maxLength: 512
-                        description: 该分镜的提示词
+                        description: Prompt for this shot
                       duration:
                         type: string
-                        description: 该分镜时长（≥1，所有分镜时长之和等于总时长）
+                        description: Duration of this shot (≥1; the sum of all shot durations equals the total duration)
                 image_list:
                   type: array
                   description: >-
-                    参考图片列表，支持首帧/尾帧、场景、风格参考。格式 .jpg/.jpeg/.png，≤10MB，最小 300px，宽高比
+                    Reference image list. Supports first/last frame, scene, and style references. Format .jpg/.jpeg/.png, ≤10MB, minimum 300px, aspect ratio
                     1:2.5–2.5:1。
                   items:
                     type: object
@@ -112,16 +112,16 @@ paths:
                     properties:
                       image_url:
                         type: string
-                        description: 图片 URL 或 Base64 编码
+                        description: Image URL or Base64 encoding
                       type:
                         type: string
                         enum:
                           - first_frame
                           - end_frame
-                        description: 帧类型：first_frame 首帧，end_frame 尾帧。使用尾帧时必须同时设置首帧。
+                        description: "Frame type: first_frame for the first frame, end_frame for the last frame. A last frame requires a first frame as well."
                 element_list:
                   type: array
-                  description: 参考元素列表，基于可灵元素库中的元素 ID。
+                  description: Reference element list, based on element IDs from the Kling element library.
                   items:
                     type: object
                     required:
@@ -130,10 +130,10 @@ paths:
                       element_id:
                         type: integer
                         format: int64
-                        description: 元素库中的元素 ID
+                        description: Element ID from the element library
                 video_list:
                   type: array
-                  description: 参考视频列表。仅支持 MP4/MOV，≥3 秒，720px–2160px，24–60fps，≤200MB。
+                  description: Reference video list. MP4/MOV only, ≥3 seconds, 720px–2160px, 24–60fps, ≤200MB.
                   items:
                     type: object
                     required:
@@ -141,61 +141,61 @@ paths:
                     properties:
                       video_url:
                         type: string
-                        description: 视频 URL
+                        description: Video URL
                       refer_type:
                         type: string
                         enum:
                           - feature
                           - base
                         default: base
-                        description: 引用类型。base：视频编辑。feature：视频风格/运镜参考。
+                        description: "Reference type. base: video editing. feature: style/camera-movement reference."
                       keep_original_sound:
                         type: string
                         enum:
                           - 'yes'
                           - 'no'
-                        description: 是否保留参考视频的原声
+                        description: Whether to keep the original audio of the reference video
                 sound:
                   type: string
                   enum:
                     - 'on'
                     - 'off'
                   default: 'off'
-                  description: 是否在生成视频时同步生成音效。有参考视频时只能为 off。
+                  description: Whether to generate sound effects together with the video. Must be off when a reference video is provided.
                 watermark_info:
                   type: object
-                  description: 水印配置
+                  description: Watermark configuration
                   properties:
                     enabled:
                       type: boolean
-                      description: 是否生成带水印的结果
+                      description: Whether to generate a watermarked result
                 callback_url:
                   type: string
-                  description: 任务状态变更的回调通知 URL
+                  description: Callback URL for task status changes
                 external_task_id:
                   type: string
-                  description: 自定义任务 ID，同一账号下需唯一。
+                  description: Custom task ID. Must be unique within the same account.
       responses:
         '200':
-          description: 任务创建成功
+          description: Task created successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/VideoTask'
         '400':
-          description: 请求参数有误
+          description: Invalid request parameters
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '429':
-          description: 请求频率超限
+          description: Rate limit exceeded
           content:
             application/json:
               schema:
@@ -207,11 +207,11 @@ components:
       properties:
         id:
           type: string
-          description: 任务 ID
+          description: Task ID
           example: '860260753860210752'
         task_id:
           type: string
-          description: 任务 ID
+          description: Task ID
           example: '860260753860210752'
         object:
           type: string
@@ -221,14 +221,14 @@ components:
           example: kling-v3-omni
         status:
           type: string
-          description: 任务状态
+          description: Task status
         progress:
           type: integer
-          description: 进度百分比
+          description: Progress percentage
           example: 0
         created_at:
           type: integer
-          description: Unix 时间戳
+          description: Unix timestamp
           example: 1773130665
     Error:
       type: object

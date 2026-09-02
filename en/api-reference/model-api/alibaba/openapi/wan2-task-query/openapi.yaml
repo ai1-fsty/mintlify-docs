@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: Wan 视频任务查询
-  description: 查询 Wan2 视频生成任务的状态和结果
+  title: Wan video task query
+  description: Query the status and result of a Wan2 video generation task
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,20 +10,20 @@ security:
 paths:
   /v1/video/generations/{task_id}:
     get:
-      summary: 查询视频任务
-      description: 轮询视频生成任务的状态，直到 `status` 变为 `succeeded` 或 `failed`。
+      summary: Query a video task
+      description: Poll the video generation task until `status` becomes `succeeded` or `failed`.
       operationId: queryWanVideoTask
       parameters:
         - name: task_id
           in: path
           required: true
-          description: 创建任务接口返回的任务 ID。
+          description: Task ID returned by the create-task API.
           schema:
             type: string
             example: task_abc123
       responses:
         '200':
-          description: 查询成功
+          description: Query succeeded
           content:
             application/json:
               schema:
@@ -31,7 +31,7 @@ paths:
                 properties:
                   code:
                     type: integer
-                    description: 0 表示成功。
+                    description: 0 indicates success.
                     example: 0
                   data:
                     type: object
@@ -45,24 +45,24 @@ paths:
                           - processing
                           - succeeded
                           - failed
-                        description: 任务状态。
+                        description: Task status.
                       format:
                         type: string
-                        description: 视频格式（如 `mp4`）。
+                        description: Video format (e.g. `mp4`).
                       url:
                         type: string
-                        description: 成功后的视频下载链接（有效期约 24 小时）。
+                        description: Video download URL after success (valid for about 24 hours).
                       error:
                         type: string
-                        description: 失败时的错误信息。
+                        description: Error message when the task fails.
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '404':
-          description: 任务不存在
+          description: Task not found
           content:
             application/json:
               schema:

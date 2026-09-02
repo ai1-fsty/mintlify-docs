@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: FLUX.2 [pro]
-  description: 通过 Starrise AI API 调用 Black Forest Labs FLUX.2 [pro] 文生图模型
+  description: Call the Black Forest Labs FLUX.2 [pro] text-to-image model
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,10 +10,10 @@ security:
 paths:
   /v1/images/generations:
     post:
-      summary: 生成图片
+      summary: Generate an image
       description: >-
-        使用 FLUX.2 [pro] 根据文本描述生成图片。支持最高 4MP 分辨率和多参考图一致性。接口为同步调用，直接返回 Base64
-        编码的图片数据。
+        Generate an image from a text description with FLUX.2 [pro]. Supports up to 4MP and multi-reference consistency. This is a synchronous call and returns Base64
+        -encoded image data.
       operationId: createFlux2Pro
       requestBody:
         required: true
@@ -29,35 +29,35 @@ paths:
                   type: string
                   enum:
                     - flux-2-pro
-                  description: 模型 ID
+                  description: model ID
                   example: flux-2-pro
                 prompt:
                   type: string
-                  description: 图片描述文字。
-                  example: 一只可爱的北极熊宝宝
+                  description: Image description text.
+                  example: An adorable polar bear cub
                 'n':
                   type: integer
                   minimum: 1
                   maximum: 4
                   default: 1
-                  description: 生成图片数量。
+                  description: Number of images to generate.
                 size:
                   type: string
-                  description: 输出图片尺寸，如 `1024x1024`。支持最高 4MP 分辨率。
+                  description: Output image size, e.g. `1024x1024`. Supports up to 4MP.
                   example: 1024x1024
                 output_format:
                   type: string
                   enum:
                     - jpeg
                     - png
-                  description: 输出图片格式。
+                  description: Output image format.
                   example: jpeg
                 seed:
                   type: integer
-                  description: 随机种子，用于复现生成结果。
+                  description: Random seed, used to reproduce generation results.
       responses:
         '200':
-          description: 图片生成成功
+          description: Image generated successfully
           content:
             application/json:
               schema:
@@ -65,7 +65,7 @@ paths:
                 properties:
                   created:
                     type: integer
-                    description: 创建时间戳
+                    description: Creation timestamp
                   data:
                     type: array
                     items:
@@ -73,15 +73,15 @@ paths:
                       properties:
                         b64_json:
                           type: string
-                          description: Base64 编码的图片数据。
+                          description: Base64-encoded image data.
         '400':
-          description: 请求参数有误
+          description: Invalid request parameters
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:

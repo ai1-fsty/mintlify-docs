@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: DeepSeek V4 Flash
-  description: 通过 Starrise AI OpenAI 兼容接口调用 DeepSeek V4 Flash
+  description: Call DeepSeek V4 Flash
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,8 +10,8 @@ security:
 paths:
   /v1/chat/completions:
     post:
-      summary: 对话补全
-      description: 根据对话内容生成模型响应。
+      summary: Chat completion
+      description: Generate a model response from the conversation.
       operationId: createChatCompletionDeepseekV4Flash
       requestBody:
         required: true
@@ -27,12 +27,12 @@ paths:
                   type: string
                   enum:
                     - deepseek-v4-flash
-                  description: 模型 ID
+                  description: model ID
                   example: deepseek-v4-flash
                 messages:
                   type: array
                   minItems: 1
-                  description: 对话消息列表。
+                  description: List of conversation messages.
                   items:
                     type: object
                     required:
@@ -50,27 +50,27 @@ paths:
                         type: string
                       name:
                         type: string
-                        description: 参与者名称，用于区分同角色不同参与者。
+                        description: Participant name, used to distinguish different participants with the same role.
                       prefix:
                         type: boolean
-                        description: 为 true 时模型将以此消息为前缀继续生成。
+                        description: When true, the model continues generation using this message as a prefix.
                       tool_call_id:
                         type: string
-                        description: 工具消息必填，此消息响应的工具调用 ID。
+                        description: Required for tool messages. The ID of the tool call this message responds to.
                   example:
                     - role: user
-                      content: 你好！
+                      content: Hello!
                 thinking:
                   type: object
                   nullable: true
-                  description: 启用或禁用思考模式。
+                  description: Enable or disable thinking mode.
                   properties:
                     type:
                       type: string
                       enum:
                         - enabled
                         - disabled
-                      description: '`enabled` 开启思考模式。'
+                      description: '`enabled` turns on thinking mode.'
                     reasoning_effort:
                       type: string
                       enum:
@@ -78,11 +78,11 @@ paths:
                         - max
                         - low
                         - medium
-                      description: 控制推理强度。
+                      description: Controls reasoning intensity.
                 max_tokens:
                   type: integer
                   minimum: 1
-                  description: 最大生成 Token 数。
+                  description: Maximum number of tokens to generate.
                 response_format:
                   type: object
                   properties:
@@ -92,41 +92,41 @@ paths:
                         - text
                         - json_object
                       default: text
-                  description: '设为 `{"type": "json_object"}` 启用 JSON 模式。'
+                  description: 'Set `{"type": "json_object"}` to enable JSON mode.'
                 stop:
                   oneOf:
                     - type: string
                     - type: array
                       items:
                         type: string
-                  description: 触发停止生成的序列，最多 16 个。
+                  description: Sequences that stop generation. Up to 16.
                 stream:
                   type: boolean
                   default: false
-                  description: 为 true 时通过 SSE 流式返回结果。
+                  description: When true, results are streamed back via SSE.
                 stream_options:
                   type: object
-                  description: 流式选项，仅当 stream 为 true 时有效。
+                  description: Streaming options. Only valid when stream is true.
                   properties:
                     include_usage:
                       type: boolean
-                      description: 为 true 时在流式结束前返回用量统计。
+                      description: When true, usage statistics are returned before the stream ends.
                 temperature:
                   type: number
                   minimum: 0
                   maximum: 2
                   default: 1
-                  description: 采样温度，值越高输出越随机。
+                  description: Sampling temperature. Higher values make the output more random.
                   example: 1
                 top_p:
                   type: number
                   minimum: 0
                   maximum: 1
                   default: 1
-                  description: 核采样阈值。
+                  description: Nucleus sampling threshold.
                 tools:
                   type: array
-                  description: 模型可调用的工具列表，当前仅支持函数调用。
+                  description: A list of tools the model can call. Currently only function calling is supported.
                   items:
                     type: object
                     properties:
@@ -141,16 +141,16 @@ paths:
                         properties:
                           name:
                             type: string
-                            description: 函数名。
+                            description: Function name.
                           description:
                             type: string
-                            description: 函数功能描述。
+                            description: Description of what the function does.
                           parameters:
                             type: object
-                            description: 函数参数，JSON Schema 格式。
+                            description: Function parameters in JSON Schema format.
                           strict:
                             type: boolean
-                            description: 为 true 时启用严格模式。
+                            description: When true, enables strict mode.
                 tool_choice:
                   oneOf:
                     - type: string
@@ -171,33 +171,33 @@ paths:
                           properties:
                             name:
                               type: string
-                  description: 控制工具调用行为：`none`、`auto`、`required` 或指定函数。
+                  description: "Controls tool-calling behavior: `none`, `auto`, `required`, or a specific function."
                 frequency_penalty:
                   type: number
                   minimum: -2
                   maximum: 2
                   default: 0
-                  description: DeepSeek 已弃用，传入无效。
+                  description: Deprecated by DeepSeek. Passing this has no effect.
                 presence_penalty:
                   type: number
                   minimum: -2
                   maximum: 2
                   default: 0
-                  description: DeepSeek 已弃用，传入无效。
+                  description: Deprecated by DeepSeek. Passing this has no effect.
                 user_id:
                   type: string
                   maxLength: 512
                   pattern: ^[a-zA-Z0-9\-_]+$
-                  description: 自定义用户 ID，用于内容安全处理和 KVCache 缓存隔离。
+                  description: Custom user ID, used for content-safety processing and KVCache isolation.
       responses:
         '200':
-          description: 成功生成响应
+          description: Response generated successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChatCompletion'
         '400':
-          description: 请求参数有误
+          description: Invalid request parameters
           content:
             application/json:
               schema:
@@ -213,9 +213,9 @@ paths:
                       code:
                         type: string
         '401':
-          description: 未授权
+          description: Unauthorized
         '429':
-          description: 请求频率超限
+          description: Rate limit exceeded
 components:
   schemas:
     ChatCompletion:
@@ -229,7 +229,7 @@ components:
           example: chat.completion
         created:
           type: integer
-          description: Unix 时间戳
+          description: Unix timestamp
         model:
           type: string
           example: deepseek-v4-flash
@@ -249,11 +249,11 @@ components:
                   content:
                     type: string
                     nullable: true
-                    example: 你好！有什么我可以帮助你的吗？
+                    example: Hello! How can I help you?
                   reasoning_content:
                     type: string
                     nullable: true
-                    description: 思考模式下的推理过程。
+                    description: Reasoning process in thinking mode.
                   tool_calls:
                     type: array
                     nullable: true
@@ -317,12 +317,12 @@ components:
         system_fingerprint:
           type: string
           nullable: true
-          description: 后端配置指纹。
+          description: Backend configuration fingerprint.
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
       description: >-
-        使用 Bearer 令牌进行身份验证。在 Starrise AI 控制台创建 API Key 后，以 `Bearer YOUR_API_KEY`
-        格式传入 Authorization 请求头。
+        Authenticate with a Bearer token. After creating an API key in the Starrise AI console, pass it as `Bearer YOUR_API_KEY`
+        in the Authorization header.
 

@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Gemini 2.5 Flash Image
-  description: 通过 Starrise AI 代理调用 Google Gemini 2.5 Flash Image
+  description: Call Google Gemini 2.5 Flash Image
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -9,13 +9,13 @@ security: []
 paths:
   /v1beta/models/gemini-2.5-flash-image:generateContent:
     post:
-      summary: 图片生成
-      description: 使用 Gemini 模型生成图片。
+      summary: Image generation
+      description: Generate an image using a Gemini model.
       operationId: Gemini25FlashImageGenerateImageZh
       parameters:
         - name: key
           in: query
-          description: API 密钥
+          description: API key
           required: true
           schema:
             type: string
@@ -33,8 +33,8 @@ paths:
                 contents:
                   type: array
                   description: >
-                    对话轮次数组。每轮包含 role 和 parts。 part 可以是文本提示词或 inline_data
-                    图片（base64）。 如需使用参考图，在同一个 parts 数组中同时传入 text 和 inline_data。
+                    Array of conversation turns. Each turn includes role and parts. A part can be a text prompt or inline_data
+                    Image (base64). To use a reference image, pass both text and inline_data in the same parts array.
                   items:
                     type: object
                     properties:
@@ -47,26 +47,26 @@ paths:
                       parts:
                         type: array
                         description: |
-                          内容片段列表。在同一个数组中组合 text 和 inline_data 可以同时发送提示词和参考图片。
+                          List of content parts. Combine text and inline_data in the same array to send a prompt and a reference image together.
                         items:
                           type: object
                           properties:
                             text:
                               type: string
-                              description: 文本提示词
+                              description: Text prompt
                               example: >-
                                 Hi, this is a picture of me. Can you add a llama
                                 next to me?
                             inline_data:
                               type: object
                               description: |
-                                参考图，以 base64 编码。 将 `data` 替换为实际的 base64 图片数据。
+                                Reference image, base64-encoded. Replace `data` with the actual base64 image data.
                               properties:
                                 mime_type:
                                   type: string
                                   description: >-
-                                    图片的 MIME
-                                    类型。支持：image/jpeg、image/png、image/webp
+                                    Image MIME type
+                                    Type. Supported: image/jpeg, image/png, image/webp
                                   enum:
                                     - image/jpeg
                                     - image/png
@@ -75,8 +75,8 @@ paths:
                                 data:
                                   type: string
                                   description: >
-                                    Base64 编码的图片数据。将你的 base64 字符串粘贴至此。 示例：使用
-                                    `base64 image.jpg` 或在线工具转换图片。
+                                    Base64-encoded image data. Paste your base64 string here. Example: use
+                                    `base64 image.jpg` or an online tool to convert the image.
                                   example: >-
                                     iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==
                   example:
@@ -97,8 +97,8 @@ paths:
                     responseModalities:
                       type: array
                       description: >
-                        输出模态。使用 ["IMAGE"] 仅输出图片， 或 ["TEXT", "IMAGE"]
-                        同时返回文字说明和图片。
+                        Output modalities. Use ["IMAGE"] for images only, or ["TEXT", "IMAGE"]
+                        to return both a text caption and an image.
                       items:
                         type: string
                         enum:
@@ -109,12 +109,12 @@ paths:
                         - IMAGE
                     imageConfig:
                       type: object
-                      description: 图片生成配置
+                      description: Image generation configuration
                       properties:
                         aspectRatio:
                           type: string
                           description: |
-                            目标宽高比
+                            Target aspect ratio
                           enum:
                             - '1:1'
                             - '4:3'
@@ -125,7 +125,7 @@ paths:
                         imageSize:
                           type: string
                           description: |
-                            图片分辨率。1K ≈ 1024px，2K ≈ 2048px，4K ≈ 4096px（按长边）。
+                            Image resolution. 1K ≈ 1024px, 2K ≈ 2048px, 4K ≈ 4096px (longest side).
                           enum:
                             - 1K
                             - 2K
@@ -133,7 +133,7 @@ paths:
                           example: 1K
       responses:
         '200':
-          description: 图片生成成功
+          description: Image generated successfully
           content:
             application/json:
               schema:
@@ -154,19 +154,19 @@ paths:
                   candidatesTokenCount: 1
                   totalTokenCount: 11
         '400':
-          description: 请求参数有误
+          description: Invalid request parameters
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '429':
-          description: 请求频率超限
+          description: Rate limit exceeded
           content:
             application/json:
               schema:
@@ -191,17 +191,17 @@ components:
                       properties:
                         text:
                           type: string
-                          description: 文字说明（当 responseModalities 包含 TEXT 时返回）
+                          description: Text caption (returned when responseModalities includes TEXT)
                         inline_data:
                           type: object
-                          description: 生成的图片数据
+                          description: Generated image data
                           properties:
                             mime_type:
                               type: string
                               example: image/jpeg
                             data:
                               type: string
-                              description: Base64 编码的生成图片
+                              description: Base64-encoded generated image
                               example: >-
                                 iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==
                   role:

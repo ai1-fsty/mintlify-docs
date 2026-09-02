@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: 豆包 Seed 1.6 Flash (250828)
-  description: 通过 Starrise AI OpenAI 兼容接口调用字节跳动高速高效对话模型
+  title: Doubao Seed 1.6 Flash (250828)
+  description: Call ByteDance high-speed chat model
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,8 +10,8 @@ security:
 paths:
   /v1/chat/completions:
     post:
-      summary: 对话补全
-      description: 为给定的对话创建模型响应。
+      summary: Chat completion
+      description: Create a model response for the given conversation.
       operationId: createChatCompletionDoubaoSeed16Flash250828
       requestBody:
         required: true
@@ -27,12 +27,12 @@ paths:
                   type: string
                   enum:
                     - doubao-seed-1-6-flash-250828
-                  description: 模型 ID
+                  description: model ID
                   example: doubao-seed-1-6-flash-250828
                 messages:
                   type: array
                   minItems: 1
-                  description: 组成当前对话的消息列表。
+                  description: The list of messages that make up the current conversation.
                   items:
                     type: object
                     required:
@@ -49,69 +49,69 @@ paths:
                         type: string
                   example:
                     - role: user
-                      content: 你好！
+                      content: Hello!
                 max_tokens:
                   type: integer
                   minimum: 1
                   maximum: 8192
                   default: 8192
-                  description: 最大生成 Token 数。
+                  description: Maximum number of tokens to generate.
                 temperature:
                   type: number
                   minimum: 0
                   maximum: 2
                   default: 1
-                  description: 采样温度，值越高输出越随机。
+                  description: Sampling temperature. Higher values make the output more random.
                   example: 1
                 top_p:
                   type: number
                   minimum: 0
                   maximum: 1
-                  description: 核采样阈值。
+                  description: Nucleus sampling threshold.
                 frequency_penalty:
                   type: number
                   minimum: -2
                   maximum: 2
                   default: 0
-                  description: 根据词频惩罚重复 Token。
+                  description: Penalize repeated tokens based on frequency.
                 presence_penalty:
                   type: number
                   minimum: -2
                   maximum: 2
                   default: 0
-                  description: 惩罚已出现过的 Token。
+                  description: Penalize tokens that have already appeared.
                 stream:
                   type: boolean
                   default: false
-                  description: 是否通过 SSE 流式返回部分消息。
+                  description: Whether to stream partial messages via SSE.
                 stop:
                   oneOf:
                     - type: string
                     - type: array
                       items:
                         type: string
-                  description: 触发停止生成的序列。
+                  description: Sequences that stop generation.
       responses:
         '200':
-          description: 补全生成成功
+          description: Completion generated successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ChatCompletion'
         '400':
-          description: 请求无效
+          description: Invalid request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '429':
-          description: 请求频率超限
+          description: Rate limit exceeded
           content:
             application/json:
               schema:
@@ -135,7 +135,7 @@ components:
           example: chat.completion
         created:
           type: integer
-          description: Unix 时间戳
+          description: Unix timestamp
         model:
           type: string
           example: doubao-seed-1-6-flash-250828
@@ -154,7 +154,7 @@ components:
                     example: assistant
                   content:
                     type: string
-                    example: 你好！有什么可以帮你的吗？
+                    example: Hello! How can I help you?
               finish_reason:
                 type: string
                 enum:

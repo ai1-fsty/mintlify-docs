@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
-  title: FLUX.1 Kontext [pro] — 图片编辑
-  description: 通过 Starrise AI API 调用 Black Forest Labs FLUX.1 Kontext [pro] 图片编辑模型
+  title: FLUX.1 Kontext [pro] — Image edit
+  description: Call the Black Forest Labs FLUX.1 Kontext [pro] image-editing model
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,10 +10,10 @@ security:
 paths:
   /v1/images/edits:
     post:
-      summary: 图片编辑
+      summary: Image editing
       description: >-
-        使用 FLUX.1 Kontext [pro] 编辑已有图片。使用 multipart 表单上传。接口为同步调用，直接返回 Base64
-        编码的图片数据。
+        Edit an existing image with FLUX.1 Kontext [pro]. Upload via multipart form. This is a synchronous call and returns Base64
+        -encoded image data.
       operationId: editFlux1KontextPro
       requestBody:
         required: true
@@ -30,45 +30,45 @@ paths:
                   type: string
                   enum:
                     - flux-1-kontext-pro
-                  description: 模型 ID
+                  description: model ID
                 image:
                   type: string
                   format: binary
-                  description: 需要编辑的图片文件。
+                  description: The image file to edit.
                 prompt:
                   type: string
-                  description: 编辑指令。必须为英文。
+                  description: Edit instruction. Must be in English.
                   example: Change the background to a sunset beach
                 'n':
                   type: integer
                   minimum: 1
                   maximum: 1
                   default: 1
-                  description: 生成图片数量。仅支持 1。
+                  description: Number of images to generate. Only 1 is supported.
                 size:
                   type: string
-                  description: 输出图片尺寸，如 `1024x1024`。
+                  description: Output image size, e.g. `1024x1024`.
       responses:
         '200':
-          description: 图片编辑成功
+          description: Image edited successfully
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ImageGenerationResponse'
         '400':
-          description: 请求无效
+          description: Invalid request
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '429':
-          description: 超出速率限制
+          description: Rate limit exceeded
           content:
             application/json:
               schema:
@@ -80,7 +80,7 @@ components:
       properties:
         created:
           type: integer
-          description: Unix 时间戳
+          description: Unix timestamp
           example: 1774002799
         data:
           type: array
@@ -89,7 +89,7 @@ components:
             properties:
               b64_json:
                 type: string
-                description: Base64 编码的图片数据。
+                description: Base64-encoded image data.
     Error:
       type: object
       properties:

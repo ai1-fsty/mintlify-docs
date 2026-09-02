@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: Wan2.2 I2V A14B
-  description: 通过 Starrise AI API 调用阿里巴巴 Wan2.2 图生视频模型（异步任务）
+  description: Call the Alibaba Wan2.2 image-to-video model (asynchronous task)
   version: 1.0.0
 servers:
   - url: https://ai.alad.com
@@ -10,10 +10,10 @@ security:
 paths:
   /v1/video/generations:
     post:
-      summary: 创建图生视频任务
+      summary: Create an image-to-video task
       description: >
-        根据参考图片和文本描述生成视频。为异步任务——提交后通过 `GET /v1/video/generations/{task_id}`
-        轮询状态，直到 `status` 为 `succeeded`。
+        Generate a video from a reference image and a text description. This is an asynchronous task — after submitting, poll `GET /v1/video/generations/{task_id}`
+        until `status` is `succeeded`.
       operationId: createWan22I2v
       requestBody:
         required: true
@@ -29,34 +29,34 @@ paths:
                   type: string
                   enum:
                     - wan2.2-i2v-a14b
-                  description: 模型 ID
+                  description: model ID
                   example: wan2.2-i2v-a14b
                 image:
                   type: string
-                  description: 参考图片的公网 URL。
+                  description: Public URL of the reference image.
                   example: https://example.com/reference.jpg
                 prompt:
                   type: string
-                  description: 视频描述文字（可选，用于引导生成方向）。
-                  example: 相机缓慢推进
+                  description: Video description text (optional, used to guide generation).
+                  example: The camera slowly dollies in
                 duration:
                   type: number
-                  description: 视频时长（秒），3–5。
+                  description: Video duration in seconds, 3–5.
                   minimum: 3
                   maximum: 5
                   default: 5
                 width:
                   type: integer
-                  description: 输出视频宽度（像素）。
+                  description: Output video width in pixels.
                 height:
                   type: integer
-                  description: 输出视频高度（像素）。
+                  description: Output video height in pixels.
                 seed:
                   type: integer
-                  description: 随机种子，用于复现结果。
+                  description: Random seed, used to reproduce results.
       responses:
         '200':
-          description: 任务创建成功
+          description: Task created successfully
           content:
             application/json:
               schema:
@@ -64,17 +64,17 @@ paths:
                 properties:
                   task_id:
                     type: string
-                    description: 任务 ID，用于轮询状态。
+                    description: Task ID, used to poll status.
                   status:
                     type: string
         '400':
-          description: 请求参数有误
+          description: Invalid request parameters
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/Error'
         '401':
-          description: 未授权
+          description: Unauthorized
           content:
             application/json:
               schema:
