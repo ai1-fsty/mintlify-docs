@@ -2,10 +2,6 @@
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
   "name": "CubeAI",
-  "logo": {
-    "light": "/images/主.png",
-    "dark": "/images/副.png"
-  },
   "colors": {
     "primary": "#0284c7",
     "light": "#f0f9ff",
