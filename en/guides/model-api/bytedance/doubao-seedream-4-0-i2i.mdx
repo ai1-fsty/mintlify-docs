@@ -3,7 +3,7 @@ title: "Seedream 4.0 Image-to-Image"
 description: "ByteDance Seedream 4.0 image-to-image model — generate images using reference images and text prompts."
 ---
 
-Seedream 4.0 Image-to-Image is an image-to-image model from ByteDance's Seedream series, available through the Starrise AI API.
+Seedream 4.0 Image-to-Image is an image-to-image model from ByteDance's Seedream series, available through the Cube AI API.
 
 ## Key Capabilities
 
@@ -16,7 +16,7 @@ Seedream 4.0 Image-to-Image is an image-to-image model from ByteDance's Seedream
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/images/generations \
+  curl https://ai.cubeuaeai.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -36,7 +36,7 @@ Seedream 4.0 Image-to-Image is an image-to-image model from ByteDance's Seedream
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/v1/images/generations",
+      "https://ai.cubeuaeai.com/v1/images/generations",
       headers={
           "Authorization": "Bearer YOUR_API_KEY",
           "Content-Type": "application/json"

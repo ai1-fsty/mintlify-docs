@@ -3,7 +3,7 @@ title: "Gemini 3.1 Flash Image Preview"
 description: "Call Google Gemini 3.1 Flash Image Preview via Gemini API for AI image generation and editing."
 ---
 
-Gemini 3.1 Flash Image Preview is Google's image generation model, available through Starrise AI via the native Gemini API. It supports text-to-image generation and image editing with reference images.
+Gemini 3.1 Flash Image Preview is Google's image generation model, available through Cube AI via the native Gemini API. It supports text-to-image generation and image editing with reference images.
 
 ## Key Capabilities
 
@@ -17,7 +17,7 @@ Gemini 3.1 Flash Image Preview is Google's image generation model, available thr
 
 <CodeGroup>
   ```bash cURL
-  curl "https://ai.alad.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent?key=YOUR_API_KEY" \
+  curl "https://ai.cubeuaeai.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent?key=YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
       "contents": [
@@ -41,7 +41,7 @@ Gemini 3.1 Flash Image Preview is Google's image generation model, available thr
   ```python Python
   import requests, base64
 
-  url = "https://ai.alad.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent"
+  url = "https://ai.cubeuaeai.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent"
   response = requests.post(url, params={"key": "YOUR_API_KEY"}, json={
       "contents": [
           {
@@ -102,7 +102,7 @@ Pass both a `text` instruction and an `inline_data` reference image in the same 
   # BASE64=$(base64 -i your_photo.jpg)
   #
   # Then send the request:
-  curl "https://ai.alad.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent?key=YOUR_API_KEY" \
+  curl "https://ai.cubeuaeai.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent?key=YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
       "contents": [
@@ -138,7 +138,7 @@ Pass both a `text` instruction and an `inline_data` reference image in the same 
   with open("your_photo.jpg", "rb") as f:
       image_b64 = base64.b64encode(f.read()).decode("utf-8")
 
-  url = "https://ai.alad.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent"
+  url = "https://ai.cubeuaeai.com/v1beta/models/gemini-3.1-flash-image-preview:generateContent"
   response = requests.post(url, params={"key": "YOUR_API_KEY"}, json={
       "contents": [
           {

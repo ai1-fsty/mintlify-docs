@@ -3,7 +3,7 @@ title: "Claude Haiku 4.5 Thinking"
 description: "Anthropic's Claude Haiku 4.5 with Extended Thinking — fast reasoning at low cost, great for math, coding, and analysis."
 ---
 
-Claude Haiku 4.5 Thinking is the Extended Thinking version of Claude Haiku 4.5, available through Starrise AI via OpenAI-compatible interface. Combining Haiku's speed and cost advantages with step-by-step internal reasoning enabled by default, it significantly improves accuracy on complex tasks while remaining far faster and more affordable than large thinking models.
+Claude Haiku 4.5 Thinking is the Extended Thinking version of Claude Haiku 4.5, available through Cube AI via OpenAI-compatible interface. Combining Haiku's speed and cost advantages with step-by-step internal reasoning enabled by default, it significantly improves accuracy on complex tasks while remaining far faster and more affordable than large thinking models.
 
 ## Key Capabilities
 
@@ -17,7 +17,7 @@ Claude Haiku 4.5 Thinking is the Extended Thinking version of Claude Haiku 4.5, 
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/messages \
+  curl https://ai.cubeuaeai.com/v1/messages \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -33,7 +33,7 @@ Claude Haiku 4.5 Thinking is the Extended Thinking version of Claude Haiku 4.5, 
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -51,7 +51,7 @@ Claude Haiku 4.5 Thinking is the Extended Thinking version of Claude Haiku 4.5, 
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

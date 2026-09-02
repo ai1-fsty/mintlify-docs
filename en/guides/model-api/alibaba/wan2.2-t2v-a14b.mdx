@@ -1,9 +1,9 @@
 ---
 title: "Wan2.2 T2V A14B"
-description: "Call Alibaba's Wan2.2 T2V A14B text-to-video model via the Starrise AI API."
+description: "Call Alibaba's Wan2.2 T2V A14B text-to-video model via the Cube AI API."
 ---
 
-Wan2.2 T2V A14B is a text-to-video model available through Starrise AI. Video generation is an **asynchronous call** — after submitting a task, poll `GET /v1/video/generations/{task_id}` until `status` is `succeeded`.
+Wan2.2 T2V A14B is a text-to-video model available through Cube AI. Video generation is an **asynchronous call** — after submitting a task, poll `GET /v1/video/generations/{task_id}` until `status` is `succeeded`.
 
 ## Key Capabilities
 
@@ -16,7 +16,7 @@ Wan2.2 T2V A14B is a text-to-video model available through Starrise AI. Video ge
 <CodeGroup>
   ```bash cURL
   # Step 1 — Create task
-  curl https://ai.alad.com/v1/video/generations \
+  curl https://ai.cubeuaeai.com/v1/video/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -26,7 +26,7 @@ Wan2.2 T2V A14B is a text-to-video model available through Starrise AI. Video ge
     }'
 
   # Step 2 — Poll until complete
-  curl https://ai.alad.com/v1/video/generations/{TASK_ID} \
+  curl https://ai.cubeuaeai.com/v1/video/generations/{TASK_ID} \
     -H "Authorization: Bearer YOUR_API_KEY"
   ```
 
@@ -37,7 +37,7 @@ Wan2.2 T2V A14B is a text-to-video model available through Starrise AI. Video ge
 
   # Step 1 — Create task
   resp = requests.post(
-      "https://ai.alad.com/v1/video/generations",
+      "https://ai.cubeuaeai.com/v1/video/generations",
       headers=headers,
       json={
           "model": "wan2.2-t2v-a14b",
@@ -50,7 +50,7 @@ Wan2.2 T2V A14B is a text-to-video model available through Starrise AI. Video ge
   # Step 2 — Poll until complete
   while True:
       result = requests.get(
-          f"https://ai.alad.com/v1/video/generations/{task_id}",
+          f"https://ai.cubeuaeai.com/v1/video/generations/{task_id}",
           headers=headers
       ).json()
       status = result["data"]["status"]

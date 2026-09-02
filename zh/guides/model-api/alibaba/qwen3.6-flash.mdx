@@ -1,9 +1,9 @@
 ---
 title: "Qwen3.6-Flash"
-description: "通过 Starrise AI OpenAI 兼容接口调用阿里巴巴 Qwen3.6-Flash 视觉语言模型。快速、智能体友好的多模态模型。"
+description: "通过 Cube AI OpenAI 兼容接口调用阿里巴巴 Qwen3.6-Flash 视觉语言模型。快速、智能体友好的多模态模型。"
 ---
 
-Qwen3.6-Flash 是阿里巴巴的原生视觉语言 Flash 模型，通过 Starrise AI 以 OpenAI 兼容接口提供。相比 Qwen3.5-Flash，在智能体编码、数学/代码推理和空间智能方面有显著提升。
+Qwen3.6-Flash 是阿里巴巴的原生视觉语言 Flash 模型，通过 Cube AI 以 OpenAI 兼容接口提供。相比 Qwen3.5-Flash，在智能体编码、数学/代码推理和空间智能方面有显著提升。
 
 ## 核心能力
 
@@ -18,7 +18,7 @@ Qwen3.6-Flash 是阿里巴巴的原生视觉语言 Flash 模型，通过 Starris
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -34,7 +34,7 @@ Qwen3.6-Flash 是阿里巴巴的原生视觉语言 Flash 模型，通过 Starris
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -52,7 +52,7 @@ Qwen3.6-Flash 是阿里巴巴的原生视觉语言 Flash 模型，通过 Starris
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(
@@ -72,7 +72,7 @@ Qwen3.6-Flash 是阿里巴巴的原生视觉语言 Flash 模型，通过 Starris
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   completion = client.chat.completions.create(
@@ -98,7 +98,7 @@ Qwen3.6-Flash 是阿里巴巴的原生视觉语言 Flash 模型，通过 Starris
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -129,7 +129,7 @@ Qwen3.6-Flash 是阿里巴巴的原生视觉语言 Flash 模型，通过 Starris
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -156,7 +156,7 @@ Qwen3.6-Flash 是阿里巴巴的原生视觉语言 Flash 模型，通过 Starris
   ```
 
   ```bash cURL (图片)
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{

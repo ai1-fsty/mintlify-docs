@@ -3,7 +3,7 @@ title: "Claude 3.7 Sonnet Thinking"
 description: "Anthropic's Claude 3.7 Sonnet with Extended Thinking — deep reasoning for mathematics, coding, and complex analysis."
 ---
 
-Claude 3.7 Sonnet Thinking is the Extended Thinking version of Claude 3.7 Sonnet, available through Starrise AI via OpenAI-compatible interface. Extended Thinking is enabled by default — the model performs step-by-step internal reasoning before generating a response, significantly improving accuracy on complex tasks.
+Claude 3.7 Sonnet Thinking is the Extended Thinking version of Claude 3.7 Sonnet, available through Cube AI via OpenAI-compatible interface. Extended Thinking is enabled by default — the model performs step-by-step internal reasoning before generating a response, significantly improving accuracy on complex tasks.
 
 ## Key Capabilities
 
@@ -17,7 +17,7 @@ Claude 3.7 Sonnet Thinking is the Extended Thinking version of Claude 3.7 Sonnet
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/messages \
+  curl https://ai.cubeuaeai.com/v1/messages \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -33,7 +33,7 @@ Claude 3.7 Sonnet Thinking is the Extended Thinking version of Claude 3.7 Sonnet
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -51,7 +51,7 @@ Claude 3.7 Sonnet Thinking is the Extended Thinking version of Claude 3.7 Sonnet
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

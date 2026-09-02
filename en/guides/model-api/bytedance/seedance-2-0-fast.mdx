@@ -1,9 +1,9 @@
 ---
 title: "Seedance 2.0 Fast"
-description: "Call ByteDance's Seedance Fast video generation model via Starrise AI API — supports multimodal references, video editing, extension, audio generation, and web search enhancement."
+description: "Call ByteDance's Seedance Fast video generation model via Cube AI API — supports multimodal references, video editing, extension, audio generation, and web search enhancement."
 ---
 
-Seedance 2.0 Fast is ByteDance's latest video generation model, available through the Starrise AI API. It supports text-to-video, image-to-video, multimodal reference input, video editing, video extension, and synchronized audio generation.
+Seedance 2.0 Fast is ByteDance's latest video generation model, available through the Cube AI API. It supports text-to-video, image-to-video, multimodal reference input, video editing, video extension, and synchronized audio generation.
 
 ## Key Capabilities
 
@@ -43,7 +43,7 @@ Seedance 2.0 Fast is ByteDance's latest video generation model, available throug
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/video/generations \
+  curl https://ai.cubeuaeai.com/v1/video/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -68,7 +68,7 @@ Seedance 2.0 Fast is ByteDance's latest video generation model, available throug
 
   # Step 1: Create task
   resp = requests.post(
-      "https://ai.alad.com/v1/video/generations",
+      "https://ai.cubeuaeai.com/v1/video/generations",
       headers=headers,
       json={
           "model": "seedance-fast",
@@ -85,7 +85,7 @@ Seedance 2.0 Fast is ByteDance's latest video generation model, available throug
   # Step 2: Poll for results
   while True:
       result = requests.get(
-          f"https://ai.alad.com/v1/video/generations/{task_id}",
+          f"https://ai.cubeuaeai.com/v1/video/generations/{task_id}",
           headers=headers
       ).json()
       status = result["data"]["status"]
@@ -106,7 +106,7 @@ In the prompt you can reference `content` array items using `@image1`, `@video1`
 > **Important:** Assets must be passed in strict order: text, image\_url, video\_url, audio\_url. Do not reorder them, as this may cause errors; when including multiple assets, also ensure no other asset types are mixed in.
 
 ```bash cURL
-curl https://ai.alad.com/v1/video/generations \
+curl https://ai.cubeuaeai.com/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -141,7 +141,7 @@ curl https://ai.alad.com/v1/video/generations \
 ### Video Editing
 
 ```bash cURL
-curl https://ai.alad.com/v1/video/generations \
+curl https://ai.cubeuaeai.com/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -171,7 +171,7 @@ curl https://ai.alad.com/v1/video/generations \
 ### Web Search Enhancement (Text-to-Video Only)
 
 ```bash cURL
-curl https://ai.alad.com/v1/video/generations \
+curl https://ai.cubeuaeai.com/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

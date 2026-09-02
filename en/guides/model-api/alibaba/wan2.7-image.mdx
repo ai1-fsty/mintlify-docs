@@ -1,9 +1,9 @@
 ---
 title: "Wan2.7 Image"
-description: "Call Alibaba's Wanxiang Image Generation & Editing 2.7 model via the Starrise AI API."
+description: "Call Alibaba's Wanxiang Image Generation & Editing 2.7 model via the Cube AI API."
 ---
 
-Wanxiang Image Generation & Editing 2.7 (Wan2.7 Image) is Alibaba's latest multimodal image model, available through Starrise AI. Supports text-to-image, image editing, interactive region editing, and multi-image generation with up to 4K output resolution.
+Wanxiang Image Generation & Editing 2.7 (Wan2.7 Image) is Alibaba's latest multimodal image model, available through Cube AI. Supports text-to-image, image editing, interactive region editing, and multi-image generation with up to 4K output resolution.
 
 ## Model List
 
@@ -24,7 +24,7 @@ Wanxiang Image Generation & Editing 2.7 (Wan2.7 Image) is Alibaba's latest multi
 
 <CodeGroup>
   ```bash Text-to-Image
-  curl https://ai.alad.com/v1/images/generations \
+  curl https://ai.cubeuaeai.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -36,7 +36,7 @@ Wanxiang Image Generation & Editing 2.7 (Wan2.7 Image) is Alibaba's latest multi
   ```
 
   ```bash Image Editing
-  curl https://ai.alad.com/v1/images/generations \
+  curl https://ai.cubeuaeai.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -51,7 +51,7 @@ Wanxiang Image Generation & Editing 2.7 (Wan2.7 Image) is Alibaba's latest multi
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/v1/images/generations",
+      "https://ai.cubeuaeai.com/v1/images/generations",
       headers={"Authorization": "Bearer YOUR_API_KEY"},
       json={
           "model": "wan2.7-image-pro",

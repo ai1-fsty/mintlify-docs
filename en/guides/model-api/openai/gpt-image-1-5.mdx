@@ -3,7 +3,7 @@ title: "GPT Image 1.5"
 description: "OpenAI GPT Image 1.5 image generation model. Generate and edit images with faster speed and higher precision."
 ---
 
-GPT Image 1.5 is OpenAI's latest image generation model based on the GPT-5 architecture, available through the Starrise AI API. It's 4× faster and 20% cheaper than GPT Image 1, with significantly improved text rendering and editing precision.
+GPT Image 1.5 is OpenAI's latest image generation model based on the GPT-5 architecture, available through the Cube AI API. It's 4× faster and 20% cheaper than GPT Image 1, with significantly improved text rendering and editing precision.
 
 ## Key Capabilities
 
@@ -27,7 +27,7 @@ GPT Image 1.5 is OpenAI's latest image generation model based on the GPT-5 archi
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/images/generations \
+  curl https://ai.cubeuaeai.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -43,7 +43,7 @@ GPT Image 1.5 is OpenAI's latest image generation model based on the GPT-5 archi
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.images.generate(

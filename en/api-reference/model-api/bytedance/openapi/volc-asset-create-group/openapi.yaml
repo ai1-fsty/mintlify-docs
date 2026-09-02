@@ -4,7 +4,7 @@ info:
   description: Create an asset group to organize media used by Seedance
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

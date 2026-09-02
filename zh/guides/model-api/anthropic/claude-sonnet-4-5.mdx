@@ -3,7 +3,7 @@ title: "Claude Sonnet 4.5"
 description: "通过 OpenAI 兼容接口调用 Anthropic 的 Claude Sonnet 4.5，最佳编程模型，速度与性能的完美平衡。"
 ---
 
-Claude Sonnet 4.5 是 Anthropic 最佳编程模型，通过 Starrise AI 以 OpenAI 兼容接口提供服务。在速度和能力之间实现出色平衡，擅长代码生成、分析、写作和复杂推理任务。
+Claude Sonnet 4.5 是 Anthropic 最佳编程模型，通过 Cube AI 以 OpenAI 兼容接口提供服务。在速度和能力之间实现出色平衡，擅长代码生成、分析、写作和复杂推理任务。
 
 ## 核心能力
 
@@ -18,7 +18,7 @@ Claude Sonnet 4.5 是 Anthropic 最佳编程模型，通过 Starrise AI 以 Open
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/messages \
+  curl https://ai.cubeuaeai.com/v1/messages \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -34,7 +34,7 @@ Claude Sonnet 4.5 是 Anthropic 最佳编程模型，通过 Starrise AI 以 Open
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -52,7 +52,7 @@ Claude Sonnet 4.5 是 Anthropic 最佳编程模型，通过 Starrise AI 以 Open
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

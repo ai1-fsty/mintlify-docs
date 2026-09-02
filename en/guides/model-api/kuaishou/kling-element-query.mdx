@@ -9,7 +9,7 @@ After creating a custom element, use this endpoint to poll the task status until
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/kling/v1/general/advanced-custom-elements/863121016086724692 \
+  curl https://ai.cubeuaeai.com/kling/v1/general/advanced-custom-elements/863121016086724692 \
     -H "Authorization: Bearer YOUR_API_KEY"
   ```
 
@@ -21,7 +21,7 @@ After creating a custom element, use this endpoint to poll the task status until
 
   while True:
       response = requests.get(
-          f"https://ai.alad.com/kling/v1/general/advanced-custom-elements/{task_id}",
+          f"https://ai.cubeuaeai.com/kling/v1/general/advanced-custom-elements/{task_id}",
           headers={"Authorization": "Bearer YOUR_API_KEY"}
       )
       result = response.json()

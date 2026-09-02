@@ -4,7 +4,7 @@ info:
   description: Call DeepSeek V3.2 Exp
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

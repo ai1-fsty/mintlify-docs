@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
   title: Seedance 素材 — 创建音频素材
-  description: 通过 Starrise AI API 上传音频素材到素材组
+  description: 通过 Cube AI API 上传音频素材到素材组
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:
@@ -106,7 +106,7 @@ paths:
         - lang: bash
           label: cURL
           source: |
-            curl https://ai.alad.com/volc/asset/CreateAsset \
+            curl https://ai.cubeuaeai.com/volc/asset/CreateAsset \
               -H "Authorization: Bearer YOUR_API_KEY" \
               -H "Content-Type: application/json" \
               -d '{

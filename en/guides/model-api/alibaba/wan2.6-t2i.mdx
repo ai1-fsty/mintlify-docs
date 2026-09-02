@@ -1,9 +1,9 @@
 ---
 title: "Wan2.6 T2I"
-description: "Call Alibaba's Wan2.6 T2I text-to-image model via the Starrise AI API."
+description: "Call Alibaba's Wan2.6 T2I text-to-image model via the Cube AI API."
 ---
 
-Wan2.6 T2I is a text-to-image model available through Starrise AI. The API is **synchronous** — it automatically polls the upstream asynchronous task and directly returns the final image URL.
+Wan2.6 T2I is a text-to-image model available through Cube AI. The API is **synchronous** — it automatically polls the upstream asynchronous task and directly returns the final image URL.
 
 ## Key Capabilities
 
@@ -15,7 +15,7 @@ Wan2.6 T2I is a text-to-image model available through Starrise AI. The API is **
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/images/generations \
+  curl https://ai.cubeuaeai.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -30,7 +30,7 @@ Wan2.6 T2I is a text-to-image model available through Starrise AI. The API is **
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/v1/images/generations",
+      "https://ai.cubeuaeai.com/v1/images/generations",
       headers={"Authorization": "Bearer YOUR_API_KEY"},
       json={
           "model": "wan2.6-t2i",

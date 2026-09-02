@@ -4,7 +4,7 @@ info:
   description: Call Alibaba Qwen3-Next-80B-A3B-Instruct model
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

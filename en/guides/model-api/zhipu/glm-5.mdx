@@ -3,7 +3,7 @@ title: "GLM-5"
 description: "Call the Zhipu GLM-5 chat model via the OpenAI-compatible API — a powerful next-generation GLM model."
 ---
 
-GLM-5 is Zhipu AI's next-generation model, available through Starrise AI via an OpenAI-compatible interface. It excels at reasoning, coding, and conversational tasks.
+GLM-5 is Zhipu AI's next-generation model, available through Cube AI via an OpenAI-compatible interface. It excels at reasoning, coding, and conversational tasks.
 
 ## Key Capabilities
 
@@ -16,7 +16,7 @@ GLM-5 is Zhipu AI's next-generation model, available through Starrise AI via an 
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -32,7 +32,7 @@ GLM-5 is Zhipu AI's next-generation model, available through Starrise AI via an 
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -50,7 +50,7 @@ GLM-5 is Zhipu AI's next-generation model, available through Starrise AI via an 
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

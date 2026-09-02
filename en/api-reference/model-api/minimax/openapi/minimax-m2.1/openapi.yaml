@@ -4,7 +4,7 @@ info:
   description: Call MiniMax M2.1 model
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

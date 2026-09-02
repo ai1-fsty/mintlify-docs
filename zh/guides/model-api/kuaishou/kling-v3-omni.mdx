@@ -3,7 +3,7 @@ title: "Kling V3 Omni"
 description: "快手可灵 V3 Omni 视频生成模型，支持文生视频、图生视频、视频编辑、多镜头分镜和同步音效生成。"
 ---
 
-Kling V3 Omni 是快手最新的视频生成模型，通过 Starrise AI API 提供服务。Omni 模型可通过 Prompt 结合元素、图片、视频等内容实现多种能力 — 支持文生视频、图生视频、视频编辑、多镜头分镜和同步音效生成。
+Kling V3 Omni 是快手最新的视频生成模型，通过 Cube AI API 提供服务。Omni 模型可通过 Prompt 结合元素、图片、视频等内容实现多种能力 — 支持文生视频、图生视频、视频编辑、多镜头分镜和同步音效生成。
 
 ## 核心能力
 
@@ -19,7 +19,7 @@ Kling V3 Omni 是快手最新的视频生成模型，通过 Starrise AI API 提�
 
 <CodeGroup>
   ```bash cURL — 文生视频
-  curl https://ai.alad.com/kling/v1/videos/omni-video \
+  curl https://ai.cubeuaeai.com/kling/v1/videos/omni-video \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -35,7 +35,7 @@ Kling V3 Omni 是快手最新的视频生成模型，通过 Starrise AI API 提�
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/kling/v1/videos/omni-video",
+      "https://ai.cubeuaeai.com/kling/v1/videos/omni-video",
       headers={
           "Authorization": "Bearer YOUR_API_KEY",
           "Content-Type": "application/json"
@@ -57,7 +57,7 @@ Kling V3 Omni 是快手最新的视频生成模型，通过 Starrise AI API 提�
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/kling/v1/videos/omni-video",
+      "https://ai.cubeuaeai.com/kling/v1/videos/omni-video",
       headers={
           "Authorization": "Bearer YOUR_API_KEY",
           "Content-Type": "application/json"
@@ -84,7 +84,7 @@ Kling V3 Omni 是快手最新的视频生成模型，通过 Starrise AI API 提�
 创建任务后，使用任务 ID 查询状态：
 
 ```bash cURL
-curl https://ai.alad.com/kling/v1/videos/text2video/{task_id} \
+curl https://ai.cubeuaeai.com/kling/v1/videos/text2video/{task_id} \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 

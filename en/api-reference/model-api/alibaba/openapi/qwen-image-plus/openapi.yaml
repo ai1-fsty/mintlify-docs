@@ -4,7 +4,7 @@ info:
   description: Call the Alibaba Qwen Image Plus text-to-image model
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

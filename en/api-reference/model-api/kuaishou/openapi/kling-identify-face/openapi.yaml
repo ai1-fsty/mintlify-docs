@@ -4,7 +4,7 @@ info:
   description: Detect faces in a video and create a session for lip-sync generation
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

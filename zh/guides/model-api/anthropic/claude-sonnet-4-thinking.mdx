@@ -3,7 +3,7 @@ title: "Claude Sonnet 4 Thinking"
 description: "Anthropic 的 Claude Sonnet 4 扩展思维版，以 Sonnet 级别的速度和成本实现增强推理。"
 ---
 
-Claude Sonnet 4 Thinking 是 Claude Sonnet 4 的扩展思维版本，通过 Starrise AI 以 OpenAI 兼容接口提供服务。结合 Sonnet 在速度和能力之间的出色平衡，默认启用逐步内部推理，在复杂任务上显著提升准确率，同时保持快速响应。
+Claude Sonnet 4 Thinking 是 Claude Sonnet 4 的扩展思维版本，通过 Cube AI 以 OpenAI 兼容接口提供服务。结合 Sonnet 在速度和能力之间的出色平衡，默认启用逐步内部推理，在复杂任务上显著提升准确率，同时保持快速响应。
 
 ## 核心能力
 
@@ -18,7 +18,7 @@ Claude Sonnet 4 Thinking 是 Claude Sonnet 4 的扩展思维版本，通过 Star
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/messages \
+  curl https://ai.cubeuaeai.com/v1/messages \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -34,7 +34,7 @@ Claude Sonnet 4 Thinking 是 Claude Sonnet 4 的扩展思维版本，通过 Star
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -52,7 +52,7 @@ Claude Sonnet 4 Thinking 是 Claude Sonnet 4 的扩展思维版本，通过 Star
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

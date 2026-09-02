@@ -1,9 +1,9 @@
 ---
 title: "MiniMax M2.1"
-description: "Call the MiniMax M2.1 chat model via the Starrise AI OpenAI-compatible API — fast, powerful, and easy to integrate."
+description: "Call the MiniMax M2.1 chat model via the Cube AI OpenAI-compatible API — fast, powerful, and easy to integrate."
 ---
 
-MiniMax M2.1 is a chat model available through Starrise AI via an OpenAI-compatible interface.
+MiniMax M2.1 is a chat model available through Cube AI via an OpenAI-compatible interface.
 
 ## Key Capabilities
 
@@ -16,7 +16,7 @@ MiniMax M2.1 is a chat model available through Starrise AI via an OpenAI-compati
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -32,7 +32,7 @@ MiniMax M2.1 is a chat model available through Starrise AI via an OpenAI-compati
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -50,7 +50,7 @@ MiniMax M2.1 is a chat model available through Starrise AI via an OpenAI-compati
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

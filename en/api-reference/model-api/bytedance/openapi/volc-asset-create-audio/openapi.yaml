@@ -4,7 +4,7 @@ info:
   description: Upload an audio asset to an asset group
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:
@@ -106,7 +106,7 @@ paths:
         - lang: bash
           label: cURL
           source: |
-            curl https://ai.alad.com/volc/asset/CreateAsset \
+            curl https://ai.cubeuaeai.com/volc/asset/CreateAsset \
               -H "Authorization: Bearer YOUR_API_KEY" \
               -H "Content-Type: application/json" \
               -d '{

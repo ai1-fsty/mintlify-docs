@@ -1,9 +1,9 @@
 ---
 title: "Qwen Image Plus"
-description: "Call Alibaba's Qwen Image Plus text-to-image model via the Starrise AI API."
+description: "Call Alibaba's Qwen Image Plus text-to-image model via the Cube AI API."
 ---
 
-Qwen Image Plus is a text-to-image model available through Starrise AI. The API is **synchronous** — it automatically polls the upstream asynchronous task and directly returns the final image URL.
+Qwen Image Plus is a text-to-image model available through Cube AI. The API is **synchronous** — it automatically polls the upstream asynchronous task and directly returns the final image URL.
 
 ## Key Capabilities
 
@@ -15,7 +15,7 @@ Qwen Image Plus is a text-to-image model available through Starrise AI. The API 
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/images/generations \
+  curl https://ai.cubeuaeai.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -30,7 +30,7 @@ Qwen Image Plus is a text-to-image model available through Starrise AI. The API 
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/v1/images/generations",
+      "https://ai.cubeuaeai.com/v1/images/generations",
       headers={"Authorization": "Bearer YOUR_API_KEY"},
       json={
           "model": "qwen-image-plus",

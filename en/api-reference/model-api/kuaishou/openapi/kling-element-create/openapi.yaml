@@ -4,7 +4,7 @@ info:
   description: Create a custom subject (character, scene, prop, etc.) for Kling video generation
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

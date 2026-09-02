@@ -3,7 +3,7 @@ title: "Claude Opus 4"
 description: "通过 OpenAI 兼容接口调用 Anthropic 的 Claude Opus 4，最新最强大的 Claude 模型，适用于复杂推理、编程和研究。"
 ---
 
-Claude Opus 4 是 Anthropic 最新的旗舰模型，通过 Starrise AI 以 OpenAI 兼容接口提供服务。在能力上实现了显著飞跃，擅长复杂推理、高级编程、智能体任务和深度分析。
+Claude Opus 4 是 Anthropic 最新的旗舰模型，通过 Cube AI 以 OpenAI 兼容接口提供服务。在能力上实现了显著飞跃，擅长复杂推理、高级编程、智能体任务和深度分析。
 
 ## 核心能力
 
@@ -18,7 +18,7 @@ Claude Opus 4 是 Anthropic 最新的旗舰模型，通过 Starrise AI 以 OpenA
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/messages \
+  curl https://ai.cubeuaeai.com/v1/messages \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -34,7 +34,7 @@ Claude Opus 4 是 Anthropic 最新的旗舰模型，通过 Starrise AI 以 OpenA
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -52,7 +52,7 @@ Claude Opus 4 是 Anthropic 最新的旗舰模型，通过 Starrise AI 以 OpenA
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

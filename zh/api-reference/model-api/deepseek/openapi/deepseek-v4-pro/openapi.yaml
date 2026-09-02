@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
   title: DeepSeek V4 Pro
-  description: 通过 Starrise AI OpenAI 兼容接口调用 DeepSeek V4 Pro
+  description: 通过 Cube AI OpenAI 兼容接口调用 DeepSeek V4 Pro
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:
@@ -323,6 +323,6 @@ components:
       type: http
       scheme: bearer
       description: >-
-        使用 Bearer 令牌进行身份验证。在 Starrise AI 控制台创建 API Key 后，以 `Bearer YOUR_API_KEY`
+        使用 Bearer 令牌进行身份验证。在 Cube AI 控制台创建 API Key 后，以 `Bearer YOUR_API_KEY`
         格式传入 Authorization 请求头。
 

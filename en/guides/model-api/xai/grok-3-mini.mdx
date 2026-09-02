@@ -1,9 +1,9 @@
 ---
 title: "Grok 3 Mini"
-description: "Call xAI Grok 3 Mini via Starrise AI API. Fast and lightweight."
+description: "Call xAI Grok 3 Mini via Cube AI API. Fast and lightweight."
 ---
 
-Grok 3 Mini is xAI's language model, available through Starrise AI. Fast and lightweight.
+Grok 3 Mini is xAI's language model, available through Cube AI. Fast and lightweight.
 
 ## Key Capabilities
 
@@ -15,7 +15,7 @@ Grok 3 Mini is xAI's language model, available through Starrise AI. Fast and lig
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -31,7 +31,7 @@ Grok 3 Mini is xAI's language model, available through Starrise AI. Fast and lig
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(

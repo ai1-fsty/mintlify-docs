@@ -1,22 +1,22 @@
 ---
 title: "Using with MindSearch"
-description: "Integrate Starrise AI models with MindSearch — an open-source AI search engine."
+description: "Integrate Cube AI models with MindSearch — an open-source AI search engine."
 ---
 
 ## 1. Get Your API Key
 
-Open the [Starrise AI Console](https://ai.alad.com/?lang=en) and register an account (or log in if you already have one). After registering, go to **API Keys**, create a new API key, click to copy it, and save it for later use.
+Open the [Cube AI Console](https://ai.cubeuaeai.com/?lang=en) and register an account (or log in if you already have one). After registering, go to **API Keys**, create a new API key, click to copy it, and save it for later use.
 
 ## 2. Deploy MindSearch
 
-After cloning MindSearch locally and installing the required dependencies (see the [MindSearch README](https://github.com/InternLM/MindSearch/blob/main/README.md)), edit `/path/to/MindSearch/mindsearch/models.py` and add the configuration for calling the Starrise AI API:
+After cloning MindSearch locally and installing the required dependencies (see the [MindSearch README](https://github.com/InternLM/MindSearch/blob/main/README.md)), edit `/path/to/MindSearch/mindsearch/models.py` and add the configuration for calling the Cube AI API:
 
 ```python
-starrise_config = dict(
+cube_config = dict(
     type=GPTAPI,
     model_type='gpt-4o',
     key=os.environ.get('ANYFAST_API_KEY', 'YOUR ANYFAST API KEY'),
-    openai_api_base='https://ai.alad.com/v1/chat/completions',
+    openai_api_base='https://ai.cubeuaeai.com/v1/chat/completions',
     meta_template=[
         dict(role='system', api_role='system'),
         dict(role='user', api_role='user'),
@@ -37,11 +37,11 @@ After adding this configuration, you can run the relevant commands to start Mind
 Start the backend:
 
 ```bash
-# Specify the Starrise AI API key
+# Specify the Cube AI API key
 export ANYFAST_API_KEY=<the key you copied above>
 
 # Start
-python -m mindsearch.app --lang en --model_format starrise_config --search_engine DuckDuckGoSearch
+python -m mindsearch.app --lang en --model_format cube_config --search_engine DuckDuckGoSearch
 ```
 
 Start the frontend (using Gradio as an example):

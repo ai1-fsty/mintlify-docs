@@ -4,7 +4,7 @@ info:
   description: Call Anthropic Claude Opus 4.5 extended-thinking variant
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

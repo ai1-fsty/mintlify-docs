@@ -3,7 +3,7 @@ title: "GPT Image 2"
 description: "OpenAI GPT Image 2 image generation model. Next-generation autoregressive + reasoning hybrid architecture, supporting flexible resolution up to 4K with near-perfect text rendering."
 ---
 
-GPT Image 2 is OpenAI's next-generation image generation model, available through the Starrise AI API. Built on an autoregressive + reasoning hybrid architecture, it supports native 2K resolution, near-perfect text rendering (~99% character-level accuracy across 12+ languages), and excellent multi-object scene composition.
+GPT Image 2 is OpenAI's next-generation image generation model, available through the Cube AI API. Built on an autoregressive + reasoning hybrid architecture, it supports native 2K resolution, near-perfect text rendering (~99% character-level accuracy across 12+ languages), and excellent multi-object scene composition.
 
 ## Key Capabilities
 
@@ -30,7 +30,7 @@ GPT Image 2 is OpenAI's next-generation image generation model, available throug
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/images/generations \
+  curl https://ai.cubeuaeai.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -46,7 +46,7 @@ GPT Image 2 is OpenAI's next-generation image generation model, available throug
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.images.generate(
@@ -92,7 +92,7 @@ Two available model IDs:
 
 <CodeGroup>
   ```bash Single image
-  curl https://ai.alad.com/v1/images/edits \
+  curl https://ai.cubeuaeai.com/v1/images/edits \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -F "image=@/path/to/source.jpeg" \
     -F model="gpt-image-2" \
@@ -102,7 +102,7 @@ Two available model IDs:
   ```
 
   ```bash Multiple images (up to 16)
-  curl https://ai.alad.com/v1/images/edits \
+  curl https://ai.cubeuaeai.com/v1/images/edits \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -F "image[]=@/path/to/image1.png" \
     -F "image[]=@/path/to/image2.png" \
@@ -143,7 +143,7 @@ Requirements:
 > Mask editing and the `n` parameter **both require selecting the Direct group in the console.**
 
 ```bash cURL
-curl https://ai.alad.com/v1/images/edits \
+curl https://ai.cubeuaeai.com/v1/images/edits \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -F image=@/path/to/source.jpeg \
   -F mask=@/path/to/mask.png \

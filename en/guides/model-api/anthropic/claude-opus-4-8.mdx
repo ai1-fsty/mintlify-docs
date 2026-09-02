@@ -3,7 +3,7 @@ title: "Claude Opus 4.8"
 description: "Call Anthropic's Claude Opus 4.8 via OpenAI-compatible interface — the most capable general-purpose model, with adaptive thinking and fast mode."
 ---
 
-Claude Opus 4.8 is Anthropic's most capable general-purpose model, available through Starrise AI via OpenAI-compatible interface. Built on Claude Opus 4.7, it features improvements in long-horizon agentic coding, tool-trigger reliability, and compression handling.
+Claude Opus 4.8 is Anthropic's most capable general-purpose model, available through Cube AI via OpenAI-compatible interface. Built on Claude Opus 4.7, it features improvements in long-horizon agentic coding, tool-trigger reliability, and compression handling.
 
 ## Key Capabilities
 
@@ -19,7 +19,7 @@ Claude Opus 4.8 is Anthropic's most capable general-purpose model, available thr
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/messages \
+  curl https://ai.cubeuaeai.com/v1/messages \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -35,7 +35,7 @@ Claude Opus 4.8 is Anthropic's most capable general-purpose model, available thr
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -53,7 +53,7 @@ Claude Opus 4.8 is Anthropic's most capable general-purpose model, available thr
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

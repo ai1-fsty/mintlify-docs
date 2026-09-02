@@ -4,7 +4,7 @@ info:
   description: Call the OpenAI-compatible chat completions API. All chat models are supported.
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

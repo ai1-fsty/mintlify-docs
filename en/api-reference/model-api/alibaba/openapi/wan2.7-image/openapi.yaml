@@ -4,7 +4,7 @@ info:
   description: Call Alibaba Wan image generation and editing 2.7 model
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
   title: Sora 2 下载视频
-  description: 通过 Starrise AI API 下载已完成的 Sora 2 视频
+  description: 通过 Cube AI API 下载已完成的 Sora 2 视频
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

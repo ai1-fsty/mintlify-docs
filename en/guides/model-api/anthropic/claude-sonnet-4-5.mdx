@@ -3,7 +3,7 @@ title: "Claude Sonnet 4.5"
 description: "Call Anthropic's Claude Sonnet 4.5 via OpenAI-compatible interface — the best coding model, a perfect balance of speed and performance."
 ---
 
-Claude Sonnet 4.5 is Anthropic's best coding model, available through Starrise AI via OpenAI-compatible interface. It strikes an excellent balance between speed and capability, excelling at code generation, analysis, writing, and complex reasoning tasks.
+Claude Sonnet 4.5 is Anthropic's best coding model, available through Cube AI via OpenAI-compatible interface. It strikes an excellent balance between speed and capability, excelling at code generation, analysis, writing, and complex reasoning tasks.
 
 ## Key Capabilities
 
@@ -18,7 +18,7 @@ Claude Sonnet 4.5 is Anthropic's best coding model, available through Starrise A
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/messages \
+  curl https://ai.cubeuaeai.com/v1/messages \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -34,7 +34,7 @@ Claude Sonnet 4.5 is Anthropic's best coding model, available through Starrise A
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -52,7 +52,7 @@ Claude Sonnet 4.5 is Anthropic's best coding model, available through Starrise A
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

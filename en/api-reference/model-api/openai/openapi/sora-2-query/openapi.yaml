@@ -4,7 +4,7 @@ info:
   description: Query Sora 2 video generation task status
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

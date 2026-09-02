@@ -3,7 +3,7 @@ title: "Gemini 2.0 Flash"
 description: "通过 Gemini API 调用 Google Gemini 2.0 Flash 进行 AI 图片编辑。"
 ---
 
-Gemini 2.0 Flash 是 Google 的多模态模型，具有图片编辑能力，通过 Starrise AI 以原生 Gemini API 提供服务。可以根据文本指令编辑已有图片。
+Gemini 2.0 Flash 是 Google 的多模态模型，具有图片编辑能力，通过 Cube AI 以原生 Gemini API 提供服务。可以根据文本指令编辑已有图片。
 
 ## 核心能力
 
@@ -16,7 +16,7 @@ Gemini 2.0 Flash 是 Google 的多模态模型，具有图片编辑能力，通�
 
 <CodeGroup>
   ```bash cURL
-  curl "https://ai.alad.com/v1beta/models/gemini-2.0-flash:generateContent?key=YOUR_API_KEY" \
+  curl "https://ai.cubeuaeai.com/v1beta/models/gemini-2.0-flash:generateContent?key=YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
       "contents": [
@@ -38,7 +38,7 @@ Gemini 2.0 Flash 是 Google 的多模态模型，具有图片编辑能力，通�
   import requests
   import base64
 
-  url = "https://ai.alad.com/v1beta/models/gemini-2.0-flash:generateContent"
+  url = "https://ai.cubeuaeai.com/v1beta/models/gemini-2.0-flash:generateContent"
   params = {"key": "YOUR_API_KEY"}
 
   with open("input.png", "rb") as f:

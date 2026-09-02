@@ -1,19 +1,19 @@
 ---
 title: "Quick Start"
-description: "Make your first Starrise AI API call in minutes."
+description: "Make your first Cube AI API call in minutes."
 ---
 
-Starrise AI provides a unified API for calling AI models from multiple providers, including chat, image generation, and video generation. This guide helps you quickly make your first API call.
+Cube AI provides a unified API for calling AI models from multiple providers, including chat, image generation, and video generation. This guide helps you quickly make your first API call.
 
 ## Three Steps to Get Started
 
 ### Step 1: Create an Account
 
-Visit [ai.alad.com](https://ai.alad.com?lang=en) to register your account.
+Visit [ai.cubeuaeai.com](https://ai.cubeuaeai.com?lang=en) to register your account.
 
 ### Step 2: Get Your API Key
 
-Go to the [Console](https://ai.alad.com/console/token?lang=en) to generate your API key. Keep it safe — you'll need it to authenticate every request.
+Go to the [Console](https://ai.cubeuaeai.com/console/token?lang=en) to generate your API key. Keep it safe — you'll need it to authenticate every request.
 
 ### Step 3: Make Your First API Call
 
@@ -21,7 +21,7 @@ Use your API key to call a chat model. The example below calls Claude 3.5 Sonnet
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -40,7 +40,7 @@ Use your API key to call a chat model. The example below calls Claude 3.5 Sonnet
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -58,7 +58,7 @@ Use your API key to call a chat model. The example below calls Claude 3.5 Sonnet
 
   const client = new OpenAI({
     apiKey: "YOUR_API_KEY",
-    baseURL: "https://ai.alad.com/v1",
+    baseURL: "https://ai.cubeuaeai.com/v1",
   });
 
   const response = await client.chat.completions.create({
@@ -71,7 +71,7 @@ Use your API key to call a chat model. The example below calls Claude 3.5 Sonnet
 </CodeGroup>
 
 <Warning>
-  **Configure your channel first.** Different models correspond to different channels. You must enable the corresponding channel in the console before you can successfully call that model. Go to the [Console](https://ai.alad.com/console?lang=en) to confirm channels are enabled.
+  **Configure your channel first.** Different models correspond to different channels. You must enable the corresponding channel in the console before you can successfully call that model. Go to the [Console](https://ai.cubeuaeai.com/console?lang=en) to confirm channels are enabled.
 </Warning>
 
 ## Next Steps

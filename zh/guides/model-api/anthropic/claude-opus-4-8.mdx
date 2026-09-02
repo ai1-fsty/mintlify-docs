@@ -3,7 +3,7 @@ title: "Claude Opus 4.8"
 description: "通过 OpenAI 兼容接口调用 Anthropic 的 Claude Opus 4.8，最强大的通用模型，具备自适应思维和快速模式。"
 ---
 
-Claude Opus 4.8 是 Anthropic 目前最强大的通用模型，通过 Starrise AI 以 OpenAI 兼容接口提供服务。基于 Claude Opus 4.7 构建，改进了长时智能体编程、工具触发可靠性和压缩处理能力。
+Claude Opus 4.8 是 Anthropic 目前最强大的通用模型，通过 Cube AI 以 OpenAI 兼容接口提供服务。基于 Claude Opus 4.7 构建，改进了长时智能体编程、工具触发可靠性和压缩处理能力。
 
 ## 核心能力
 
@@ -19,7 +19,7 @@ Claude Opus 4.8 是 Anthropic 目前最强大的通用模型，通过 Starrise A
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/messages \
+  curl https://ai.cubeuaeai.com/v1/messages \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -35,7 +35,7 @@ Claude Opus 4.8 是 Anthropic 目前最强大的通用模型，通过 Starrise A
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -53,7 +53,7 @@ Claude Opus 4.8 是 Anthropic 目前最强大的通用模型，通过 Starrise A
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

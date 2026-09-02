@@ -4,7 +4,7 @@ info:
   description: Download the completed Sora 2 video
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

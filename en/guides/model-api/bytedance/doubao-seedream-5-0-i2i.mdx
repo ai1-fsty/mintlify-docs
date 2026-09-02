@@ -3,7 +3,7 @@ title: "Seedream 5.0 Image-to-Image"
 description: "ByteDance Seedream 5.0 image-to-image model — generate images using reference images and text prompts."
 ---
 
-Seedream 5.0 Image-to-Image is an image-to-image model from ByteDance's Seedream series, available through the Starrise AI API.
+Seedream 5.0 Image-to-Image is an image-to-image model from ByteDance's Seedream series, available through the Cube AI API.
 
 <Warning>
   When referencing external image URLs, if Volcengine takes more than 10 seconds to download the image, the request will time out. Ensure image URLs load quickly, or use Base64 encoding for large files.
@@ -20,7 +20,7 @@ Seedream 5.0 Image-to-Image is an image-to-image model from ByteDance's Seedream
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/images/generations \
+  curl https://ai.cubeuaeai.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -40,7 +40,7 @@ Seedream 5.0 Image-to-Image is an image-to-image model from ByteDance's Seedream
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/v1/images/generations",
+      "https://ai.cubeuaeai.com/v1/images/generations",
       headers={
           "Authorization": "Bearer YOUR_API_KEY",
           "Content-Type": "application/json"

@@ -1,9 +1,9 @@
 ---
 title: "DeepSeek V4 Pro"
-description: "Call DeepSeek V4 Pro via Starrise AI OpenAI-compatible interface — fast, powerful, and easy to integrate."
+description: "Call DeepSeek V4 Pro via Cube AI OpenAI-compatible interface — fast, powerful, and easy to integrate."
 ---
 
-DeepSeek V4 Pro is available through Starrise AI via the OpenAI-compatible interface. Supports thinking mode, function calling, and JSON mode.
+DeepSeek V4 Pro is available through Cube AI via the OpenAI-compatible interface. Supports thinking mode, function calling, and JSON mode.
 
 ## Key Capabilities
 
@@ -19,7 +19,7 @@ DeepSeek V4 Pro is available through Starrise AI via the OpenAI-compatible inter
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -35,7 +35,7 @@ DeepSeek V4 Pro is available through Starrise AI via the OpenAI-compatible inter
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -53,7 +53,7 @@ DeepSeek V4 Pro is available through Starrise AI via the OpenAI-compatible inter
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

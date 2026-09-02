@@ -1,9 +1,9 @@
 ---
 title: "Qwen3.6-Flash"
-description: "Call Alibaba's Qwen3.6-Flash vision language model via Starrise AI OpenAI-compatible API — fast, agent-friendly multimodal model."
+description: "Call Alibaba's Qwen3.6-Flash vision language model via Cube AI OpenAI-compatible API — fast, agent-friendly multimodal model."
 ---
 
-Qwen3.6-Flash is Alibaba's native vision language Flash model, available through Starrise AI via an OpenAI-compatible API. Compared to Qwen3.5-Flash, it delivers significant improvements in agentic coding, math/code reasoning, and spatial intelligence.
+Qwen3.6-Flash is Alibaba's native vision language Flash model, available through Cube AI via an OpenAI-compatible API. Compared to Qwen3.5-Flash, it delivers significant improvements in agentic coding, math/code reasoning, and spatial intelligence.
 
 ## Key Capabilities
 
@@ -18,7 +18,7 @@ Qwen3.6-Flash is Alibaba's native vision language Flash model, available through
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -34,7 +34,7 @@ Qwen3.6-Flash is Alibaba's native vision language Flash model, available through
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -52,7 +52,7 @@ Qwen3.6-Flash is Alibaba's native vision language Flash model, available through
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(
@@ -72,7 +72,7 @@ Qwen3.6-Flash is Alibaba's native vision language Flash model, available through
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   completion = client.chat.completions.create(
@@ -98,7 +98,7 @@ Qwen3.6-Flash is Alibaba's native vision language Flash model, available through
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -129,7 +129,7 @@ Qwen3.6-Flash is Alibaba's native vision language Flash model, available through
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -156,7 +156,7 @@ Qwen3.6-Flash is Alibaba's native vision language Flash model, available through
   ```
 
   ```bash cURL (Image)
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{

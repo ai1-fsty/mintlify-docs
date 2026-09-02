@@ -1,6 +1,6 @@
 ---
 title: "Seedance 2.0 Asset Management"
-description: "Manage images, videos, and audio assets for Seedance 2.0 video generation via the Starrise AI API."
+description: "Manage images, videos, and audio assets for Seedance 2.0 video generation via the Cube AI API."
 ---
 
 Seedance 2.0 Asset Management lets you upload and organize media assets (images, videos, audio) for use with Seedance 2.0 video generation. Once uploaded, reference assets in Seedance 2.0 requests using an asset ID (`asset://<ID>`) instead of public URLs.
@@ -44,7 +44,7 @@ First, create an asset group to obtain a group ID.
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/volc/asset/CreateAssetGroup \
+  curl https://ai.cubeuaeai.com/volc/asset/CreateAssetGroup \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -57,7 +57,7 @@ First, create an asset group to obtain a group ID.
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/volc/asset/CreateAssetGroup",
+      "https://ai.cubeuaeai.com/volc/asset/CreateAssetGroup",
       headers={"Authorization": "Bearer YOUR_API_KEY"},
       json={
           "model": "volc-asset",
@@ -84,7 +84,7 @@ Using the asset group ID from Step 1, upload an asset (e.g. a character referenc
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/volc/asset/CreateAsset \
+  curl https://ai.cubeuaeai.com/volc/asset/CreateAsset \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -98,7 +98,7 @@ Using the asset group ID from Step 1, upload an asset (e.g. a character referenc
 
   ```python Python
   response = requests.post(
-      "https://ai.alad.com/volc/asset/CreateAsset",
+      "https://ai.cubeuaeai.com/volc/asset/CreateAsset",
       headers={"Authorization": "Bearer YOUR_API_KEY"},
       json={
           "model": "volc-asset",
@@ -135,7 +135,7 @@ Expected response:
 > You **must** specify `"model": "volc-asset-video"` and `"AssetType": "Video"` when uploading video.
 
 ```bash cURL
-curl https://ai.alad.com/volc/asset/CreateAsset \
+curl https://ai.cubeuaeai.com/volc/asset/CreateAsset \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -152,7 +152,7 @@ curl https://ai.alad.com/volc/asset/CreateAsset \
 > You **must** specify `"model": "volc-asset-audio"` and `"AssetType": "Audio"` when uploading audio.
 
 ```bash cURL
-curl https://ai.alad.com/volc/asset/CreateAsset \
+curl https://ai.cubeuaeai.com/volc/asset/CreateAsset \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -167,7 +167,7 @@ curl https://ai.alad.com/volc/asset/CreateAsset \
 ### File Upload (multipart)
 
 ```bash Upload image
-curl https://ai.alad.com/volc/asset/CreateAsset \
+curl https://ai.cubeuaeai.com/volc/asset/CreateAsset \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -F "file=@/path/to/image.jpg" \
   -F "GroupId=group-20260427160000-xxxxx" \
@@ -175,7 +175,7 @@ curl https://ai.alad.com/volc/asset/CreateAsset \
 ```
 
 ```bash Upload video
-curl https://ai.alad.com/volc/asset/CreateAsset \
+curl https://ai.cubeuaeai.com/volc/asset/CreateAsset \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -F "model=volc-asset-video" \
   -F "file=@/path/to/video.mp4" \
@@ -185,7 +185,7 @@ curl https://ai.alad.com/volc/asset/CreateAsset \
 ```
 
 ```bash Upload audio
-curl https://ai.alad.com/volc/asset/CreateAsset \
+curl https://ai.cubeuaeai.com/volc/asset/CreateAsset \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -F "model=volc-asset-audio" \
   -F "file=@/path/to/audio.mp3" \
@@ -201,7 +201,7 @@ Reference the asset ID from Step 2 to generate a video.
 > **Important:** Assets must be passed in strict order: text, image\_url, video\_url, audio\_url. Do not reorder them, as this may cause errors; when including multiple assets, also ensure no other asset types are mixed in.
 
 ```bash cURL
-curl https://ai.alad.com/v1/video/generations \
+curl https://ai.cubeuaeai.com/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -245,7 +245,7 @@ The response returns an asynchronous task ID (prefixed with `asyn`).
 Use the task ID to check the generation status.
 
 ```bash cURL
-curl https://ai.alad.com/v1/video/generations/asynxxxx \
+curl https://ai.cubeuaeai.com/v1/video/generations/asynxxxx \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
@@ -259,7 +259,7 @@ Once complete, the response will contain a pre-signed S3 download URL. Note that
 ### List Asset Groups
 
 ```bash cURL
-curl https://ai.alad.com/volc/asset/ListAssetGroups \
+curl https://ai.cubeuaeai.com/volc/asset/ListAssetGroups \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -273,7 +273,7 @@ curl https://ai.alad.com/volc/asset/ListAssetGroups \
 ### List Assets in a Group
 
 ```bash cURL
-curl https://ai.alad.com/volc/asset/ListAssets \
+curl https://ai.cubeuaeai.com/volc/asset/ListAssets \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

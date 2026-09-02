@@ -4,7 +4,7 @@ info:
   description: Call the xAI Grok 4 Fast Non-Reasoning model
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

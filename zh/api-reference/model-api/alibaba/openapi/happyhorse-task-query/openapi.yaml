@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
   title: HappyHorse 任务查询
-  description: 通过 Starrise AI API 查询 HappyHorse 1.0 视频生成任务的状态和结果
+  description: 通过 Cube AI API 查询 HappyHorse 1.0 视频生成任务的状态和结果
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

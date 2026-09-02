@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
   title: GPT-5 Pro
-  description: 通过 Starrise AI OpenAI 兼容接口调用 OpenAI GPT-5 Pro
+  description: 通过 Cube AI OpenAI 兼容接口调用 OpenAI GPT-5 Pro
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

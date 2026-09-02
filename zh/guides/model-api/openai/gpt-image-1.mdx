@@ -3,7 +3,7 @@ title: "GPT Image 1"
 description: "OpenAI GPT Image 1 图像生成模型。通过文本提示生成和编辑图像。"
 ---
 
-GPT Image 1 是 OpenAI 的自回归图像生成模型，通过 Starrise AI API 提供服务。可从文本提示生成高质量图像，支持精准文字渲染和多风格生成。
+GPT Image 1 是 OpenAI 的自回归图像生成模型，通过 Cube AI API 提供服务。可从文本提示生成高质量图像，支持精准文字渲染和多风格生成。
 
 ## 核心能力
 
@@ -26,7 +26,7 @@ GPT Image 1 是 OpenAI 的自回归图像生成模型，通过 Starrise AI API �
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/images/generations \
+  curl https://ai.cubeuaeai.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -42,7 +42,7 @@ GPT Image 1 是 OpenAI 的自回归图像生成模型，通过 Starrise AI API �
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.images.generate(

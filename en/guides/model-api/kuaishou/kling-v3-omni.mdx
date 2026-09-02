@@ -3,7 +3,7 @@ title: "Kling V3 Omni"
 description: "Kuaishou Kling V3 Omni video generation model with text-to-video, image-to-video, video editing, multi-shot scenes, and synchronized sound effect generation."
 ---
 
-Kling V3 Omni is Kuaishou's latest video generation model, available through the Starrise AI API. The Omni model combines elements, images, videos, and more via prompts for diverse capabilities — supporting text-to-video, image-to-video, video editing, multi-shot scenes, and synchronized sound effect generation.
+Kling V3 Omni is Kuaishou's latest video generation model, available through the Cube AI API. The Omni model combines elements, images, videos, and more via prompts for diverse capabilities — supporting text-to-video, image-to-video, video editing, multi-shot scenes, and synchronized sound effect generation.
 
 ## Key Capabilities
 
@@ -19,7 +19,7 @@ Kling V3 Omni is Kuaishou's latest video generation model, available through the
 
 <CodeGroup>
   ```bash cURL — Text-to-Video
-  curl https://ai.alad.com/kling/v1/videos/omni-video \
+  curl https://ai.cubeuaeai.com/kling/v1/videos/omni-video \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -35,7 +35,7 @@ Kling V3 Omni is Kuaishou's latest video generation model, available through the
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/kling/v1/videos/omni-video",
+      "https://ai.cubeuaeai.com/kling/v1/videos/omni-video",
       headers={
           "Authorization": "Bearer YOUR_API_KEY",
           "Content-Type": "application/json"
@@ -57,7 +57,7 @@ Kling V3 Omni is Kuaishou's latest video generation model, available through the
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/kling/v1/videos/omni-video",
+      "https://ai.cubeuaeai.com/kling/v1/videos/omni-video",
       headers={
           "Authorization": "Bearer YOUR_API_KEY",
           "Content-Type": "application/json"
@@ -84,7 +84,7 @@ Kling V3 Omni is Kuaishou's latest video generation model, available through the
 After creating a task, use the task ID to query the status:
 
 ```bash cURL
-curl https://ai.alad.com/kling/v1/videos/text2video/{task_id} \
+curl https://ai.cubeuaeai.com/kling/v1/videos/text2video/{task_id} \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 

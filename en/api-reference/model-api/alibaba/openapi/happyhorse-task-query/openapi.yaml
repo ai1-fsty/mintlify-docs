@@ -4,7 +4,7 @@ info:
   description: Query the status and result of a HappyHorse 1.0 video generation task
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

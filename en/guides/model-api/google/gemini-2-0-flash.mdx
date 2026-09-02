@@ -3,7 +3,7 @@ title: "Gemini 2.0 Flash"
 description: "Call Google Gemini 2.0 Flash via Gemini API for AI image editing."
 ---
 
-Gemini 2.0 Flash is Google's multimodal model with image editing capabilities, available through Starrise AI via the native Gemini API. It can edit existing images based on text instructions.
+Gemini 2.0 Flash is Google's multimodal model with image editing capabilities, available through Cube AI via the native Gemini API. It can edit existing images based on text instructions.
 
 ## Key Capabilities
 
@@ -16,7 +16,7 @@ Gemini 2.0 Flash is Google's multimodal model with image editing capabilities, a
 
 <CodeGroup>
   ```bash cURL
-  curl "https://ai.alad.com/v1beta/models/gemini-2.0-flash:generateContent?key=YOUR_API_KEY" \
+  curl "https://ai.cubeuaeai.com/v1beta/models/gemini-2.0-flash:generateContent?key=YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
       "contents": [
@@ -38,7 +38,7 @@ Gemini 2.0 Flash is Google's multimodal model with image editing capabilities, a
   import requests
   import base64
 
-  url = "https://ai.alad.com/v1beta/models/gemini-2.0-flash:generateContent"
+  url = "https://ai.cubeuaeai.com/v1beta/models/gemini-2.0-flash:generateContent"
   params = {"key": "YOUR_API_KEY"}
 
   with open("input.png", "rb") as f:

@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
   title: Sora 2 查询任务
-  description: 通过 Starrise AI API 查询 Sora 2 视频生成任务状态
+  description: 通过 Cube AI API 查询 Sora 2 视频生成任务状态
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

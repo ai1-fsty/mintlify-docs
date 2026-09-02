@@ -3,7 +3,7 @@ title: "GLM-4.5"
 description: "Call the Zhipu GLM-4.5 chat model via the OpenAI-compatible API — fast, powerful, and easy to integrate."
 ---
 
-GLM-4.5 is a chat model from Zhipu AI, available through Starrise AI via an OpenAI-compatible interface. It features powerful reasoning and conversational capabilities.
+GLM-4.5 is a chat model from Zhipu AI, available through Cube AI via an OpenAI-compatible interface. It features powerful reasoning and conversational capabilities.
 
 ## Key Capabilities
 
@@ -16,7 +16,7 @@ GLM-4.5 is a chat model from Zhipu AI, available through Starrise AI via an Open
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -32,7 +32,7 @@ GLM-4.5 is a chat model from Zhipu AI, available through Starrise AI via an Open
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -50,7 +50,7 @@ GLM-4.5 is a chat model from Zhipu AI, available through Starrise AI via an Open
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

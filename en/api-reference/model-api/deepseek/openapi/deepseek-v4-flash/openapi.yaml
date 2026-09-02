@@ -4,7 +4,7 @@ info:
   description: Call DeepSeek V4 Flash
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:
@@ -323,6 +323,6 @@ components:
       type: http
       scheme: bearer
       description: >-
-        Authenticate with a Bearer token. After creating an API key in the Starrise AI console, pass it as `Bearer YOUR_API_KEY`
+        Authenticate with a Bearer token. After creating an API key in the Cube AI console, pass it as `Bearer YOUR_API_KEY`
         in the Authorization header.
 

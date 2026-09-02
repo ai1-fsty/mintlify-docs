@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
   title: Gemini 2.5 Flash Image
-  description: 通过 Starrise AI 代理调用 Google Gemini 2.5 Flash Image
+  description: 通过 Cube AI 代理调用 Google Gemini 2.5 Flash Image
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security: []
 paths:
   /v1beta/models/gemini-2.5-flash-image:generateContent:

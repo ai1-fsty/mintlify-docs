@@ -1,9 +1,9 @@
 ---
 title: "Kimi-K2.5"
-description: "通过 Starrise AI OpenAI 兼容接口调用月之暗面 Kimi-K2.5 对话模型，快速、强大且易于集成。"
+description: "通过 Cube AI OpenAI 兼容接口调用月之暗面 Kimi-K2.5 对话模型，快速、强大且易于集成。"
 ---
 
-Kimi-K2.5 是月之暗面（MoonShot）推出的对话模型，通过 Starrise AI 以 OpenAI 兼容接口提供。
+Kimi-K2.5 是月之暗面（MoonShot）推出的对话模型，通过 Cube AI 以 OpenAI 兼容接口提供。
 
 ## 核心能力
 
@@ -16,7 +16,7 @@ Kimi-K2.5 是月之暗面（MoonShot）推出的对话模型，通过 Starrise A
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -32,7 +32,7 @@ Kimi-K2.5 是月之暗面（MoonShot）推出的对话模型，通过 Starrise A
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -50,7 +50,7 @@ Kimi-K2.5 是月之暗面（MoonShot）推出的对话模型，通过 Starrise A
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

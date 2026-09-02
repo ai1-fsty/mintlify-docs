@@ -1,9 +1,9 @@
 ---
 title: "Grok 3 Mini"
-description: "通过 Starrise AI API 调用 xAI Grok 3 Mini 模型。快速轻量。"
+description: "通过 Cube AI API 调用 xAI Grok 3 Mini 模型。快速轻量。"
 ---
 
-Grok 3 Mini 是 xAI 推出的语言模型，通过 Starrise AI 提供。快速轻量。
+Grok 3 Mini 是 xAI 推出的语言模型，通过 Cube AI 提供。快速轻量。
 
 ## 核心能力
 
@@ -15,7 +15,7 @@ Grok 3 Mini 是 xAI 推出的语言模型，通过 Starrise AI 提供。快速�
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -31,7 +31,7 @@ Grok 3 Mini 是 xAI 推出的语言模型，通过 Starrise AI 提供。快速�
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(

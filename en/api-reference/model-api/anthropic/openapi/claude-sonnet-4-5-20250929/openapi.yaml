@@ -4,7 +4,7 @@ info:
   description: Call Anthropic Claude Sonnet 4.5
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

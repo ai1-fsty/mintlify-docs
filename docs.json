@@ -1,7 +1,7 @@
 {
   "$schema": "https://mintlify.com/docs.json",
   "theme": "mint",
-  "name": "Starrise AI",
+  "name": "Cube AI",
   "favicon": "/favicon.ico",
   "logo": {
     "light": "/images/主.png",
@@ -13,9 +13,9 @@
     "dark": "#082f49"
   },
   "variables": {
-    "api-base-url": "https://ai.alad.com/v1",
-    "api-origin": "https://ai.alad.com",
-    "ws-base-url": "wss://ai.alad.com"
+    "api-base-url": "https://ai.cubeuaeai.com/v1",
+    "api-origin": "https://ai.cubeuaeai.com",
+    "ws-base-url": "wss://ai.cubeuaeai.com"
   },
   "navigation": {
     "languages": [
@@ -25,12 +25,12 @@
           "primary": {
             "type": "button",
             "label": "Console",
-            "href": "https://ai.alad.com/console/token?lang=en"
+            "href": "https://ai.cubeuaeai.com/console/token?lang=en"
           }
         },
         "footer": {
           "socials": {
-            "website": "https://ai.alad.com/?lang=en"
+            "website": "https://ai.cubeuaeai.com/?lang=en"
           }
         },
         "tabs": [
@@ -672,7 +672,7 @@
           "primary": {
             "type": "button",
             "label": "控制台",
-            "href": "https://ai.alad.com/console/token?lang=en"
+            "href": "https://ai.cubeuaeai.com/console/token"
           }
         },
         "tabs": [
@@ -1313,12 +1313,12 @@
     "primary": {
       "type": "button",
       "label": "Console",
-      "href": "https://ai.alad.com/console/token"
+      "href": "https://ai.cubeuaeai.com/console/token"
     }
   },
   "footer": {
     "socials": {
-      "website": "https://ai.alad.com"
+      "website": "https://ai.cubeuaeai.com"
     }
   }
 }

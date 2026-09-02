@@ -4,7 +4,7 @@ info:
   description: Call the Alibaba Wan2.2 image-to-video model (asynchronous task)
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

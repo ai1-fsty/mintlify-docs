@@ -1,9 +1,9 @@
 ---
 title: "Wan2.7 Image"
-description: "通过 Starrise AI API 调用阿里巴巴万相-图像生成与编辑 2.7 模型。"
+description: "通过 Cube AI API 调用阿里巴巴万相-图像生成与编辑 2.7 模型。"
 ---
 
-万相-图像生成与编辑 2.7（Wan2.7 Image）是阿里巴巴最新的多模态图像模型，通过 Starrise AI 提供服务。支持文生图、图像编辑、交互式区域编辑和组图生成，最高支持 4K 输出分辨率。
+万相-图像生成与编辑 2.7（Wan2.7 Image）是阿里巴巴最新的多模态图像模型，通过 Cube AI 提供服务。支持文生图、图像编辑、交互式区域编辑和组图生成，最高支持 4K 输出分辨率。
 
 ## 模型列表
 
@@ -24,7 +24,7 @@ description: "通过 Starrise AI API 调用阿里巴巴万相-图像生成与编
 
 <CodeGroup>
   ```bash 文生图
-  curl https://ai.alad.com/v1/images/generations \
+  curl https://ai.cubeuaeai.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -36,7 +36,7 @@ description: "通过 Starrise AI API 调用阿里巴巴万相-图像生成与编
   ```
 
   ```bash 图像编辑
-  curl https://ai.alad.com/v1/images/generations \
+  curl https://ai.cubeuaeai.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -51,7 +51,7 @@ description: "通过 Starrise AI API 调用阿里巴巴万相-图像生成与编
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/v1/images/generations",
+      "https://ai.cubeuaeai.com/v1/images/generations",
       headers={"Authorization": "Bearer YOUR_API_KEY"},
       json={
           "model": "wan2.7-image-pro",

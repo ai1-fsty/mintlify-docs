@@ -3,7 +3,7 @@ title: "Seedream 5.0 图生图"
 description: "字节跳动 Seedream 5.0 图生图模型，使用参考图片和文本提示词生成图片。"
 ---
 
-Seedream 5.0 图生图是字节跳动 Seedream 系列的图生图模型，通过 Starrise AI API 提供服务。
+Seedream 5.0 图生图是字节跳动 Seedream 系列的图生图模型，通过 Cube AI API 提供服务。
 
 <Warning>
   引入外部图片链接时，如果火山引擎下载该图片耗时超过 10 秒，将导致请求超时报错。请确保图片链接加载速度快，或对大文件使用 Base64 编码方式传入。
@@ -20,7 +20,7 @@ Seedream 5.0 图生图是字节跳动 Seedream 系列的图生图模型，通过
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/images/generations \
+  curl https://ai.cubeuaeai.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -40,7 +40,7 @@ Seedream 5.0 图生图是字节跳动 Seedream 系列的图生图模型，通过
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/v1/images/generations",
+      "https://ai.cubeuaeai.com/v1/images/generations",
       headers={
           "Authorization": "Bearer YOUR_API_KEY",
           "Content-Type": "application/json"

@@ -4,7 +4,7 @@ info:
   description: Drive the character's mouth movement to match speech from text (TTS) or an audio file
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

@@ -3,7 +3,7 @@ title: "Kling 2 Master Text-to-Video"
 description: "Kuaishou Kling 2 Master text-to-video model. Generate videos from text prompts with custom camera control, multi-shot scenes, and sound effects."
 ---
 
-Kling 2 Master Text-to-Video is a text-to-video model in Kuaishou's Kling series, available through the Starrise AI API. Create videos from text descriptions with custom camera control, multi-shot scenes, and optional sound effect generation.
+Kling 2 Master Text-to-Video is a text-to-video model in Kuaishou's Kling series, available through the Cube AI API. Create videos from text descriptions with custom camera control, multi-shot scenes, and optional sound effect generation.
 
 ## Key Capabilities
 
@@ -17,7 +17,7 @@ Kling 2 Master Text-to-Video is a text-to-video model in Kuaishou's Kling series
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/kling/v1/videos/text2video \
+  curl https://ai.cubeuaeai.com/kling/v1/videos/text2video \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -33,7 +33,7 @@ Kling 2 Master Text-to-Video is a text-to-video model in Kuaishou's Kling series
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/kling/v1/videos/text2video",
+      "https://ai.cubeuaeai.com/kling/v1/videos/text2video",
       headers={
           "Authorization": "Bearer YOUR_API_KEY",
           "Content-Type": "application/json"

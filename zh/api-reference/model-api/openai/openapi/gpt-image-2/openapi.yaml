@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
   title: GPT Image 2
-  description: 通过 Starrise AI API 使用 GPT Image 2 生成图像
+  description: 通过 Cube AI API 使用 GPT Image 2 生成图像
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

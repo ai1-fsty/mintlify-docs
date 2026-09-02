@@ -9,7 +9,7 @@ description: "OpenAI 兼容的模型列表接口，返回当前 API Key 可用�
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/models \
+  curl https://ai.cubeuaeai.com/v1/models \
     -H "Authorization: Bearer YOUR_API_KEY"
   ```
 
@@ -18,7 +18,7 @@ description: "OpenAI 兼容的模型列表接口，返回当前 API Key 可用�
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   models = client.models.list()

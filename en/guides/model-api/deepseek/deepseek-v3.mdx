@@ -1,9 +1,9 @@
 ---
 title: "DeepSeek V3"
-description: "Call DeepSeek V3 via Starrise AI OpenAI-compatible interface — fast, powerful, and easy to integrate."
+description: "Call DeepSeek V3 via Cube AI OpenAI-compatible interface — fast, powerful, and easy to integrate."
 ---
 
-DeepSeek V3 is available through Starrise AI via the OpenAI-compatible interface, excelling at complex reasoning, coding, and multi-turn conversations.
+DeepSeek V3 is available through Cube AI via the OpenAI-compatible interface, excelling at complex reasoning, coding, and multi-turn conversations.
 
 ## Key Capabilities
 
@@ -16,7 +16,7 @@ DeepSeek V3 is available through Starrise AI via the OpenAI-compatible interface
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -32,7 +32,7 @@ DeepSeek V3 is available through Starrise AI via the OpenAI-compatible interface
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -50,7 +50,7 @@ DeepSeek V3 is available through Starrise AI via the OpenAI-compatible interface
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

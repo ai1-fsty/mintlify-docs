@@ -1,9 +1,9 @@
 ---
 title: "FLUX.1 Kontext [pro]"
-description: "Call the Black Forest Labs FLUX.1 Kontext [pro] image editing and generation model via the Starrise AI API."
+description: "Call the Black Forest Labs FLUX.1 Kontext [pro] image editing and generation model via the Cube AI API."
 ---
 
-FLUX.1 Kontext \[pro] is a context-aware image generation model from Black Forest Labs, available through Starrise AI. It can generate images from text descriptions or edit existing images using text instructions. Both endpoints use **synchronous calls** — they directly return Base64-encoded image data.
+FLUX.1 Kontext \[pro] is a context-aware image generation model from Black Forest Labs, available through Cube AI. It can generate images from text descriptions or edit existing images using text instructions. Both endpoints use **synchronous calls** — they directly return Base64-encoded image data.
 
 * **Text-to-image** — POST JSON to `/v1/images/generations`
 * **Image editing** — POST multipart form to `/v1/images/edits`
@@ -21,7 +21,7 @@ FLUX.1 Kontext \[pro] is a context-aware image generation model from Black Fores
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/images/generations \
+  curl https://ai.cubeuaeai.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -35,7 +35,7 @@ FLUX.1 Kontext \[pro] is a context-aware image generation model from Black Fores
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/v1/images/generations",
+      "https://ai.cubeuaeai.com/v1/images/generations",
       headers={"Authorization": "Bearer YOUR_API_KEY"},
       json={
           "model": "flux-1-kontext-pro",
@@ -53,7 +53,7 @@ FLUX.1 Kontext \[pro] is a context-aware image generation model from Black Fores
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/images/edits \
+  curl https://ai.cubeuaeai.com/v1/images/edits \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -F "model=flux-1-kontext-pro" \
     -F "image=@/path/to/photo.jpg" \
@@ -65,7 +65,7 @@ FLUX.1 Kontext \[pro] is a context-aware image generation model from Black Fores
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/v1/images/edits",
+      "https://ai.cubeuaeai.com/v1/images/edits",
       headers={"Authorization": "Bearer YOUR_API_KEY"},
       files={"image": open("/path/to/photo.jpg", "rb")},
       data={

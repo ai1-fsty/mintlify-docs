@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
   title: Claude Opus 4.8
-  description: Anthropic Claude Opus 4.8 via Starrise AI OpenAI-compatible API
+  description: Anthropic Claude Opus 4.8 via Cube AI OpenAI-compatible API
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

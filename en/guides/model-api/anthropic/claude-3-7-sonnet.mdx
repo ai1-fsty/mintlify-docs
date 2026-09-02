@@ -3,7 +3,7 @@ title: "Claude 3.7 Sonnet"
 description: "Call Anthropic's Claude 3.7 Sonnet via OpenAI-compatible interface — an advanced reasoning model with Extended Thinking support."
 ---
 
-Claude 3.7 Sonnet is Anthropic's latest high-performance conversational model, available through Starrise AI via OpenAI-compatible interface. It features Extended Thinking capability and excels at complex coding, analysis, and multi-step reasoning tasks.
+Claude 3.7 Sonnet is Anthropic's latest high-performance conversational model, available through Cube AI via OpenAI-compatible interface. It features Extended Thinking capability and excels at complex coding, analysis, and multi-step reasoning tasks.
 
 ## Key Capabilities
 
@@ -17,7 +17,7 @@ Claude 3.7 Sonnet is Anthropic's latest high-performance conversational model, a
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/messages \
+  curl https://ai.cubeuaeai.com/v1/messages \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -33,7 +33,7 @@ Claude 3.7 Sonnet is Anthropic's latest high-performance conversational model, a
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -51,7 +51,7 @@ Claude 3.7 Sonnet is Anthropic's latest high-performance conversational model, a
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

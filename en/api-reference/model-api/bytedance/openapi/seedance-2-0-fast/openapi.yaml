@@ -5,7 +5,7 @@ info:
     Call the ByteDance Seedance 2.0 Fast video generation model. Supports text-to-video, image-to-video, multimodal references, video editing, video extension, and web-search enhancement
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

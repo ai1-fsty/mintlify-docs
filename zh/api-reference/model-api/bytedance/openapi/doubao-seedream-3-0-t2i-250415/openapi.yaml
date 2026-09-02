@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
   title: Seedream 3.0 文生图
-  description: 通过 Starrise AI API 调用字节跳动 Seedream 3.0 文生图模型
+  description: 通过 Cube AI API 调用字节跳动 Seedream 3.0 文生图模型
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

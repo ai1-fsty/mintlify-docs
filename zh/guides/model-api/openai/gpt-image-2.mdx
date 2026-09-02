@@ -3,7 +3,7 @@ title: "GPT Image 2"
 description: "OpenAI GPT Image 2 图像生成模型。新一代自回归 + 推理混合架构，支持灵活分辨率最高 4K，文字渲染准确率接近完美。"
 ---
 
-GPT Image 2 是 OpenAI 的新一代图像生成模型，通过 Starrise AI API 提供服务。基于自回归 + 推理混合架构，支持原生 2K 分辨率、接近完美的文字渲染能力（12+ 种语言约 99% 字符级准确率），以及出色的多物体场景构图。
+GPT Image 2 是 OpenAI 的新一代图像生成模型，通过 Cube AI API 提供服务。基于自回归 + 推理混合架构，支持原生 2K 分辨率、接近完美的文字渲染能力（12+ 种语言约 99% 字符级准确率），以及出色的多物体场景构图。
 
 ## 核心能力
 
@@ -30,7 +30,7 @@ GPT Image 2 是 OpenAI 的新一代图像生成模型，通过 Starrise AI API �
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/images/generations \
+  curl https://ai.cubeuaeai.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -46,7 +46,7 @@ GPT Image 2 是 OpenAI 的新一代图像生成模型，通过 Starrise AI API �
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.images.generate(
@@ -92,7 +92,7 @@ GPT Image 2 是 OpenAI 的新一代图像生成模型，通过 Starrise AI API �
 
 <CodeGroup>
   ```bash 单张图片
-  curl https://ai.alad.com/v1/images/edits \
+  curl https://ai.cubeuaeai.com/v1/images/edits \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -F "image=@/path/to/source.jpeg" \
     -F model="gpt-image-2" \
@@ -102,7 +102,7 @@ GPT Image 2 是 OpenAI 的新一代图像生成模型，通过 Starrise AI API �
   ```
 
   ```bash 多张图片（最多 16 张）
-  curl https://ai.alad.com/v1/images/edits \
+  curl https://ai.cubeuaeai.com/v1/images/edits \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -F "image[]=@/path/to/image1.png" \
     -F "image[]=@/path/to/image2.png" \
@@ -143,7 +143,7 @@ GPT Image 2 是 OpenAI 的新一代图像生成模型，通过 Starrise AI API �
 > 遮罩编辑与 `n` 参数**均需在控制台选择 Direct 分组。**
 
 ```bash cURL
-curl https://ai.alad.com/v1/images/edits \
+curl https://ai.cubeuaeai.com/v1/images/edits \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -F image=@/path/to/source.jpeg \
   -F mask=@/path/to/mask.png \

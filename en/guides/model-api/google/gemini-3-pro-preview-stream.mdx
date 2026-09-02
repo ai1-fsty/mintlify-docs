@@ -3,7 +3,7 @@ title: "Gemini 3 Pro Preview (Stream)"
 description: "Call Google Gemini 3 Pro Preview streaming via Gemini API. Supports real-time SSE token streaming."
 ---
 
-Gemini 3 Pro Preview (Stream) provides streaming text generation based on the Google Gemini 3 Pro Preview model, accessible through Starrise AI. Responses are delivered in real time via Server-Sent Events (SSE).
+Gemini 3 Pro Preview (Stream) provides streaming text generation based on the Google Gemini 3 Pro Preview model, accessible through Cube AI. Responses are delivered in real time via Server-Sent Events (SSE).
 
 ## Key Capabilities
 
@@ -16,7 +16,7 @@ Gemini 3 Pro Preview (Stream) provides streaming text generation based on the Go
 
 <CodeGroup>
   ```bash cURL
-  curl "https://ai.alad.com/v1beta/models/gemini-3-pro-preview:streamGenerateContent?key=YOUR_API_KEY&alt=sse" \
+  curl "https://ai.cubeuaeai.com/v1beta/models/gemini-3-pro-preview:streamGenerateContent?key=YOUR_API_KEY&alt=sse" \
     -H "Content-Type: application/json" \
     -d '{
       "contents": [
@@ -39,7 +39,7 @@ Gemini 3 Pro Preview (Stream) provides streaming text generation based on the Go
   ```python Python
   import requests
 
-  url = "https://ai.alad.com/v1beta/models/gemini-3-pro-preview:streamGenerateContent"
+  url = "https://ai.cubeuaeai.com/v1beta/models/gemini-3-pro-preview:streamGenerateContent"
   params = {"key": "YOUR_API_KEY", "alt": "sse"}
   data = {
       "contents": [

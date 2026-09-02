@@ -3,7 +3,7 @@ title: "Seedance 1.5 Pro 图生视频"
 description: "字节跳动 Seedance 1.5 Pro 图生视频模型，使用参考图片作为首帧（和尾帧）生成视频。"
 ---
 
-Seedance 1.5 Pro 图生视频 是字节跳动 Seedance 系列的图生视频模型，通过 Starrise AI API 提供服务。使用参考图片作为首帧（和尾帧）生成视频。
+Seedance 1.5 Pro 图生视频 是字节跳动 Seedance 系列的图生视频模型，通过 Cube AI API 提供服务。使用参考图片作为首帧（和尾帧）生成视频。
 
 ## 核心能力
 
@@ -17,7 +17,7 @@ Seedance 1.5 Pro 图生视频 是字节跳动 Seedance 系列的图生视频模�
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/video/generations \
+  curl https://ai.cubeuaeai.com/v1/video/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -36,7 +36,7 @@ Seedance 1.5 Pro 图生视频 是字节跳动 Seedance 系列的图生视频模�
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/v1/video/generations",
+      "https://ai.cubeuaeai.com/v1/video/generations",
       headers={
           "Authorization": "Bearer YOUR_API_KEY",
           "Content-Type": "application/json"

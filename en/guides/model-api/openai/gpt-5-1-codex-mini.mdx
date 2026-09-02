@@ -3,7 +3,7 @@ title: "GPT-5.1 Codex Mini"
 description: "OpenAI GPT-5.1 Codex Mini — compact, code-optimized version of GPT-5.1."
 ---
 
-GPT-5.1 Codex Mini is available through Starrise AI via OpenAI-compatible interface.
+GPT-5.1 Codex Mini is available through Cube AI via OpenAI-compatible interface.
 
 ## Key Capabilities
 
@@ -16,7 +16,7 @@ GPT-5.1 Codex Mini is available through Starrise AI via OpenAI-compatible interf
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -32,7 +32,7 @@ GPT-5.1 Codex Mini is available through Starrise AI via OpenAI-compatible interf
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -50,7 +50,7 @@ GPT-5.1 Codex Mini is available through Starrise AI via OpenAI-compatible interf
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

@@ -3,7 +3,7 @@ title: "Claude Haiku 4.5 Thinking"
 description: "Anthropic 的 Claude Haiku 4.5 扩展思维版，以低成本实现快速推理，擅长数学、编程和分析。"
 ---
 
-Claude Haiku 4.5 Thinking 是 Claude Haiku 4.5 的扩展思维版本，通过 Starrise AI 以 OpenAI 兼容接口提供服务。结合 Haiku 的速度与性价比优势，默认启用逐步内部推理，在复杂任务上显著提升准确率，同时速度和成本远优于大型思维模型。
+Claude Haiku 4.5 Thinking 是 Claude Haiku 4.5 的扩展思维版本，通过 Cube AI 以 OpenAI 兼容接口提供服务。结合 Haiku 的速度与性价比优势，默认启用逐步内部推理，在复杂任务上显著提升准确率，同时速度和成本远优于大型思维模型。
 
 ## 核心能力
 
@@ -17,7 +17,7 @@ Claude Haiku 4.5 Thinking 是 Claude Haiku 4.5 的扩展思维版本，通过 St
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/messages \
+  curl https://ai.cubeuaeai.com/v1/messages \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -33,7 +33,7 @@ Claude Haiku 4.5 Thinking 是 Claude Haiku 4.5 的扩展思维版本，通过 St
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -51,7 +51,7 @@ Claude Haiku 4.5 Thinking 是 Claude Haiku 4.5 的扩展思维版本，通过 St
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

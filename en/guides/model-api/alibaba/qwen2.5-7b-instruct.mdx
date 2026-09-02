@@ -1,9 +1,9 @@
 ---
 title: "Qwen2.5-7B-Instruct"
-description: "Call Qwen2.5-7B-Instruct chat model via Starrise AI OpenAI-compatible API (Alibaba channel) — fast, powerful, and easy to integrate."
+description: "Call Qwen2.5-7B-Instruct chat model via Cube AI OpenAI-compatible API (Alibaba channel) — fast, powerful, and easy to integrate."
 ---
 
-Qwen2.5-7B-Instruct is a chat model available through Starrise AI via an OpenAI-compatible API.
+Qwen2.5-7B-Instruct is a chat model available through Cube AI via an OpenAI-compatible API.
 
 ## Key Capabilities
 
@@ -16,7 +16,7 @@ Qwen2.5-7B-Instruct is a chat model available through Starrise AI via an OpenAI-
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -32,7 +32,7 @@ Qwen2.5-7B-Instruct is a chat model available through Starrise AI via an OpenAI-
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -50,7 +50,7 @@ Qwen2.5-7B-Instruct is a chat model available through Starrise AI via an OpenAI-
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

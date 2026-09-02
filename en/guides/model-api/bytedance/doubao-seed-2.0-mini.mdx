@@ -3,7 +3,7 @@ title: "Doubao Seed 2.0 Mini"
 description: "ByteDance's Seed 2.0 Mini compact model — ideal for high-throughput scenarios."
 ---
 
-Doubao Seed 2.0 Mini is a chat model available through Starrise AI via an OpenAI-compatible API. ByteDance's Seed 2.0 Mini compact model — ideal for high-throughput scenarios.
+Doubao Seed 2.0 Mini is a chat model available through Cube AI via an OpenAI-compatible API. ByteDance's Seed 2.0 Mini compact model — ideal for high-throughput scenarios.
 
 ## Key Capabilities
 
@@ -16,7 +16,7 @@ Doubao Seed 2.0 Mini is a chat model available through Starrise AI via an OpenAI
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -32,7 +32,7 @@ Doubao Seed 2.0 Mini is a chat model available through Starrise AI via an OpenAI
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -50,7 +50,7 @@ Doubao Seed 2.0 Mini is a chat model available through Starrise AI via an OpenAI
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

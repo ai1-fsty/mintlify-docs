@@ -4,7 +4,7 @@ info:
   description: Call Kuaishou Kling 2.0 Master Image-to-Video model
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

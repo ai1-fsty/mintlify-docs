@@ -1,9 +1,9 @@
 ---
 title: "FLUX.2 [flex]"
-description: "Call the Black Forest Labs FLUX.2 [flex] text-to-image model via the Starrise AI API."
+description: "Call the Black Forest Labs FLUX.2 [flex] text-to-image model via the Cube AI API."
 ---
 
-FLUX.2 \[flex] is a highly configurable text-to-image model from Black Forest Labs, available through Starrise AI. It offers fine-grained control over sampling steps and guidance scale, ideal for design professionals. The API uses **synchronous calls** — it directly returns Base64-encoded image data.
+FLUX.2 \[flex] is a highly configurable text-to-image model from Black Forest Labs, available through Cube AI. It offers fine-grained control over sampling steps and guidance scale, ideal for design professionals. The API uses **synchronous calls** — it directly returns Base64-encoded image data.
 
 ## Key Capabilities
 
@@ -17,7 +17,7 @@ FLUX.2 \[flex] is a highly configurable text-to-image model from Black Forest La
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/images/generations \
+  curl https://ai.cubeuaeai.com/v1/images/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -33,7 +33,7 @@ FLUX.2 \[flex] is a highly configurable text-to-image model from Black Forest La
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/v1/images/generations",
+      "https://ai.cubeuaeai.com/v1/images/generations",
       headers={"Authorization": "Bearer YOUR_API_KEY"},
       json={
           "model": "flux-2-flex",

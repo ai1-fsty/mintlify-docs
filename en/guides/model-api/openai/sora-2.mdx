@@ -3,7 +3,7 @@ title: "Sora 2"
 description: "OpenAI Sora 2 video generation model. Generate videos from text prompts and reference images."
 ---
 
-Sora 2 is OpenAI's video generation model, available through the Starrise AI API. It supports text-to-video, image-to-video (first-frame reference), and video remixing.
+Sora 2 is OpenAI's video generation model, available through the Cube AI API. It supports text-to-video, image-to-video (first-frame reference), and video remixing.
 
 ## Key Capabilities
 
@@ -27,7 +27,7 @@ The Sora 2 API is asynchronous. Follow these steps:
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/videos \
+  curl https://ai.cubeuaeai.com/v1/videos \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -F "model=sora-2" \
     -F "prompt=A cat walking through a sunflower field at golden sunset" \
@@ -39,7 +39,7 @@ The Sora 2 API is asynchronous. Follow these steps:
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/v1/videos",
+      "https://ai.cubeuaeai.com/v1/videos",
       headers={"Authorization": "Bearer YOUR_API_KEY"},
       data={
           "model": "sora-2",
@@ -58,13 +58,13 @@ The Sora 2 API is asynchronous. Follow these steps:
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/videos/video_69b131ea03548190925a6a06febf993b \
+  curl https://ai.cubeuaeai.com/v1/videos/video_69b131ea03548190925a6a06febf993b \
     -H "Authorization: Bearer YOUR_API_KEY"
   ```
 
   ```python Python
   status = requests.get(
-      f"https://ai.alad.com/v1/videos/{task['id']}",
+      f"https://ai.cubeuaeai.com/v1/videos/{task['id']}",
       headers={"Authorization": "Bearer YOUR_API_KEY"}
   ).json()
 
@@ -76,13 +76,13 @@ The Sora 2 API is asynchronous. Follow these steps:
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/videos/video_69b131ea03548190925a6a06febf993b/content \
+  curl https://ai.cubeuaeai.com/v1/videos/video_69b131ea03548190925a6a06febf993b/content \
     -H "Authorization: Bearer YOUR_API_KEY"
   ```
 
   ```python Python
   result = requests.get(
-      f"https://ai.alad.com/v1/videos/{task['id']}/content",
+      f"https://ai.cubeuaeai.com/v1/videos/{task['id']}/content",
       headers={"Authorization": "Bearer YOUR_API_KEY"}
   ).json()
 

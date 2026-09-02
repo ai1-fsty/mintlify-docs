@@ -1,9 +1,9 @@
 ---
 title: "Grok 4 Fast Reasoning"
-description: "Call xAI Grok 4 Fast Reasoning via Starrise AI API. Grok 4 reasoning variant."
+description: "Call xAI Grok 4 Fast Reasoning via Cube AI API. Grok 4 reasoning variant."
 ---
 
-Grok 4 Fast Reasoning is xAI's language model, available through Starrise AI. Grok 4 reasoning variant.
+Grok 4 Fast Reasoning is xAI's language model, available through Cube AI. Grok 4 reasoning variant.
 
 ## Key Capabilities
 
@@ -15,7 +15,7 @@ Grok 4 Fast Reasoning is xAI's language model, available through Starrise AI. Gr
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -31,7 +31,7 @@ Grok 4 Fast Reasoning is xAI's language model, available through Starrise AI. Gr
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(

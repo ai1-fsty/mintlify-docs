@@ -26,7 +26,7 @@ HappyHorse 1.0 T2V 是阿里 HappyHorse 视频生成系列的文生视频模型�
 <CodeGroup>
   ```bash cURL
   # 第一步 — 创建任务
-  curl https://ai.alad.com/v1/video/generations \
+  curl https://ai.cubeuaeai.com/v1/video/generations \
     -H 'Authorization: Bearer YOUR_API_KEY' \
     -H 'Content-Type: application/json' \
     -d '{
@@ -41,7 +41,7 @@ HappyHorse 1.0 T2V 是阿里 HappyHorse 视频生成系列的文生视频模型�
     }'
 
   # 第二步 — 轮询直至完成
-  curl https://ai.alad.com/v1/video/generations/asyntask_xxx \
+  curl https://ai.cubeuaeai.com/v1/video/generations/asyntask_xxx \
     -H 'Authorization: Bearer YOUR_API_KEY'
   ```
 
@@ -51,7 +51,7 @@ HappyHorse 1.0 T2V 是阿里 HappyHorse 视频生成系列的文生视频模型�
   headers = {"Authorization": "Bearer YOUR_API_KEY"}
 
   resp = requests.post(
-      "https://ai.alad.com/v1/video/generations",
+      "https://ai.cubeuaeai.com/v1/video/generations",
       headers=headers,
       json={
           "model": "happyhorse-1.0-t2v",
@@ -68,7 +68,7 @@ HappyHorse 1.0 T2V 是阿里 HappyHorse 视频生成系列的文生视频模型�
 
   while True:
       r = requests.get(
-          f"https://ai.alad.com/v1/video/generations/{task_id}",
+          f"https://ai.cubeuaeai.com/v1/video/generations/{task_id}",
           headers=headers,
       ).json()
       status = r["data"]["status"]

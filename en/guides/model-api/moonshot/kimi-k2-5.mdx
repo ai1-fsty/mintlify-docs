@@ -1,9 +1,9 @@
 ---
 title: "Kimi-K2.5"
-description: "Call the Moonshot Kimi-K2.5 chat model via the Starrise AI OpenAI-compatible API — fast, powerful, and easy to integrate."
+description: "Call the Moonshot Kimi-K2.5 chat model via the Cube AI OpenAI-compatible API — fast, powerful, and easy to integrate."
 ---
 
-Kimi-K2.5 is a chat model from Moonshot AI, available through Starrise AI via an OpenAI-compatible interface.
+Kimi-K2.5 is a chat model from Moonshot AI, available through Cube AI via an OpenAI-compatible interface.
 
 ## Key Capabilities
 
@@ -16,7 +16,7 @@ Kimi-K2.5 is a chat model from Moonshot AI, available through Starrise AI via an
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -32,7 +32,7 @@ Kimi-K2.5 is a chat model from Moonshot AI, available through Starrise AI via an
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -50,7 +50,7 @@ Kimi-K2.5 is a chat model from Moonshot AI, available through Starrise AI via an
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

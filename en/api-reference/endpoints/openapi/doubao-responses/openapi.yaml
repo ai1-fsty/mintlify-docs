@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
   title: Doubao-compatible endpoint — Responses
-  description: Access Doubao models through Starrise AI using the Responses API
+  description: Access Doubao models through Cube AI using the Responses API
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

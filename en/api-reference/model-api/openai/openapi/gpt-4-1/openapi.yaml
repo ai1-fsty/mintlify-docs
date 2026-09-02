@@ -4,7 +4,7 @@ info:
   description: Call OpenAI GPT-4.1
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

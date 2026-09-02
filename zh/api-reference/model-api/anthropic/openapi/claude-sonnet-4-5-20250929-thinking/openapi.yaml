@@ -1,10 +1,10 @@
 openapi: 3.1.0
 info:
   title: Claude Sonnet 4.5 Thinking (20250929)
-  description: 通过 Starrise AI OpenAI 兼容接口调用 Anthropic Claude Sonnet 4.5 扩展思维版
+  description: 通过 Cube AI OpenAI 兼容接口调用 Anthropic Claude Sonnet 4.5 扩展思维版
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:

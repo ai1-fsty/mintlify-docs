@@ -3,7 +3,7 @@ title: "Kling 1.6 多图生视频"
 description: "快手 Kling 1.6 多图生视频模型，支持从最多 4 张参考图片生成视频。"
 ---
 
-Kling 1.6 多图生视频 是快手可灵系列的多图生视频模型，通过 Starrise AI API 提供服务。上传最多 4 张参考图片，结合文本提示词，生成包含所有参考主体的连贯视频。
+Kling 1.6 多图生视频 是快手可灵系列的多图生视频模型，通过 Cube AI API 提供服务。上传最多 4 张参考图片，结合文本提示词，生成包含所有参考主体的连贯视频。
 
 ## 核心能力
 
@@ -17,7 +17,7 @@ Kling 1.6 多图生视频 是快手可灵系列的多图生视频模型，通过
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/kling/v1/videos/multi-image2video \
+  curl https://ai.cubeuaeai.com/kling/v1/videos/multi-image2video \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -37,7 +37,7 @@ Kling 1.6 多图生视频 是快手可灵系列的多图生视频模型，通过
   import requests
 
   response = requests.post(
-      "https://ai.alad.com/kling/v1/videos/multi-image2video",
+      "https://ai.cubeuaeai.com/kling/v1/videos/multi-image2video",
       headers={
           "Authorization": "Bearer YOUR_API_KEY",
           "Content-Type": "application/json"

@@ -3,7 +3,7 @@ title: "GPT-5 Pro"
 description: "OpenAI GPT-5 Pro — GPT-5 最强多模态版本。"
 ---
 
-GPT-5 Pro 通过 Starrise AI 以 OpenAI 兼容接口提供服务。
+GPT-5 Pro 通过 Cube AI 以 OpenAI 兼容接口提供服务。
 
 ## 核心能力
 
@@ -16,7 +16,7 @@ GPT-5 Pro 通过 Starrise AI 以 OpenAI 兼容接口提供服务。
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/chat/completions \
+  curl https://ai.cubeuaeai.com/v1/chat/completions \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -32,7 +32,7 @@ GPT-5 Pro 通过 Starrise AI 以 OpenAI 兼容接口提供服务。
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   response = client.chat.completions.create(
@@ -50,7 +50,7 @@ GPT-5 Pro 通过 Starrise AI 以 OpenAI 兼容接口提供服务。
 
   client = OpenAI(
       api_key="YOUR_API_KEY",
-      base_url="https://ai.alad.com/v1"
+      base_url="https://ai.cubeuaeai.com/v1"
   )
 
   stream = client.chat.completions.create(

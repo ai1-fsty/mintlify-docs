@@ -1,9 +1,9 @@
 ---
 title: "Seedance 2.0"
-description: "Call ByteDance's Seedance video generation model via Starrise AI API — supports multimodal references, video editing, extension, audio generation, and web search enhancement."
+description: "Call ByteDance's Seedance video generation model via Cube AI API — supports multimodal references, video editing, extension, audio generation, and web search enhancement."
 ---
 
-Seedance 2.0 is ByteDance's latest video generation model, available through the Starrise AI API. It supports text-to-video, image-to-video, multimodal reference input, video editing, video extension, and synchronized audio generation.
+Seedance 2.0 is ByteDance's latest video generation model, available through the Cube AI API. It supports text-to-video, image-to-video, multimodal reference input, video editing, video extension, and synchronized audio generation.
 
 ## Key Capabilities
 
@@ -46,7 +46,7 @@ If you need to use persistent image, video, or audio assets (e.g. a fixed charac
 First, create an asset group to obtain a group ID.
 
 ```bash
-curl https://ai.alad.com/volc/asset/CreateAssetGroup \
+curl https://ai.cubeuaeai.com/volc/asset/CreateAssetGroup \
   -H 'Authorization: Bearer YOUR_KEY' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -70,7 +70,7 @@ Example response:
 Using the group ID from Step 1, upload an image asset (e.g., a character reference face image).
 
 ```bash
-curl https://ai.alad.com/volc/asset/CreateAsset \
+curl https://ai.cubeuaeai.com/volc/asset/CreateAsset \
   -H 'Authorization: Bearer YOUR_KEY' \
   -H 'Content-Type: application/json' \
   -d '{
@@ -97,7 +97,7 @@ Example response:
 Reference the asset ID from Step 2 to generate a video.
 
 ```bash
-curl https://ai.alad.com/v1/video/generations \
+curl https://ai.cubeuaeai.com/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -129,7 +129,7 @@ The API returns an asynchronous task ID (prefixed with `asyn`).
 Use the task ID to query the generation status.
 
 ```bash
-curl https://ai.alad.com/v1/video/generations/asynxxxx \
+curl https://ai.cubeuaeai.com/v1/video/generations/asynxxxx \
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
@@ -146,7 +146,7 @@ Once the task completes, the response will contain a pre-signed S3 download URL.
 
 <CodeGroup>
   ```bash cURL
-  curl https://ai.alad.com/v1/video/generations \
+  curl https://ai.cubeuaeai.com/v1/video/generations \
     -H "Authorization: Bearer YOUR_API_KEY" \
     -H "Content-Type: application/json" \
     -d '{
@@ -171,7 +171,7 @@ Once the task completes, the response will contain a pre-signed S3 download URL.
 
   # Step 1: Create task
   resp = requests.post(
-      "https://ai.alad.com/v1/video/generations",
+      "https://ai.cubeuaeai.com/v1/video/generations",
       headers=headers,
       json={
           "model": "seedance-2.0",
@@ -188,7 +188,7 @@ Once the task completes, the response will contain a pre-signed S3 download URL.
   # Step 2: Poll for results
   while True:
       result = requests.get(
-          f"https://ai.alad.com/v1/video/generations/{task_id}",
+          f"https://ai.cubeuaeai.com/v1/video/generations/{task_id}",
           headers=headers
       ).json()
       status = result["data"]["status"]
@@ -209,7 +209,7 @@ In the prompt you can reference `content` array items using `@image1`, `@video1`
 > **Important:** Assets must be passed in strict order: text, image\_url, video\_url, audio\_url. Do not reorder them, as this may cause errors; when including multiple assets, also ensure no other asset types are mixed in.
 
 ```bash cURL
-curl https://ai.alad.com/v1/video/generations \
+curl https://ai.cubeuaeai.com/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -244,7 +244,7 @@ curl https://ai.alad.com/v1/video/generations \
 ### Video Editing
 
 ```bash cURL
-curl https://ai.alad.com/v1/video/generations \
+curl https://ai.cubeuaeai.com/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
@@ -274,7 +274,7 @@ curl https://ai.alad.com/v1/video/generations \
 ### Web Search Enhancement (Text-to-Video Only)
 
 ```bash cURL
-curl https://ai.alad.com/v1/video/generations \
+curl https://ai.cubeuaeai.com/v1/video/generations \
   -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{

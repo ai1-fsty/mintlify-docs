@@ -4,7 +4,7 @@ info:
   description: 通过 element_id 删除自定义主体
   version: 1.0.0
 servers:
-  - url: https://ai.alad.com
+  - url: https://ai.cubeuaeai.com
 security:
   - bearerAuth: []
 paths:
