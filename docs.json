@@ -1315,5 +1315,9 @@
     "socials": {
       "website": "https://ai.cubeuaeai.com"
     }
+  },
+  "favicon": {
+    "light": "/favicon.ico",
+    "dark": "/favicon.ico"
   }
 }
