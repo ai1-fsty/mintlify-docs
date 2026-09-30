@@ -3,32 +3,206 @@ title: "FAQ"
 description: "Frequently asked questions about Starrise AI."
 ---
 
+Starrise AI is an enterprise AI API aggregation platform. Use one API key and one Base URL to call leading models and manage usage, billing, and call logs in one place.
+
+<Note>
+  Model lists, pricing, routes, supported client versions, and configuration paths may change with provider policies and platform updates. For production use, the current [Console](https://ai.alad.com/console/token?lang=en), your quotation, the SLA, data processing terms, and signed documents take precedence.
+</Note>
+
+## Product
+
 <AccordionGroup>
-  <Accordion title="What is Starrise AI?">
-    Starrise AI is a unified AI API platform that gives developers access to models from multiple providers — including chat, image generation, and video generation — through a single API key and consistent interface.
+  <Accordion title="What is Starrise, and what does it offer?">
+    Starrise is an enterprise AI API aggregation platform. Use one API key and one Base URL to call leading models — including Claude, GPT/OpenAI, Gemini, DeepSeek, Qwen, GLM, Kimi, Grok, and Doubao — and manage usage, billing, and call logs in one place.
+
+    Core capabilities: unified access, intelligent routing and failover, transparent usage and cost, enterprise key and permission management, and 24/7 support from a UAE-based team.
+
+    Chat, image generation, and video generation are all available through a single, consistent interface. See the [Introduction](/en/index) and [Quick Start](/en/quickstart).
   </Accordion>
 
+  <Accordion title="How is Starrise different from going direct to a provider?">
+    Integrate once to access multiple leading models, and manage keys, permissions, usage, and billing from one console. You avoid separate contracts, integrations, and reconciliation for each provider, and you are not locked in to any of them.
+
+    Compared with other aggregators, Starrise gives you 24/7 support from a UAE-based team, international and Chinese models through one API, business-ready payment (bank transfer, multiple currencies, formal invoices), and enterprise discounts based on your models and usage.
+  </Accordion>
+</AccordionGroup>
+
+## Getting started
+
+<AccordionGroup>
   <Accordion title="How do I get an API key?">
-    Register at [ai.alad.com](https://ai.alad.com?lang=en), then go to the [Console](https://ai.alad.com/console/token?lang=en) to create your API key.
+    Register at [ai.alad.com](https://ai.alad.com?lang=en), then go to [Token Management](https://ai.alad.com/console/token?lang=en) in the Console to create your API key.
+
+    Keep the key secure. Do not expose it in client-side code or public repositories.
+  </Accordion>
+
+  <Accordion title="How do I integrate? What is the API endpoint?">
+    Sign up at [ai.alad.com](https://ai.alad.com?lang=en) and create an API key in the Console. Then replace the Base URL and API key in your existing OpenAI client with your Starrise values.
+
+    The API is OpenAI-compatible, so no major code changes are needed.
+
+    * Base URL: `https://ai.alad.com/v1`
+    * Chat endpoint: `POST https://ai.alad.com/v1/chat/completions`
+
+    Copy the exact address from the Console if needed. Use model names exactly as listed in the Starrise marketplace, or requests will fail.
+
+    See the [Quick Start](/en/quickstart) and [API Reference](/en/api-reference/introduction) for a complete first-call example.
   </Accordion>
 
   <Accordion title="Is Starrise AI compatible with the OpenAI SDK?">
-    Yes. Chat models fully conform to the OpenAI API specification. Just change `base_url` to `https://ai.alad.com/v1` — no other code changes are needed.
+    Yes. Chat models fully conform to the OpenAI API specification. Change `base_url` to `https://ai.alad.com/v1` — no other code changes are needed.
+
+    ```python
+    from openai import OpenAI
+
+    client = OpenAI(
+        api_key="YOUR_API_KEY",
+        base_url="https://ai.alad.com/v1"
+    )
+    ```
+
+    You can also list models available to the current key via `GET /v1/models`. See [GET /v1/models](/en/guides/system-api/models-list).
   </Accordion>
 
-  <Accordion title="How does billing work?">
-    Starrise AI uses a prepaid credit system. Credits are deducted in real time when API calls are made. Chat models are billed per token; image and video generation models are billed per generation. Go to the [Top Up page](https://ai.alad.com/console/topup?lang=en) to add credits.
+  <Accordion title="Do I need to enable a channel before calling a model?">
+    Yes. Different models correspond to different channels. You must enable the corresponding channel in the [Console](https://ai.alad.com/console?lang=en) before you can successfully call that model.
+  </Accordion>
+</AccordionGroup>
+
+## Models
+
+<AccordionGroup>
+  <Accordion title="Which models are supported?">
+    Starrise supports models from multiple providers, including Anthropic, OpenAI, Google, ByteDance, DeepSeek, Alibaba, Zhipu, MiniMax, MoonShot, xAI, Kuaishou, and Black Forest Labs.
+
+    Browse the full list in the [Model API](/en/guides/model-api/anthropic/claude-opus-4-8) section, or call `GET /v1/models` with your API key. The marketplace in the [Console](https://ai.alad.com?lang=en) is the source of truth for currently available model names.
+  </Accordion>
+
+  <Accordion title="How do I generate images or videos?">
+    Image and video models use dedicated endpoints rather than `/v1/chat/completions`:
+
+    * Image generation: `POST /v1/images/generations`
+    * Video generation: `POST /v1/video/generations`, then poll `GET /v1/video/generations/{task_id}` until the task succeeds
+    * Provider-specific video APIs (for example Kling) use their own paths under `/kling/v1/...`
+
+    Video generation is asynchronous. Submit a request, then poll the task until the status becomes `succeeded`. See the [API Reference](/en/api-reference/introduction) for endpoint details and the Model API pages for each model's parameters.
+  </Accordion>
+</AccordionGroup>
+
+## Billing
+
+<AccordionGroup>
+  <Accordion title="How does billing work, and how do prices compare with official APIs?">
+    Billing is prepaid and usage-based. Top up your balance and each call is deducted at the model's rate, with no monthly fee.
+
+    * Chat models are billed per token (input + output)
+    * Image and video generation models are billed per generation
+    * Unused credits never expire
+    * There are no platform fees or hidden markups
+
+    Listed prices match each provider's official list price, so you can compare directly. Rates vary by model: check the marketplace or your quotation. Enterprise customers can contact us for discounted rates.
+
+    One balance and one bill across providers, plus switching models without re-integrating, also cut your admin and switching costs.
+
+    Go to the [Top Up page](https://ai.alad.com/console/topup?lang=en) to add credits. See [Top Up & Payment](/en/guides/resources/payment).
   </Accordion>
 
   <Accordion title="What happens when I run out of credits?">
     API calls will return a `402 Payment Required` error. Top up at the [Console](https://ai.alad.com/console/topup?lang=en) to resume usage.
+
+    Set a balance alert to avoid interrupted API calls. We recommend a threshold of 20% of your average monthly spend.
   </Accordion>
 
-  <Accordion title="Which models are supported?">
-    Starrise AI supports models from multiple providers including Anthropic, ByteDance, and more. Browse the full list in the [Model API](/en/guides/model-api/bytedance/seedance-2-0) section.
+  <Accordion title="How do I view spend and usage detail?">
+    Everything is in the Console. The dashboard shows your total spend, usage logs break down usage and trends by model, and the billing page records top-ups.
+
+    To control cost, use multiple keys and groups, quotas, permissions, and balance alerts. We recommend a separate key for each environment and team, and exporting call details regularly to reconcile your bill.
   </Accordion>
 
-  <Accordion title="How do I generate a video with Seedance 2.0?">
-    Video generation is an asynchronous process. Submit a request to `POST /v1/video/generations`, then poll `GET /v1/video/generations/{task_id}` until the status becomes `succeeded`. See the [Seedance 2.0 guide](/en/guides/model-api/bytedance/seedance-2-0) for a complete example.
+  <Accordion title="How do enterprise customers top up, make payment, and get invoices?">
+    Enterprise top-ups are processed manually by our operations team and are normally credited within 1 working day.
+
+    You can pay by corporate bank transfer, with settlement in USD, HKD, AED, and other currencies. We send the receiving account and payment details with your invoice. Confirm them with our team before paying, and never use account details from unverified channels.
+
+    Individual accounts can also add credits by credit or debit card via Stripe on the [Top Up page](https://ai.alad.com/console/topup?lang=en).
+  </Accordion>
+
+  <Accordion title="Is a trial credit available?">
+    Yes. We can provision trial credit for teams evaluating Starrise. To request it, tell us your use case, estimated volume, target models, expected concurrency, and preferred testing window.
+  </Accordion>
+</AccordionGroup>
+
+## Account and security
+
+<AccordionGroup>
+  <Accordion title="How do I create and manage API keys?">
+    Go to [Token Management](https://ai.alad.com/console/token?lang=en) in the Console to create, view, and disable keys, and assign groups, quotas, and permissions per project, team, or customer.
+
+    Each key can have its own expiry, spending limit, and IP allowlist. Keys are masked in the Console and never appear in clear text in logs. Include the key as a Bearer token:
+
+    ```
+    Authorization: Bearer YOUR_API_KEY
+    ```
+  </Accordion>
+
+  <Accordion title="What security settings are available for accounts and API keys?">
+    You can set an expiry, spending limit, and IP allowlist on each API key. Keys are masked in the Console and never appear in clear text in logs.
+
+    Use sub-accounts to separate teams: a parent account sees its own and its sub-accounts' data, and a sub-account sees only its own. Accounts support two-factor authentication, passkeys, and enterprise SSO.
+  </Accordion>
+
+  <Accordion title="Do you store my prompts, and is my data used for training?">
+    We do not store request content. Prompts, responses, and uploaded files are held in memory only while the request is processed, then released. They are never written to disk or a database, and there is no option to log full request content.
+
+    We retain only call metadata (model, token counts, latency, route, request ID), billing records, and an admin audit trail. Source IPs and error messages are not logged by default; if you enable error logging, they are redacted first.
+
+    Training use, data residency, and deletion depend on the route, the provider's policy, and your contract. Confirm the applicable setup and complete your compliance review before going to production.
+  </Accordion>
+</AccordionGroup>
+
+## Clients and tools
+
+<AccordionGroup>
+  <Accordion title="How do I connect Claude Code, Codex, CC Switch, and similar clients?">
+    Use a tool such as CC Switch to route requests from Claude desktop, Codex, and similar clients to Starrise, or configure the third-party API directly in the client's developer / custom-provider settings.
+
+    Typical settings:
+
+    * API Key: your Starrise key from the Console
+    * Base URL: `https://ai.alad.com/v1` (OpenAI-compatible clients)
+    * Anthropic-style clients (Claude Code): `ANTHROPIC_BASE_URL=https://ai.alad.com/` and `ANTHROPIC_API_KEY`
+
+    Step-by-step guides:
+
+    * [CC Switch](/en/guides/usecases/use-anyfast-in-cc-switch)
+    * [Claude Code](/en/guides/usecases/use-anyfast-in-claude-code)
+    * [Codex](/en/guides/usecases/use-anyfast-in-codex)
+    * [Chatbox](/en/guides/usecases/use-anyfast-in-chatbox)
+    * [Cline](/en/guides/usecases/use-anyfast-in-cline)
+    * [Continue (VS Code)](/en/guides/usecases/use-anyfast-in-continue-vscode)
+  </Accordion>
+</AccordionGroup>
+
+## Support and errors
+
+<AccordionGroup>
+  <Accordion title="How do I get technical support?">
+    Our UAE-based team provides 24/7 support via the Console, email, or WhatsApp.
+
+    When reporting an issue, include the request ID, timestamp, model, endpoint, HTTP status code, full error message, client and version, relevant configuration (with API keys redacted), and steps to reproduce. Never share a full API key, password, or wallet private key in a ticket, chat, or screenshot.
+  </Accordion>
+
+  <Accordion title="What do common HTTP errors mean?">
+    | Status | Meaning |
+    | --- | --- |
+    | `400` | Bad request — invalid parameters |
+    | `401` | Unauthorized — API key missing or invalid |
+    | `402` | Payment required — balance is insufficient |
+    | `403` | Forbidden — insufficient permissions |
+    | `404` | Not found — invalid endpoint |
+    | `429` | Rate limit exceeded — retry with exponential backoff |
+    | `500` | Internal server error |
+
+    See [Error Handling](/en/api-reference/introduction#error-handling) in the API Reference.
   </Accordion>
 </AccordionGroup>

@@ -3,32 +3,204 @@ title: "常见问题"
 description: "关于 Starrise AI 的常见问题解答。"
 ---
 
+Starrise AI 是企业级 AI API 聚合平台。通过一个 API Key 和一个 Base URL，即可统一调用主流模型，并集中管理用量、账单与调用日志。
+
+<Note>
+  模型列表、价格、线路、第三方客户端版本和配置入口可能随供应商政策及平台更新而变化。正式报价、SLA、数据处理和资源可用性以当前[控制台](https://ai.alad.com/console/token)、报价单及最终签署文件为准。
+</Note>
+
+## 产品
+
 <AccordionGroup>
-  <Accordion title="Starrise AI 是什么？">
-    Starrise AI 是统一的 AI API 平台，通过单一 API Key 和一致的接口，让开发者访问多家提供商的模型，包括对话、图片生成和视频生成。
+  <Accordion title="Starrise 是什么？提供哪些核心能力？">
+    Starrise 是一个企业级 AI API 聚合平台。通过一个 API Key 和一个 Base URL，即可统一调用 Claude、GPT/OpenAI、Gemini、DeepSeek、Qwen、GLM、Kimi、Grok、Doubao 等主流模型，并集中管理用量、账单与调用日志。
+
+    核心能力包括：统一接入、智能路由与故障切换、用量与成本透明、企业级密钥与权限管理，以及阿联酋本地团队 24/7 支持。
+
+    对话、图片生成和视频生成均通过同一套接口提供。详见[介绍](/zh/index)和[快速入门](/zh/quickstart)。
   </Accordion>
 
+  <Accordion title="和直接对接模型厂商相比，有什么区别？">
+    企业只需对接一次，即可调用多家主流模型，并在同一控制台统一管理密钥、权限、用量与账单，无需与每家厂商分别签约、对接和对账，也不会被单一厂商绑定。
+
+    与一般聚合平台相比，Starrise 的差异在于：阿联酋本地团队 24/7 支持；同一接口兼顾国际与国产模型；支持对公转账、多币种付款并开具正式发票；企业客户可按使用模型和用量获取折扣报价。
+  </Accordion>
+</AccordionGroup>
+
+## 开始使用
+
+<AccordionGroup>
   <Accordion title="如何获取 API Key？">
-    在 [ai.alad.com](https://ai.alad.com) 注册账号后，前往[控制台](https://ai.alad.com/console/token)创建你的 API Key。
+    在 [ai.alad.com](https://ai.alad.com) 注册账号后，前往控制台的[Token 管理](https://ai.alad.com/console/token)创建你的 API Key。
+
+    请妥善保管密钥，不要把它写进前端代码或公开仓库。
+  </Accordion>
+
+  <Accordion title="如何接入？API 地址是什么？">
+    注册并登录 [ai.alad.com](https://ai.alad.com) 后，在控制台创建 API Key，把原有 OpenAI 调用中的 Base URL 和 API Key 替换为 Starrise 的即可——接口兼容 OpenAI 格式，无需大幅改动代码。
+
+    * Base URL：`https://ai.alad.com/v1`
+    * 对话接口：`POST https://ai.alad.com/v1/chat/completions`
+
+    具体地址以控制台为准。模型名称需与 Starrise 模型市场中的名称完全一致，否则调用会失败。
+
+    完整示例见[快速入门](/zh/quickstart)和 [API 参考](/zh/api-reference/introduction)。
   </Accordion>
 
   <Accordion title="Starrise AI 兼容 OpenAI SDK 吗？">
     兼容。对话模型完全遵循 OpenAI API 规范，只需将 `base_url` 改为 `https://ai.alad.com/v1`，其他代码无需修改。
+
+    ```python
+    from openai import OpenAI
+
+    client = OpenAI(
+        api_key="YOUR_API_KEY",
+        base_url="https://ai.alad.com/v1"
+    )
+    ```
+
+    也可以通过 `GET /v1/models` 列出当前 Key 可用的模型。详见 [GET /v1/models](/zh/guides/system-api/models-list)。
   </Accordion>
 
-  <Accordion title="如何计费？">
-    Starrise AI 采用预付费积分制，API 调用时实时扣除积分。对话模型按 Token 计费，图片和视频生成按次计费。前往[充值页面](https://ai.alad.com/console/topup)添加积分。
+  <Accordion title="调用模型前需要先开通渠道吗？">
+    需要。不同模型对应不同的渠道，只有在[控制台](https://ai.alad.com/console)中开通了对应渠道，才能成功调用该模型。
+  </Accordion>
+</AccordionGroup>
+
+## 模型
+
+<AccordionGroup>
+  <Accordion title="支持哪些模型？">
+    Starrise 支持多家提供商的模型，包括 Anthropic、OpenAI、Google、ByteDance、DeepSeek、阿里、智谱、MiniMax、MoonShot、xAI、快手和 Black Forest Labs。
+
+    可在[模型 API](/zh/guides/model-api/anthropic/claude-opus-4-8) 栏目浏览完整列表，或使用 API Key 调用 `GET /v1/models`。当前可用的模型名称以[控制台](https://ai.alad.com)模型市场为准。
+  </Accordion>
+
+  <Accordion title="如何生成图片或视频？">
+    图片和视频模型使用独立接口，而不是 `/v1/chat/completions`：
+
+    * 图片生成：`POST /v1/images/generations`
+    * 视频生成：`POST /v1/video/generations`，然后轮询 `GET /v1/video/generations/{task_id}` 直到任务成功
+    * 部分厂商视频接口（例如可灵）使用各自的 `/kling/v1/...` 路径
+
+    视频生成是异步流程：先提交请求，再轮询任务直到状态变为 `succeeded`。接口说明见 [API 参考](/zh/api-reference/introduction)，各模型参数见对应的模型 API 页面。
+  </Accordion>
+</AccordionGroup>
+
+## 计费
+
+<AccordionGroup>
+  <Accordion title="计费方式是怎样的？与官方 API 相比价格如何？">
+    采用预充值、按实际用量扣费：先充值，调用时按各模型的计价标准从余额扣除，不收月费，用多少付多少。
+
+    * 对话模型按 Token 计费（输入 + 输出）
+    * 图片和视频生成按次计费
+    * 未使用的积分永不过期
+    * 无平台费用，无隐藏加价
+
+    平台展示的是各模型官方标价，可直接对比；不同模型价格不同，以模型市场或报价单为准。企业客户可联系我们获取折扣报价。
+
+    多家模型统一充值与账单、切换模型无需重新对接，也能节省管理与切换成本。
+
+    前往[充值页面](https://ai.alad.com/console/topup)添加积分。详见[充值付款](/zh/guides/resources/payment)。
   </Accordion>
 
   <Accordion title="积分用完了怎么办？">
     API 调用会返回 `402 Payment Required` 错误。前往[控制台](https://ai.alad.com/console/topup)充值后即可恢复使用。
+
+    建议开启余额预警，将阈值设为月均消耗的 20%，避免接口调用中断。
   </Accordion>
 
-  <Accordion title="支持哪些模型？">
-    Starrise AI 支持来自 Anthropic、ByteDance 等多家提供商的模型。在[模型 API](/zh/guides/model-api/bytedance/seedance-2-0) 栏目中浏览完整列表。
+  <Accordion title="如何查看消费与用量明细？">
+    在控制台查看：仪表盘显示消费总额，调用日志按模型展示明细与用量趋势，账单页记录充值。
+
+    企业还可通过多 Key、多分组、配额、权限和余额预警管理用量与成本。建议为不同环境和团队分配独立 Key，并定期导出调用明细核对企业账单。
   </Accordion>
 
-  <Accordion title="如何用 Seedance 2.0 生成视频？">
-    视频生成是异步流程。向 `POST /v1/video/generations` 提交请求，然后轮询 `GET /v1/video/generations/{task_id}` 直到状态变为 `succeeded`。查看 [Seedance 2.0 指南](/zh/guides/model-api/bytedance/seedance-2-0) 获取完整示例。
+  <Accordion title="企业客户如何充值、付款以及开票？">
+    企业客户由运营团队人工充值，款项通常 1 个工作日内到账。
+
+    付款支持对公银行转账，可提供 USD、HKD、AED 等多币种结算。具体收款账户与付款要求会随发票一并提供，请在付款前与我方团队确认，切勿使用非官方渠道提供的账户信息。
+
+    个人账户也可以在[充值页面](https://ai.alad.com/console/topup)通过 Stripe 使用信用卡 / 借记卡充值。
+  </Accordion>
+
+  <Accordion title="是否提供测试额度？">
+    可以为有意向的企业或开发团队开通测试额度。申请测试请说明使用场景、预计调用量、目标模型、预计并发和希望测试的时间。
+  </Accordion>
+</AccordionGroup>
+
+## 账户与安全
+
+<AccordionGroup>
+  <Accordion title="如何创建和管理 API Key？">
+    在控制台[Token 管理](https://ai.alad.com/console/token)页面可创建、查看和禁用 Key，并为不同项目、团队或客户设置独立分组、配额与权限。
+
+    每个 Key 可单独设置有效期、消费上限和 IP 白名单，界面中脱敏显示，不会以明文出现在日志中。请求时使用 Bearer Token：
+
+    ```
+    Authorization: Bearer YOUR_API_KEY
+    ```
+  </Accordion>
+
+  <Accordion title="账户和 API 密钥有哪些安全设置？">
+    每个 API 密钥可单独设置有效期、消费上限和 IP 白名单，并在界面中脱敏显示，不会以明文出现在日志中。
+
+    可通过子账户隔离内部团队：主账户可查看自身及子账户数据，子账户仅能查看自身数据。账户支持双因素认证、通行密钥和企业单点登录（SSO）。
+  </Accordion>
+
+  <Accordion title="会存储我的请求内容吗？数据会被用于训练吗？">
+    不会存储请求内容：提示词、模型回复及上传的文件和图片仅在请求处理期间保存在内存中，处理完成后即释放，不写入磁盘或数据库，平台也不提供记录完整请求内容的开关。
+
+    平台仅保留调用元数据（模型、token 数、延迟、线路、请求 ID）、账单记录和管理审计记录；来源 IP 和错误信息默认不记录，如开启会先脱敏。
+
+    数据的训练用途、驻留和删除机制以具体线路、供应商政策及合同条款为准，企业客户上线前应确认适用方案并完成内部合规评估。
+  </Accordion>
+</AccordionGroup>
+
+## 客户端与工具
+
+<AccordionGroup>
+  <Accordion title="如何接入 Claude Code、Codex、CC Switch 等客户端？">
+    可通过 CC Switch 等工具将 Claude 桌面端、Codex 等应用的请求路由到 Starrise，也可在客户端的开发者 / 自定义提供商设置中直接配置第三方 API。
+
+    常见配置：
+
+    * API Key：控制台中的 Starrise 密钥
+    * Base URL：`https://ai.alad.com/v1`（OpenAI 兼容客户端）
+    * Anthropic 风格客户端（Claude Code）：`ANTHROPIC_BASE_URL=https://ai.alad.com/` 和 `ANTHROPIC_API_KEY`
+
+    分步指引：
+
+    * [CC Switch](/zh/guides/usecases/use-anyfast-in-cc-switch)
+    * [Claude Code](/zh/guides/usecases/use-anyfast-in-claude-code)
+    * [Codex](/zh/guides/usecases/use-anyfast-in-codex)
+    * [Chatbox](/zh/guides/usecases/use-anyfast-in-chatbox)
+    * [Cline](/zh/guides/usecases/use-anyfast-in-cline)
+    * [Continue（VS Code）](/zh/guides/usecases/use-anyfast-in-continue-vscode)
+  </Accordion>
+</AccordionGroup>
+
+## 支持与报错
+
+<AccordionGroup>
+  <Accordion title="如何获得技术支持？">
+    Starrise 由阿联酋本地团队提供 24/7 技术支持，可通过控制台、邮箱或 WhatsApp 联系我们。
+
+    排查故障请提供请求 ID、时间、模型名、接口路径、HTTP 状态码、完整错误信息、客户端及版本、相关配置（隐藏 API Key）和可复现步骤。请勿在工单、群聊或截图中公开完整 API Key、密码或钱包私钥。
+  </Accordion>
+
+  <Accordion title="常见 HTTP 错误码是什么意思？">
+    | 状态码 | 含义 |
+    | --- | --- |
+    | `400` | 请求参数无效 |
+    | `401` | 未授权 — API Key 缺失或无效 |
+    | `402` | 需要付款 — 余额不足 |
+    | `403` | 禁止访问 — 权限不足 |
+    | `404` | 未找到 — 接口路径无效 |
+    | `429` | 触发限流 — 请使用指数退避重试 |
+    | `500` | 服务器内部错误 |
+
+    详见 API 参考中的[错误处理](/zh/api-reference/introduction#错误处理)。
   </Accordion>
 </AccordionGroup>
